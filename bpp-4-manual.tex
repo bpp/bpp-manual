@@ -128,7 +128,7 @@ each specified using two variables in the control file:
 \begin{itemize}
 \item \textbf{A00} (\texttt{speciesdelimitation = 0},
   \texttt{speciestree = 0}): estimation of species divergence times
-  and population sizes under the MSC and MSci models when the species
+  and population sizes under the MSC, IM and MSci models when the species
   tree is specified by the user \citep{Rannala2003, Flouri2020a}
 \item \textbf{A01} (\texttt{speciesdelimitation = 0},
   \texttt{speciestree = 1}): inference of the species tree when
@@ -147,7 +147,7 @@ examples illustrating the four types of analyses \citep{Yang2015,
   Flouri2020b}.
 \section{Model Parameters}
 The basic parameters in the MSC model include the \textbf{species
-  divergence times} ($\tau$s) and \textbf{population size parameters}
+  divergence times} ($\tau$s) and mutation scaled \textbf{population sizes}
 $\theta = 4N\mu$, where $N$ is the effective population size and $\mu$
 is the mutation rate per site per generation. Note that $\theta$
 specifies the average proportion of sites that have different bases when
@@ -161,6 +161,10 @@ divergence time in years is, $\tau^*$, is
 \begin{displaymath}
 \tau^* = \frac{\tau}{\mu}.
 \end{displaymath}
+and the diploid effective population size is
+\begin{displaymath}
+N = \frac{\theta}{4\,u}.
+\end{displaymath}
 For a species tree with $s$ species, there are ($s – 1$) divergence
 times ($\tau$s) and at most ($2s – 1$) population size parameters
 ($\theta$s).  Analysis A00 estimates those parameters when the species
@@ -171,22 +175,22 @@ multispecies-coalescent-with-introgression (MSci) model, first
 implemented in BPP version~4.1 and described in
 Chapter~\ref{introgression}, adds introgression nodes to the tree,
 each with a new parameter, the \textbf{introgression probability}
-($\varphi$) \citep[see][]{Flouri2020a}.  For reviews of the MSC model,
-see \citet[][Chapter 9]{Yang2014b}, \citet{Xu2016}, and
-\citet{Rannala2020a}.
+($\varphi$) \citep[see][]{Flouri2020a}. The Isolation-with-migration (IM)
+model adds a matrix of \textbf{instantaneous migration rates} (\textbf{M}) (see Chapter~\ref{introgression})   For reviews of the MSC model, see \citet[][Chapter 9]{Yang2014b}, \citet{Xu2016}, and \citet{Rannala2020a}.
 
 \section{Model Assumptions}
 The MSC model implemented in BPP makes two basic assumptions about the
 data: \emph{no recombination between sites of the same locus}, and
 \emph{free recombination between loci}.  The original MSC model
 \citep[][]{Rannala2003} also assumes complete genetic isolation
-between populations, but some more recent implementations allow gene
+between populations, but more recent implementations allow gene
 flow between species (either continuous migration or episodic
 introgression); the MSci model implemented in BPP allows episodic
-introgression \citep[][]{Flouri2020a}.  The default model assumes a strict
+introgression \citep[][]{Flouri2020a} and the IM model allows
+continuous migration (see Chapter~\ref{introgression}).  The default model assumes a strict
 molecular clock (constant substitution rates among lineages) and
-relaxed-clocks (with substitution rates varying among lineages) are implemented through variable clock models (see
-Chapter~\ref{substitutions}).
+relaxed-clocks (with substitution rates varying among lineages)
+are implemented through variable clock models (see Chapter~\ref{substitutions}).
 
 \subsection{Nuclear genomic data}
 Ideal data for analysis using the BPP program are loosely-linked short
@@ -274,16 +278,6 @@ description may look like the following (replace the numbers in
   distribution \citep[][eq.~2]{Yang2010}.  Each analysis is run at
   least twice to confirm consistency between runs.}
 
-
-\section{Features New To BPP 4.0}
-
-\begin{itemize}
-\item i.  Multiple threads
-\item ii.  Introgression model (MSci)
-\item iii. Local-clock and locus-rates models (clock and locusrate)
-\item iv.  Topological constraints (constraint and outgroup)
-\end{itemize}
-
 \chapter{Installing and Running BPP}
 
 This manual applies to \textsc{BPP} versions 4.1 and later.  The
@@ -309,13 +303,13 @@ Download the distribution file containing an executable for your
 operating system and uncompress the file. Change the current directory
 to be the root of the subdirectory created by uncompressing the file.
 For example, on a Linux machine you could type the following to
-download and install bpp version 4.3.0 (the latest version may be
+download and install bpp version 4.4.1 (the latest version may be
 different from this):
 \begin{verbatim}
 wget https://github.com/bpp/bpp/releases/download/\
-v4.3.0/bpp-4.3.0-linux-x86_64.tar.gz
-tar -xvzf bpp-4.3.0-linux-x86_64.tar.gz
-cd bpp-4.3.0-linux-x86_64/
+v4.4.1/bpp-4.4.1-linux-x86_64.tar.gz
+tar -xvzf bpp-4.4.1-linux-x86_64.tar.gz
+cd bpp-4.4.1-linux-x86_64/
 \end{verbatim}
 \noindent
 You are now ready to proceed to Section~\ref{trial}
@@ -413,8 +407,8 @@ uncompressing the bpp distribution file. For example, in Linux the
 following commands will uncompress the distribution file and move you
 to the top level of the bpp directory: {\color{red}
 \begin{verbatim}
-tar -xvzf bpp-4.3.0-linux-x86_64.tar.gz
-cd bpp-4.3.0-linux-x86_64
+tar -xvzf bpp-4.4.1-linux-x86_64.tar.gz
+cd bpp-4.4.1-linux-x86_64
 \end{verbatim}
 }
 \noindent
@@ -424,19 +418,20 @@ following command within the Terminal application: {\color{red}
 bin\bpp --cfile examples\frogs\A00.bpp.ctl
 \end{verbatim}}
   \noindent
-  In Linux or Mac OSX type the following command within a terminal:
+  In Linux or Mac OSX type the following commands within a terminal:
   {\color{red}
 \begin{verbatim}
-bin/bpp --cfile examples/frogs/A00.bpp.ctl
+cd examples/frogs/
+../../bin/bpp --cfile examples/frogs/A00.bpp.ctl
 \end{verbatim}}  
     \noindent
     If the program executed successfully, you should see initial
     output similar to the following:
 {\small
 \begin{verbatim}
+bpp v4.4.1_linux_x86_64, 31GB RAM, 12 cores
 https://github.com/bpp/bpp
 
-Detected CPU features: mmx sse sse2 sse3 ssse3 sse4.1 sse4.2 popcnt avx avx2
 Auto-selected SIMD ISA: AVX2
 
 
@@ -444,7 +439,6 @@ Starting timer..
 Using seed: -1
 Parsing species tree... Done
 Parsing phylip file... Done
-Removing sites containing ambiguous characters... Done
 \end{verbatim}
 }
 \noindent
@@ -458,7 +452,7 @@ discussion group at:
 \newline \hspace{0.1pt} \\
 When posting on the forum, please specify the exact command you
 typed and the error message you received (preferably by copying
-and pasting this information from your terminal).
+and pasting this information from your terminal or attaching a screen shot).
 
 \chapter{Input File Formats} \label{files} Two input files are
 required for every BPP analysis, the sequence file and the control
@@ -493,15 +487,15 @@ letters, missing data can be specified using a \texttt{?} symbol,
 and IUPAC ambiguity codes may be used. The interpretation of an
 ambiguity code (as either an uncertain base or a diploid genotype)
 depends on whether the data are specified as phased in the control
-file.  By default (\texttt{cleandata = 0}), alignment gaps and
+file.  By default (control file variable \texttt{cleandata = 0}, see Section~\ref{ctrlfile}), alignment gaps and
 ambiguity nucleotides are used in the likelihood calculation, with
 gaps treated as question marks
 \citep[see][pp.~111-112]{Yang2014b}.  If \texttt{cleandata = 1},
 all columns with gaps or ambiguity characters are removed before
 analysis. An example of a sequence data file for 2 loci and 4
-sequences per locus is given below (you can also look at the
+sequences per locus is given below (you can also examine the
 sequence files \texttt{frogs.txt} and \texttt{yu2001.txt} in the
-\texttt{data} subdirectory.
+\texttt{examples} subdirectory).
 \begin{verbatim}
 
 4 20
@@ -535,17 +529,19 @@ Specimen4   B
 Specimen5   C
 Specimen6   C
 \end{verbatim}
-    The MSC model implemented in \textsc{BPP} infers the relationships
-    among species/populations not individuals and so it uses only the
-    population ID for a sequence (such as A, B, … in the example), and
-    does not use the individual ID.  Also when \textsc{BPP} reads the
-    sequence names, it use the individual ID to retrieve the species
-    ID for each sequence but then ignores the sequence name.  One
-    motivation for the use of the Imap file and this two-layer design
-    is that one may wish to analyze the same sequence data with
-    different population/species assignments of individual IDs. This
-    can be achieved by editing the small Imap file rather than editing
-    the larger sequence data file.
+See also the map files \texttt{frogs.Imap.txt} and
+\texttt{Rokas2003-5species-Imap.txt} in the \texttt{examples} subdirectory.
+The MSC model implemented in \textsc{BPP} infers the relationships
+among species/populations not individuals and so it uses only the
+population ID for a sequence (such as A, B, … in the example), and
+does not use the individual ID.  Also when \textsc{BPP} reads the
+sequence names, it use the individual ID to retrieve the species
+ID for each sequence but then ignores the sequence name.  One
+motivation for the use of the Imap file and this two-layer design
+is that one may wish to analyze the same sequence data with
+different population/species assignments of individual IDs. This
+can be achieved by editing the small Imap file rather than editing
+the larger sequence data file.
 
 \begin{figure}[ht]
   \centering \includegraphics[scale=0.567890]{figures/fig-imap}
@@ -579,12 +575,13 @@ Inside the constraint file, three keywords are allowed:
 means that species not on the list (the ingroup species) form a clade.
 \begin{verbatim}
 define g1 as (G,H);
-# identical to constraint (D,E,(G,H));
+# identical to constraint (D,E,F,(G,H));
 constraint (D,E,F,g1);   
 outgroup A,B,C;
 constraint (A,B);
 \end{verbatim}
-Both the equal sign (=) and spaces are accepted. In the example above,
+Either the equal sign (=) or spaces can be used to separate the keyword from
+the specified value. In the example above,
 there are eight species in the dataset: A, B, C, D, E, F, G, and H.
 Line 1 defines an alias \texttt{g1} for clade (G,H), which may be used
 in subsequent \texttt{define} or \texttt{constraint} statements. Line
@@ -593,8 +590,8 @@ species not on the list, (that is, D, E, F, G and H) form a
 clade. Since this information is already in line 2, line 3 has no
 effect in this case.
 
-You can also use the keyword \texttt{NOT} (case-insensitive) for
-\texttt{define} to specify the complement of the species on the
+The modifier keyword \texttt{NOT} (case-insensitive) can be used with
+\texttt{define} to instead specify the complement of the species on the
 list. Suppose in the data we have 10 species of ratites (flightless
 birds), and two outgroup species, chicken and ostrich. You can specify
 the constraint as follows:
@@ -607,8 +604,8 @@ Note that \textsc{bpp} interprets \texttt{outgroup} to mean that all
 species not on the list form a clade. In theory the \texttt{outgroup}
 keyword is unnecessary because you can always achieve the same thing
 by using \texttt{define} (especially with the \texttt{NOT} option) and
-\texttt{constraint}. However \texttt{outgroup} may be convenient to
-use in some situations so we have kept it. If there are four species
+\texttt{constraint}. However \texttt{outgroup} may be more convenient
+or explicit in some situations. If there are four species
 (A,B,C,D),
 \begin{verbatim}
 outgroup = B,C,D;
@@ -619,7 +616,6 @@ whereas
 outgroup = C,D;
 \end{verbatim}
 means (A,B) form a clade so that 3 rooted species trees are allowed.
-
 Finally if multiple compatible constraints are specified, \textsc{bpp}
 merges them into one so that
 \begin{verbatim}
@@ -658,7 +654,8 @@ where \texttt{variable} is the name of a valid variable and
 variable.  Most variable assignments follow this format --- the
 exceptions are described later.  BPP has complicated dependencies
 among variables, both in terms of whether the variable needs to be
-defined and what its permissible values are. Here we begin by defining
+defined (or has a default value when undefined) and what
+its permissible values are. Here we begin by defining
 all the variable names, the syntax of their arguments and permissible
 types (integers, floating point numbers, etc), and outline the
 structure of dependencies among variables
@@ -4495,6 +4492,17 @@ Note that the $\theta$ parameter for a modern species has to be
 specified in the tree file even if only one sequence is sampled from
 that species but migrations into that species are allowed by the
 migration matrix.
+
+
+\section{Features New To BPP 4.0}
+
+\begin{itemize}
+\item i.  Multiple threads
+\item ii.  Introgression model (MSci)
+\item iii. Local-clock and locus-rates models (clock and locusrate)
+\item iv.  Topological constraints (constraint and outgroup)
+\end{itemize}
+
 
 
 \newpage
