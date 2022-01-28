@@ -1,4 +1,4 @@
-\documentclass{book}
+\documentclass[a4paper]{book}
 % Options: Sonny, Lenny, Glenn, Conny, Rejne, Bjarne, Bjornstrup
 \usepackage[Lenny]{fncychap} \usepackage{fontspec}
 \usepackage{caption} \setmainfont{TeX Gyre Pagella} \setsansfont{TeX
@@ -6,6 +6,7 @@
 
 % Ziheng's garbage
 \usepackage{tikz}
+\usepackage{fullpage}
 % \usepackage{comment}
 % \usetikzlibrary{calc,intersections,positioning,decorations.pathreplacing,arrows.meta}
 \usepackage{listings} \usepackage{xcolor}
@@ -776,10 +777,8 @@ yellow/green.
     \label{variableTable}
   \end{center}
 \end{table}
-\newpage
+
 \subsection{BPP control file variables} \label{controlfilevariables}
-
-
 \textbf{{\large 1}} \\
 \noindent\rule{\textwidth}{0.8pt} \\
 \textbf{{\Large \texttt{seed = (-1,+d)}}} \vspace{5pt}\\
@@ -818,7 +817,7 @@ The \textbf{\texttt{0}} option can be used for debugging, or examining priors. W
 \textbf{EXAMPLES} \vspace{5pt}\\
 \textbf{\texttt{usedata = 0}} \vspace{5pt}\\
 \textbf{\texttt{usedata = 1}} \vspace{10pt}\\
-\newpage
+
 \noindent\textbf{{\large 3}} \\
 \noindent\rule{\textwidth}{0.8pt} \\
 \textbf{{\Large \texttt{outfile = s}}} \vspace{5pt}\\
@@ -848,6 +847,7 @@ Sets the name of the file containing the sequence data to be the string \textbf{
 \textbf{EXAMPLES} \vspace{5pt}\\
 \textbf{\texttt{seqfile = /home/mickey/mouse\_seq.txt}} \vspace{5pt}\\
 \textbf{\texttt{seqfile = sequences.txt}} \vspace{10pt}\\
+\newpage
 \textbf{{\large 6}} \\
 \noindent\rule{\textwidth}{0.8pt} \\
 \textbf{{\Large \texttt{finetune = b: [f*]}}} \vspace{5pt}\\
@@ -1751,7 +1751,7 @@ checkpoint file name.  For example, \texttt{bpp --resume
 \textbf{EXAMPLES} \vspace{5pt}\\
 \textbf{\texttt{checkpoint = 100000}} \vspace{5pt}\\
 \textbf{\texttt{checkpoint = 100000 10000}} \vspace{10pt}\\
-\textbf{{\large 29}} \\
+\textbf{{\large 30}} \\
 \noindent\rule{\textwidth}{0.8pt} \\
 \textbf{{\Large \texttt{constraintfile = s}}} \vspace{5pt}\\
 \textbf{DESCRIPTION} \vspace{5pt}\\
@@ -2131,7 +2131,6 @@ be large.  For analysis A00 (\texttt{speciesdelimitation = 0,
 dimension of the sample is changing and cannot be analysed using such
 traceplot programs.
 
-\newpage
 \begin{mdframed}
   \textbf{Combining results from different runs} \\
   The variable setting \texttt{print = -1} specifies that \textsc{BPP}
@@ -2853,7 +2852,11 @@ line breaks.
  biogeographical parameters using a fixed number of species
  (delimitation) as described in \cite{Rannala2017}.  Analysis A11
  jointly infers the species tree, species delimitation and
- biogeographical parameters as described in \cite{Yang2014a}. For each
+ biogeographical parameters as described in \cite{Yang2014a}. Under
+ Model A00 it is also possible to include a model of either instantaneous
+ introgression or ongoing gene flow -- examples of such analyses are given in
+ Chapter~\ref{introgression}.
+ For each
  of these 4 major types of analyses the control file specifications
  will differ as well as the form of output printed to the output
  files. Therefore, we will include two subsections in our discussion
