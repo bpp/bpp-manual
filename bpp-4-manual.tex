@@ -730,7 +730,7 @@ yellow/green.
     \begin{tabular}{@{}llllr@{}}
       \toprule
       Index & Variable & Values & Condition & Dependencies \\ \midrule
-      1 & {\color{blue} seed} & (-1,+d) & True & None \\
+      1 & {\color{blue} seed} & (-d,+d) & True & None \\
       2 & {\color{blue} usedata} & b & True & None \\
       3 & {\color{red} outfile} & s & True& None \\
       4 & {\color{red} mcmcfile} & s & True & None \\
@@ -778,27 +778,28 @@ yellow/green.
   \end{center}
 \end{table}
 
+\newpage
 \subsection{BPP control file variables} \label{controlfilevariables}
 \textbf{{\large 1}} \\
 \noindent\rule{\textwidth}{0.8pt} \\
-\textbf{{\Large \texttt{seed = (-1,+d)}}} \vspace{5pt}\\
+\textbf{{\Large \texttt{seed = (-d,+d)}}} \vspace{5pt}\\
 \textbf{DESCRIPTION} \vspace{5pt}\\
 Specifies the seed used for the random number generator.\vspace{5pt}\\
 \textbf{VALUES} \vspace{5pt}\\
-\textbf{\texttt{-1}}, use the wall clock to generate a seed (store seed in file \texttt{SeedUsed}).\vspace{5pt}\\
+\textbf{\texttt{-d}}, use the wall clock (in Windows) or white noise (in Linux) to generate a seed (store seed in file \texttt{SeedUsed}).\vspace{5pt}\\
 \textbf{\texttt{+d}}, use +d as the seed.\vspace{10pt}\\
 \textbf{DEFAULT} \vspace{5pt}\\
 \textbf{\texttt{-1}} \vspace{5pt}\\
 \textbf{COMMENTS} \vspace{5pt}\\
-Using the same positive integer will produce identical results in
+Using the same positive integer seed will produce identical results in
 different runs, which is useful for debugging, and using different
 positive integers in different runs produces different results.  Using
-$-1$, the computer clock is used as a source for the seed, and
-different runs will produce different results. The positive integer
-seed generated from the clock is stored in a file named SeedUsed and
+$-d$, for example, $-1$, the computer's entropy generator is used as a source for the seed, and
+different runs will produce different results. When evaluating MCMC convergence
+by comparing results across different runs be sure to use -d. The positive integer
+seed automatically generated when using option -d is stored in a file named SeedUsed and
 can be used explicitly to replicate a result. It is recommended that
-you run each analysis at least
-twice using different seeds to confirm that the results are stable across runs. \vspace{5pt}\\
+you run each analysis at least twice using different seeds to confirm that the results are stable across runs. \vspace{5pt}\\
 \textbf{EXAMPLES} \vspace{5pt}\\
 \textbf{\texttt{seed = -1}}\vspace{5pt}\\
 \textbf{\texttt{seed = 278}}\vspace{10pt}\\
@@ -847,15 +848,47 @@ Sets the name of the file containing the sequence data to be the string \textbf{
 \textbf{EXAMPLES} \vspace{5pt}\\
 \textbf{\texttt{seqfile = /home/mickey/mouse\_seq.txt}} \vspace{5pt}\\
 \textbf{\texttt{seqfile = sequences.txt}} \vspace{10pt}\\
-\newpage
+
 \textbf{{\large 6}} \\
 \noindent\rule{\textwidth}{0.8pt} \\
 \textbf{{\Large \texttt{finetune = b: [f*]}}} \vspace{5pt}\\
 \textbf{DESCRIPTION} \vspace{5pt}\\
-Determines whether step lengths in MCMC proposals are automatically optimized or manually set to fixed values as well as setting either the fixed step lengths (manual) or the starting step lengths (optimized). \vspace{5pt}\\
+Determines whether step lengths in MCMC proposals are automatically optimized or manually set to fixed values as well as setting either the fixed step lengths (manual) or the starting step lengths (optimized). There are up to
+15 proposals with step lengths that can be adjusted. Not all proposals are defined for any given choice of model and analysis,
+however 15 values should always be specified when using manual as the order is fixed, step lengths specified for unused proposals will be ignored by the program. The sizes of proposal steps for each parameter are provided (from left to right) in the same order as listed (from top to bottom in table.
+The proposals are as follows:
+\begin{table}[h]
+\begin{tabular}{ll}
+\hline
+Abbreviation & Parameter Proposal Description \\ \hline
+Gage & Node age on gene tree \\
+Gspr & Subtree pruning and regrafting move \\
+thet & Theta \\
+tau &  Tau \\
+mix &  Mixing step (jointly changing mu, tau and gene tree node ages\\
+lrht & empty \\
+phi &  Introgression probability\\
+pi &  Stationary frequencies of substitution model\\
+qmat &  Q matrix elements of substitution model \\
+alfa &  Alpha parameter of gamma model for rate variation among sites \\
+mubr &  empty \\
+nubr &  empty \\
+mu\_i &  empty \\
+nu\_i &  empty \\
+brte &  empty \\ \hline
+\end{tabular}
+\end{table}
+\vspace{5pt}\\
 \textbf{VALUES} \vspace{5pt}\\
-\textbf{\texttt{0: a b c d e f g}}, use fixed step lengths a, b, c, d, e, f and g in MCMC proposals. \vspace{5pt}\\
-\textbf{\texttt{1: a b c d e f g}}, automatically optimize step lengths using initial step lengths a, b, c, d, e, f and g in MCMC proposals. \vspace{5pt}\\
+\textbf{\texttt{0: Gage Gspr thet tau mix lrht phi pi qmat alfa mubr nubr mu\_i nu\_i brte}}\\
+Use fixed step lengths in MCMC proposals as specified, where Gage is the specified step length for proposal Gage, and so on. \vspace{5pt}\\
+\textbf{\texttt{1: Gage Gspr thet tau mix lrht phi pi qmat alfa mubr nubr mu\_i nu\_i brte}}\\
+Automatically optimize step lengths in MCMC proposals using specified initial step lengths. \vspace{5pt}\\
+\textbf{DEFAULT} \vspace{5pt}\\
+\textbf{\texttt{0}} \\
+Manually fixes all step lengths to be $0.1$.\\
+\textbf{\texttt{1}} \\
+Fixes all initial proposal step lengths to $0.1$ prior to optimization. 
 \textbf{DEPENDENCIES} \vspace{5pt}\\
 If \textbf{\texttt{b}} is set to 1 (automatic optimization) then \textbf{\texttt{burnin}} has to be >200. \vspace{5pt}\\
 \textbf{COMMENTS} \vspace{5pt}\\
@@ -869,8 +902,8 @@ step.  This option appears to work fine.  Some notes about manually
 adjusting those finetune step lengths are provided below in section
 3.2. \vspace{5pt}\\
 \textbf{EXAMPLES} \vspace{5pt}\\
-\textbf{\texttt{finetune = 0: .01 .02 .03 .04 .05 .01 .01}} \vspace{5pt}\\
-\textbf{\texttt{finetune = 1: .01 .02 .03 .04 .05 .01 .01}}\vspace{10pt}\\
+\textbf{\texttt{finetune = 0: .01 .02 .03 .04 .05 .01 .01 .01 .01 .01 .01 .01 .01 .01 .01}} \vspace{5pt}\\
+\textbf{\texttt{finetune = 1}}\vspace{10pt}\\
 \textbf{{\large 7}} \\
 \noindent\rule{\textwidth}{0.8pt} \\
 \textbf{{\Large \texttt{print = b b b b b}}} \vspace{5pt}\\
@@ -2930,7 +2963,7 @@ file (\texttt{yu2001.txt}); the sequence names are read and then
 ignored.  Multiple loci may be included in the sequence file. The
 contents of the control file \texttt{yu2001.bpp.ctl} are shown below:
 
-{\small
+
 \begin{verbatim}
 seed = -1
 
@@ -2966,7 +2999,7 @@ burnin = 4000
 sampfreq = 2
 nsample = 10000
 \end{verbatim}
-}
+
 \noindent
 The two lines:
 \begin{verbatim}
@@ -3000,7 +3033,7 @@ all produce a similar form of output when the program is running, but
 the number of columns and their specific content varies somewhat.
 Omitting some mostly irrelevant output related to the adjustment of
 proposal moves, the output to screen when this control file is run
-appears as follows: {\small
+appears as follows:
 \begin{verbatim}
      |  Acceptance proportions  |
 Prgs | Gage Gspr thet  tau  mix | mthet1       log-PG         log-L
@@ -3043,15 +3076,15 @@ max       0.001293  -12712.774000
 ESS*      757.838791  1180.434956
 Eff*      0.075784  0.118043
 \end{verbatim}
-}
+
 \noindent
-The line: {\small
+The line:
 \begin{verbatim}
      |  Acceptance proportions  |
 Prgs | Gage Gspr thet  tau  mix | mthet1       log-PG         log-L
 -------------------------------------------------------------------
 \end{verbatim}
-}
+
 \noindent
 is a header that explains the content of each column printed during
 the run.  The \texttt{Prgs} (progress) column will appear in all
@@ -3101,7 +3134,7 @@ The data comprise 5 loci for 4 populations, with the number of sequences at each
 between 21 and 30. We will be estimating $\theta$s for each of the 4 contemporary and 3 ancestral populations
 as well as the 3 species divergence times ($\tau$s). The contents of the control file
 \texttt{A00.bpp.ctl} are shown below:
-{\small
+
 \begin{verbatim}
 seed =  -1
 
@@ -3147,7 +3180,7 @@ burnin = 8000
 sampfreq = 2
 nsample = 100000
 \end{verbatim}
-}
+
 \noindent
 As in the previous analysis, the two lines:
 \begin{verbatim}
@@ -3159,13 +3192,13 @@ well as the species tree topology. In this case,
 a species tree is specified along with population labels.
 The block for specifying species names
 and the species tree looks like this:
-{\small
+
 \begin{verbatim}
 species&tree = 4  K  C  L  H
                     9  7 14  2
                  (((K, C), L), H);
 \end{verbatim}
-}
+
 \noindent
 The first line above lists the number of species (populations) which is
 4 in this example. This is followed
@@ -3226,7 +3259,7 @@ root age are $0.001$ and $0.000001$,respectively):
 \subsection{Output A00 (multiple populations)}
 When BPP is run using the above control file a summary of the progress of the
 MCMC is again printed to screen as follows:
-{\tiny
+{ \scriptsize
 \begin{verbatim}
      |  Acceptance proportions  |
 Prgs | Gage Gspr thet  tau  mix | mthet1 mthet2 mthet3   mtau1  mtau2  mtau3       log-PG        log-L
@@ -3253,7 +3286,7 @@ Prgs | Gage Gspr thet  tau  mix | mthet1 mthet2 mthet3   mtau1  mtau2  mtau3    
   90%  0.64 0.26 0.31 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1228.72385  -4444.54844  12:04
   95%  0.64 0.26 0.31 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1223.25921  -4444.25455  12:43
  100%  0.64 0.26 0.31 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1199.52731  -4444.17857  13:21
-
+}
 13:21 spent in MCMC
 
           theta_1K  theta_2C  theta_3L	theta_4H  theta_5KCLH theta_6KCL theta_7KC tau_5KCLH tau_6KCL tau_7KC lnL
@@ -3270,7 +3303,7 @@ ESS*      2721.25   8954.56   5279.29   11762.38  1199.63   4543.27   3299.32   
 Eff*      0.027213  0.089546  0.052793  0.117624  0.011996  0.045433  0.032993  0.008503  0.009706  0.009320  0.004204
 
 \end{verbatim}
-  }
+}
 There are again 5 acceptance proportions for the 5 parameter proposals, but now the current mean values of 6
 parameters are printed. The current mean values of $\theta$ for nodes 1, 2 and 3 (\texttt{mthet1 mthet2 mthet3})
 are printed -- which are $\theta$s of the contemporary species K, C and L, and those of
