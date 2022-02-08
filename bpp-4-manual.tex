@@ -746,7 +746,7 @@ yellow/green.
       14 & {\color{blue} speciestree} & b & True & ->14 \\
       15 & {\color{yellow1} speciesmodelprior} & +d  & 13[1]=1 OR 14[1]=1 & <-\{13,14\} \\
       16 & {\color{green1} phase} & b* & 11[1] & <-11 \\
-      17 & {\color{blue} nloci} & +d & True & <-5 \\
+      17 & {\color{blue} nloci} & +d & True & ->5 <-31 \\
       18 & {\color{blue} model} & s & True & None \\
       19 & {\color{blue} Qrates} & b +f +f +f +f +f +f & 18=''7'' & <-18 \\
       20 & {\color{blue} basefreqs} & b +f +f +f +f & 18=''7'' & <-18 \\
@@ -760,6 +760,7 @@ yellow/green.
       28 & {\color{blue} heredity} & +d [(f f, s)] & True & None \\
       29 & {\color{blue} checkpoint} & +d [(+d)] & True & None \\
       30 & {\color{blue} constraintfile} & s & True & None \\
+      31 & {\color{yellow1} threads} & +d [ +d +d ] & True & ->17 \\
       \bottomrule
     \end{tabular}
     }
@@ -888,7 +889,7 @@ Automatically optimize step lengths in MCMC proposals using specified initial st
 \textbf{\texttt{0}} \\
 Manually fixes all step lengths to be $0.1$.\\
 \textbf{\texttt{1}} \\
-Fixes all initial proposal step lengths to $0.1$ prior to optimization. 
+Fixes all initial proposal step lengths to $0.1$ prior to optimization.\\ 
 \textbf{DEPENDENCIES} \vspace{5pt}\\
 If \textbf{\texttt{b}} is set to 1 (automatic optimization) then \textbf{\texttt{burnin}} has to be >200. \vspace{5pt}\\
 \textbf{COMMENTS} \vspace{5pt}\\
@@ -1024,6 +1025,8 @@ algorithm. \vspace{5pt}\\
 \textbf{\texttt{1 1 $\alpha$ m}}, specifies rjMCMC algorithm 1, with
 parameters $ \alpha$ and $m$ as specified in equations 6 and 7 of
 \cite{Yang2010}. Reasonable values are $\alpha = 1, 1.5, 2$, etc. and $m = 0.5, 1, 2$. \vspace{5pt}\\
+\textbf{DEFAULT} \vspace{5pt}\\
+\textbf{\texttt{0}} \vspace{5pt}\\
 \textbf{DEPENDENCIES} \vspace{5pt}\\
 If \textbf{\texttt{speciesdelimitation = 1}} then \textbf{\texttt{speciesmodelprior}} must be defined. \vspace{5pt}\\
 \textbf{EXAMPLES} \vspace{5pt}\\
@@ -1040,6 +1043,8 @@ analysis.
 \textbf{\texttt{0}}, specifies that species tree is fixed.  \vspace{5pt}\\
 \textbf{\texttt{1}}, specifies that species tree is estimated. \vspace{5pt}\\
 \textbf{\texttt{}} \vspace{5pt}\\
+\textbf{DEFAULT} \vspace{5pt}\\
+\textbf{\texttt{0}} \vspace{5pt}\\
 \textbf{DEPENDENCIES} \vspace{5pt}\\
 If \textbf{\texttt{speciestree = 1}} then \textbf{\texttt{speciesmodelprior}} must be defined. \vspace{5pt}\\
 \vspace{5pt}\\
@@ -1802,6 +1807,29 @@ are used in the analysis.
 \vspace{5pt}\\
 \textbf{EXAMPLES} \vspace{5pt}\\
 \textbf{\texttt{constraintfile = myconstraints.txt}} \vspace{5pt}\\
+\textbf{{\large 31}} \\
+\noindent\rule{\textwidth}{0.8pt} \\
+\textbf{{\Large \texttt{threads = +d [+d +d]}}} \vspace{5pt}\\
+\textbf{DESCRIPTION} \vspace{5pt}\\
+Specifies the number of CPU threads to be used and optionally the specific threads
+to be used.
+\vspace{5pt}\\
+\textbf{VALUES} \vspace{5pt}\\
+\textbf{\texttt{+d} [+d +d]}, either 1 or 3 positive integers. A single integer argument specifies the number
+of threads to use. If three integers are given the first specifies the number of threads, the second
+specifies the index of the first thread used and the third specifies the increment. For example,
+\textbf{\texttt{12 4 1}} specifies that 12 threads should be used, the first with index 4 and incrementing
+by one so that threads 4-15 are used.
+\vspace{5pt}\\
+\textbf{DEFAULT} \vspace{5pt}\\
+If \texttt{threads} is undefined, the calculations for each locus are placed on different threads when possible.  
+\vspace{5pt}\\
+\textbf{DEPENDENCIES} \vspace{5pt}\\
+The number of specified threads cannot exceed the number of loci specified. \vspace{5pt}\\
+\textbf{EXAMPLES} \vspace{5pt}\\
+\textbf{\texttt{threads = 4}} \vspace{5pt}\\
+\textbf{\texttt{threads = 8 4 1}} \vspace{5pt}\\
+
 
 \subsection{Example control file} \label{examplecontrolfile}
 To examine the structure of a typical BPP control file, we consider
