@@ -2762,15 +2762,18 @@ the same extent of clock violation at different loci.
 Another important factor influencing the results of species tree
 inference is introgression (gene flow) between species (or
 populations). BPP also implements a model of episodic introgression
-between species or populations \cite{Flouri2020a}.  Since version 4.1,
-\textsc{bpp} implements the MSci model \cite{Flouri2020a}.  Currently
-introgression analysis can only be performed using the A00 method of
+between species or populations \cite{Flouri2020a} as well as a model of
+ongoing gene flow (IM).  Since version 4.1,
+\textsc{bpp} implements the MSci model \cite{Flouri2020a} and since version
+4.4 it implements the IM model.  Currently, introgression (MSci) and
+ongoing gene flow (IM) analyses can only be performed using the A00 method of
 analysis (fixed species tree and delimitation, see
 Chapter~\ref{analysismethods}).  In other words, the user has to
-specify the number of introgression events, their directions, and the
-populations involved on a fixed species tree.  The program will then
-estimate the parameters of the MSci model using MCMC.  We hope to
-implement MCMC moves that change the MSci model later.
+specify the number of introgression events (or bands of gene flow),
+their directions, and the populations involved on a fixed species tree. The
+program will then estimate the parameters of the MSci (or IM) models using MCMC.
+We hope to implement MCMC moves that change the MSci (or IM) models and
+species tree topology in the future.
 
 \section{Features of the Basic MSci Model}
 The MSci model involves three types of parameters: the species
@@ -2805,11 +2808,8 @@ and $\theta_{Hl}$ are not parameters in the model while $\tau_T$ and
 $\theta_{Hr}$ are parameters; and finally in model (C), none of those
 four parameters exists in the model.  Model (D) specifies a
 bidirectional introgression event between species A and B.
-
-
 \begin{figure} [t]
   \centering \includegraphics[scale=0.7890]{figures/fig-msci-models}
-
   \caption{Four different types of MSci models implemented in
     \textsc{bpp}.  The models are
     specified using the extended Newick format, as follows: \\
@@ -2832,7 +2832,6 @@ where $a$ and $b$ are positive numbers. For example, \texttt{phiprior
   = 1 1} specifies the beta prior beta($a, b$) with $a = 1$ and
 $b = 1$ for $\varphi$, the introgression probability under the MSci
 model.
-
 
 \chapter{Odds and Ends}
 
@@ -2897,7 +2896,7 @@ line breaks.
  describe the specifics of the four different types of analyses that
  BPP can perform and illustrate them using several of
  the example control files provided in the
- \texttt{data} subdirectory of the BPP distribution. Briefly, BPP is
+ \texttt{examples} subdirectory of the BPP distribution. Briefly, BPP is
  capable of analyzing sequence data using 4 distinct phylogeographical
  models. The 4 models are determined by the combinations of two
  possible settings for each of the two Boolean control file variables
@@ -2917,16 +2916,33 @@ line breaks.
  Model A00 it is also possible to include a model of either instantaneous
  introgression or ongoing gene flow -- examples of such analyses are given in
  Chapter~\ref{introgression}.
- For each
- of these 4 major types of analyses the control file specifications
- will differ as well as the form of output printed to the output
+ For each of these 4 major types of analyses the control file specifications
+ will differ as well as the form of output printed to the screen and output
  files. Therefore, we will include two subsections in our discussion
  of each analysis method: input and output. Here we only consider the
  control file variables specific to the methods of analysis under
  consideration. For a general discussion of other control file
  variables see the example control file discussed in
- section~\ref{ctrlfile}.
+ section~\ref{ctrlfile}. Note that for most analyses the output printed
+ to screen during the run and that printed to the specified output
+ file will be identical.
 
+ It is important to note that only analysis A00 applies within-model inference.
+ There is one specified model in that case (the MSC with a fixed species tree)
+ and the parameters are well defined, with the objective being to estimate those
+ parameters.  In contrast, analyses A01, A10, and A11 all apply trans-model
+inference. They move between different models, and the main objective
+is to calculate the posterior probabilities of the models.  Each is an
+instance of the MSC model, but the species delimitation (the number and
+nature of the species) and/or the species phylogeny may differ between models.
+In analyses A01, A10, and A11, the prior specified using control file variable
+\texttt{thetaprior} applies to all $\theta$ parameters in all models.
+Similarly, all MSC models specifying two or more delimited species have a
+parameter $\tau_0$ (the divergence time of the root), and these
+parameters (for different models) are assigned the same prior,
+specified by the \texttt{tauprior} control file variable.
+
+ 
  \section{A00: Estimating $\theta$s and $\tau$s} \label{a00} Analysis
  A00\texttt{(speciesdelimitation = 0, speciestree = 0)}, requires a
  user-specified species tree topology, given by variable
@@ -2964,7 +2980,7 @@ line breaks.
   other results (such as the posterior distribution for other
   parameters or posterior probabilities for species trees and species
   delimitations) will still be correct.  The same applies to other
-  more complex cases of missing data and parameter unidentifiability.
+  more complex cases of missing data and parameter non-identifiability.
   As an example, suppose the species tree and the numbers of sequences
   for two kinds of loci are as follows: \\
   ((A,B), (C,D)) \\
@@ -2982,7 +2998,7 @@ Our first example is a dataset of human sequence data generated by
 \citet{Yu2001}. The control file is found in the BPP distribution at
 location:
 \begin{verbatim}
-data/yu2001/yu2001.bpp.ctl
+examples/yu2001/yu2001.bpp.ctl
 \end{verbatim}
 The data comprise 61 phased sequences for a single locus that will be
 analyzed to estimate the single parameter $\theta$.  There is no need
@@ -3018,11 +3034,12 @@ cleandata = 0
 # gamma(a, b) for theta
 thetaprior = gamma 2 2000
 
-# auto (0,1): finetune for GBtj, GBspr, theta, tau, mix, locusrate, seqerr
+# auto (0 or 1): finetune for GBtj, GBspr, theta, tau, mix, locusrate, seqerr
 finetune = 1: 2 0.00001 0.0001  0.0005 0.5 0.2 1.0  
 
-# MCMC samples
+# MCMC samples, locusrate, heredityscalars, genetrees, locussubstitution
 print = 1 0 0 0  
+
 burnin = 4000
 sampfreq = 2
 nsample = 10000
@@ -3156,7 +3173,7 @@ Our second example is a dataset of frog sequence data generated by \cite{Zhou201
 This same dataset will also be used to illustrate analyses A01, A10 and A11.
 The control file is found in the BPP distribution at location:
 \begin{verbatim}
-data/frogs/A00.bpp.ctl
+examples/frogs/A00.bpp.ctl
 \end{verbatim}
 The data comprise 5 loci for 4 populations, with the number of sequences at each locus varying
 between 21 and 30. We will be estimating $\theta$s for each of the 4 contemporary and 3 ancestral populations
@@ -3190,7 +3207,7 @@ usedata = 1
 nloci = 5  
 
 # do not remove sites with ambiguity data
-cleandata = 0    * 
+cleandata = 0    
 
 # gamma(a, b) for theta (estimate theta)
 thetaprior = gamma 2 2000 
@@ -3336,7 +3353,9 @@ There are again 5 acceptance proportions for the 5 parameter proposals, but now 
 parameters are printed. The current mean values of $\theta$ for nodes 1, 2 and 3 (\texttt{mthet1 mthet2 mthet3})
 are printed -- which are $\theta$s of the contemporary species K, C and L, and those of
 the 3 $\tau$s (\texttt{mtau1  mtau2  mtau3}) which are the divergence times for ancestral species
-KCLH, KCL and KC, respectively. When the run finishes, a final block is written summarizing the results. The first two
+KCLH, KCL and KC, respectively. If there are many populations/species only the first few $\tau$s will be printed to
+screen but all the $\tau$s will be available in the summary created at the end of the run (see below).
+When the run finishes, a final block is written summarizing the results. The first two
 rows give the mean and median of the posterior distribution for each parameter. This is followed by
 summaries of the statistical uncertainty: the standard deviation (S.D.) of the posterior distribution;
 the minimum (min) and maximum (max) values; the lower and upper bounds of the 95\%
@@ -3349,36 +3368,86 @@ to the output file specified by the \texttt{outfile} variable in the control fil
 A tree file in NEXUS/Newick format is also created and placed in the file named FigTree.tre which is formatted
 for viewing/printing using the \href{http://tree.bio.ed.ac.uk/software/figtree/}{Figtree} program
 
+\subsection{MCMC output file}
+A file will be produced (with a name specified by the control file variable \texttt{mcmcfile}) that contains the mcmc samples from the run for
+all the $\theta$ and $\tau$ parameters. When running under analysis method A00 the contents of this file can be analyzed using a program
+such as \href{}{Tracer} to visually examine the convergence and mixing of the MCMC run. However, the other three analysis methods (A01, A10 and A11) are trans-model analyses in which the number of parameters and or/the meaning of the parameters changes as the chain runs so it is not
+correct to examine the trace plot without conditioning on a particular model.
+
+\subsection{Adjusting step lengths for MCMC moves (finetune)}
+
+You can use the automatic adjustment of the finetune variable (MCMC
+step lengths), which appears to be reliable, but make sure that the
+acceptance proportions are neither too small nor too large.  Below are
+notes for manual adjustments of the step lengths.  Often I use
+automatic adjustments to generate good step lengths and then copy them
+into the control file, so that the next time the automatic procedure
+starts with already good step lengths.
+
+Below are some notes about adjusting the step lengths manually
+(finetune = 0).
+
+First note the following line in the control file ChenLi2001.bpp.ctl.
+Here finetune = 0 means that MCMC step lengths will not be adjusted
+automatically, and they are used as given.
+\begin{verbatim}
+finetune = 0: .01 .02 .03 .04 .05 .01 .01  # auto (0 or 1): MCMC step lengths
+\end{verbatim}
+There are seven finetune steplengths here.  They are in a fixed order
+and always read by the program even if the concerned proposal is not
+used.  The first five of them are $\epsilon_1$, $\epsilon_2$,
+$\epsilon_3$, $\epsilon_4$, and $\epsilon_5$, described in
+\citep{Rannala2003}. These are the step lengths used in the MCMC
+proposals that (1) change internal node ages in the gene tree, (2)
+prune and re-graft nodes in the gene tree, (3) update $\theta$, (4)
+update $\tau$s using the rubber-band algorithm, and (5) implements the
+mixing step.  The 6th and 7th are for the proposals that change the
+locus rates or heredity multipliers and that change the sequencing
+errors, respectively.  If the model assumes the same rate for all loci
+and does not use heredity multipliers, the 6th proposal step is not
+used.  If the model assumes no sequencing errors, the 7th step is not
+used.  The acceptance proportions for the first five proposals are
+always printed out on the screen, but those for the 6th and 7th are
+printed out only if the concerned proposal is used in the model.  In
+the example above, only the first five proposals are used in the
+algorithm and we will change the step lengths so that the acceptance
+proportions become close to 30\%.  If the acceptance proportion is too
+small (say, <0.10)), decrease the corresponding finetune parameter.
+If the acceptance proportion is too large (say, >0.80), increase the
+finetune parameter.
+
+Run the program for a small number of iterations and look at the
+screen output for the acceptance proportions.
+{\small
+\begin{verbatim}
+lnpG0 = 2440.0952  lnL0 = -43946.6769
+ 0% 0.13 0.00 0.00 0.04 0.43  0.0009 0.0009 0.0008  0.0150 0.0067 0.0057 2399.70 -43752.8348  0:05
+ 5% 0.14 0.00 0.00 0.04 0.44  0.0009 0.0009 0.0008  0.0148 0.0064 0.0057 2340.71 -43738.0172  0:09
+10% 0.14 0.00 0.00 0.04 0.44  0.0009 0.0009 0.0008  0.0149 0.0064 0.0056 2383.91 -43739.3830  0:14
+\end{verbatim}
+}
+Here the second acceptance proportion, at 0.00, is much too small,
+which means that the corresponding step-length (0.02 in the control
+file) is much too large.  Terminate the run (Ctrl-C) and decrease the
+value in the control file.  Then run the program again (use the up and
+down arrow keys to retrieve past commands).  Repeat this process a few
+times until every acceptance proportion is neither too small nor too
+large.  In this example, changing 0.02 to 0.002 brings the acceptance
+proportion to ~24\%, which is slightly too small but already good
+enough.
+
+Those MCMC proposals are used in all four analyses (A00, A01, A10,
+A11), so that the description here applies to all of them.  Note that
+the finetune parameters affect the efficiency of the MCMC or how fast
+one can obtain reliable results.  In theory they do not change the
+results if all runs using different finetune parameters are long
+enough to generate reliable results.
+
+
+
+
 
 \newpage
-In the single-species analysis, the printout on the monitor includes
-the posterior mean of $\theta$, and posterior means of
-$t_{\mathrm{mrca}}$ for the loci, calculated up to that point in the
-MCMC run.  If you have many loci, only the first few
-$t_{\mathrm{mrca}}$ are printed on the monitor.
-
-The mcmc sample file \texttt{mcmc.txt}, created by the program, lists $1 + L + 1$ columns for $L$ loci: $\theta$,
-$t_{\mathrm{mrca}}$ for the $L$ loci, and the log likelihood.  The
-$t_{\mathrm{mrca}}$ are not parameters, but are sometimes of interest
-as well.
-
-\texttt{Common features of analyses A01, A10, and A11.}  Note that A00
-is a within-model inference: there is one well-specified model (the
-MSC model on a fixed species tree) and the parameters in the model are
-all well defined.  The objective of the analysis is to estimate those
-parameters.  In contrast, A01, A10, and A11 are all trans-model
-inferences. They move between different models, and the main objective
-is to calculate the posterior probabilities for those models.  Each of
-those models is an instance of the MSC model, but the species
-delimitation (the number and nature of the species) and/or the species
-phylogeny may differ between models.  In analyses A01, A10, and A11,
-the inverse-gamma prior specified using \texttt{thetaprior} applies to
-all $\theta$ parameters in all models.  Similarly each of those MSC
-models (if they specify two or more delimited species) may have a
-parameter$\tau_0$ for the divergence time of the root, and all those
-$\tau_0$ parameters are assigned the same inverse-gamma prior. Another
-difference is that the sample file \texttt{mcmc.txt} is readable in R
-or \textsc{tracer} for analysis A00, but not for A01, A10, and A11.
 
 \texttt{A01} means species tree estimation when the assignments and
 delimitation are fixed.
@@ -3447,172 +3516,7 @@ and implemented by \cite{Yang2015}.  Prior 3 may be suitable when
 there are many populations.
 
 
-\subsection{A00 screen output}
 
-First we consider the simple analysis under the MSC model with the
-species tree fixed (A00: speciesdelimitation = 0, speciestree = 0).
-We use this case to explain the acceptance proportions of MCMC moves.
-The screen outputs for analyses A01, A10, and A11 will have
-differences, which will be described later.
-
-Make the window wider, with 100 or 120 columns, say, before you run
-the program.  (On Windows, you right-click the window title bar and
-choose Properties – Layout and change Window Size Width.)  Pay
-attention to screen outputs, especially at the start of the run, to
-make sure that the control file and sequence data file are read
-correctly by the program, and that the acceptance proportions are
-reasonable.  Use Ctrl-C to terminate the run, if needed.
-
-Here is an outline of the steps taken by the program.  The sample
-output is from analyzing the example dataset \texttt{ChenLi2001.txt},
-on a fixed species tree.  The differences for the species delimitation
-analysis are discussed later.  The program first prints out the
-species tree, as well as a population-population table, which
-describes the descendant-ancestor relationship between populations and
-which you may ignore.  It then defines the $\theta$ and $\tau$
-parameters involved in the model.
-
-The program then reads and processes the sequence data file.
-
-It then generates the initial values for parameters $\theta$s and
-$\tau$s by using the inverse-gamma priors and the initial gene trees
-and coalescent times by sampling from the prior.  The program prints
-out the initial $\theta$s and $\tau$s, as well as the initial log MSC
-gene-tree density lnpG0 \citep{Rannala2003} and the log sequence
-likelihood lnL0 \citep{Felsenstein1981}, and starts the MCMC.
-
-\begin{verbatim}
-MCMC settings: 2000 burnin, sampling every 2, 20000 samples
-Approximating posterior, using sequence data
-(Settings: cleandata=0 print=1 saveconP=1 moveinnode=1)
-
-Starting MCMC...
-
-Initial parameters, np = 10.
-Genetrees generated from the MSC density.
-0.00093  0.00101  0.00108  0.00100  0.00106  0.00107  0.00098  0.01461  0.00922  0.00805
-lnpG0 = 2458.5040  lnL0 = -43947.4120
--4% 0.14 0.00 0.00 0.04 0.45  0.0009 0.0010 0.0011  0.0147 0.0071 0.0058 2330.02 -43766.9113
-(nsteps = 5)
-Current Pjump:      0.14267  0.00245  0.00057  0.04467  0.46200
-Current finetune:   0.01000  0.02000  0.03000  0.04000  0.05000
-New     finetune:   0.00447  0.00015  0.00030  0.00552  0.08706
-
--2% 0.15 0.84 0.42 0.02 0.20  0.0007 0.0008 0.0006  0.0141 0.0066 0.0054 2305.87 -43727.7353
-(nsteps = 5)
-Current Pjump:      0.15443  0.84480  0.42057  0.01533  0.19600
-Current finetune:   0.00447  0.00015  0.00030  0.00552  0.08706
-New     finetune:   0.00217  0.00119  0.00046  0.00026  0.05433
-
--1% 0.27 0.39 0.30 0.53 0.44  0.0007 0.0008 0.0005  0.0143 0.0063 0.0049 2364.60 -43723.3313
-(nsteps = 5)
-Current Pjump:      0.25658  0.37186  0.28314  0.50667  0.42800
-Current finetune:   0.00217  0.00119  0.00046  0.00026  0.05433
-New     finetune:   0.00182  0.00155  0.00043  0.00052  0.08488
-
-0% 0.27 0.28 0.27 0.21 0.15  0.0006 0.0008 0.0006  0.0148 0.0062 0.0052 2374.94 -43727.0222  0:05
-
-(nsteps = 5)
-Current Pjump:      0.26527  0.28023  0.27257  0.21200  0.14800
-Current finetune:   0.00182  0.00155  0.00043  0.00052  0.08488
-New     finetune:   0.00158  0.00143  0.00038  0.00035  0.03944
-
- 5% 0.29 0.30 0.30 0.35 0.51  0.0007 0.0008 0.0006  0.0151 0.0061 0.0051 2379.62 -43728.0652  0:12
-10% 0.32 0.32 0.33 0.33 0.52  0.0007 0.0008 0.0006  0.0145 0.0061 0.0052 2399.95 -43723.9478  0:17
-15% 0.31 0.31 0.32 0.34 0.52  0.0007 0.0008 0.0006  0.0146 0.0061 0.0052 2274.55 -43725.6273  0:22
-20% 0.31 0.31 0.32 0.34 0.53  0.0007 0.0008 0.0005  0.0147 0.0061 0.0052 2409.03 -43725.7590  0:28
-\end{verbatim}
-
-Then on the same line, it prints out a percentage progress indicator
-(with negative values for burnin), followed by the acceptance
-proportions for the MCMC moves (highlighted in red in the sample
-output), and by the posterior means of the parameters (in this example
-there are three $\theta$ parameters and three $\tau$ parameters).  The
-last two numbers before the time used is the log MSC density (for the
-current gene trees) and log sequence likelihood (average from the past
-samples).  In this example, the program uses four rounds of automatic
-step-size adjustments, so that the acceptance proportions are close to
-0.3 or lie in the interval (0.15, 0.7).  See below.
-
-The program will then read and process the file mcmc.txt to calculate
-the mean, min, max, median, and percentiles, and histogram
-information.  This may take quite some time if many samples (say, 1M)
-are collected in the file.  The program also generates a file
-FigTree.tre, which can be read by Andraw Rambaut’s figtree program to
-make a publication-quality tree, showing the HPD intervals for
-divergence times ($\tau$s) as node bars.  See the notes at the end of
-the file.
-
-The \texttt{mcmc.txt} sample file generated in analysis A00 can be
-read in R or \textsc{tracer}.
-
-
-\subsection{Adjusting step lengths for MCMC moves (finetune)}
-
-You can use the automatic adjustment of the finetune variable (MCMC
-step lengths), which appears to be reliable, but make sure that the
-acceptance proportions are neither too small nor too large.  Below are
-notes for manual adjustments of the step lengths.  Often I use
-automatic adjustments to generate good step lengths and then copy them
-into the control file, so that the next time the automatic procedure
-starts with already good step lengths.
-
-Below are some notes about adjusting the step lengths manually
-(finetune = 0).
-
-First note the following line in the control file ChenLi2001.bpp.ctl.
-Here finetune = 0 means that MCMC step lengths will not be adjusted
-automatically, and they are used as given.
-\begin{verbatim}
-finetune = 0: .01 .02 .03 .04 .05 .01 .01  # auto (0 or 1): MCMC step lengths
-\end{verbatim}
-There are seven finetune steplengths here.  They are in a fixed order
-and always read by the program even if the concerned proposal is not
-used.  The first five of them are $\epsilon_1$, $\epsilon_2$,
-$\epsilon_3$, $\epsilon_4$, and $\epsilon_5$, described in
-\citep{Rannala2003}. These are the step lengths used in the MCMC
-proposals that (1) change internal node ages in the gene tree, (2)
-prune and re-graft nodes in the gene tree, (3) update $\theta$, (4)
-update $\tau$s using the rubber-band algorithm, and (5) implements the
-mixing step.  The 6th and 7th are for the proposals that change the
-locus rates or heredity multipliers and that change the sequencing
-errors, respectively.  If the model assumes the same rate for all loci
-and does not use heredity multipliers, the 6th proposal step is not
-used.  If the model assumes no sequencing errors, the 7th step is not
-used.  The acceptance proportions for the first five proposals are
-always printed out on the screen, but those for the 6th and 7th are
-printed out only if the concerned proposal is used in the model.  In
-the example above, only the first five proposals are used in the
-algorithm and we will change the step lengths so that the acceptance
-proportions become close to 30\%.  If the acceptance proportion is too
-small (say, <0.10)), decrease the corresponding finetune parameter.
-If the acceptance proportion is too large (say, >0.80), increase the
-finetune parameter.
-
-Run the program for a small number of iterations and look at the
-screen output for the acceptance proportions.
-\begin{verbatim}
-lnpG0 = 2440.0952  lnL0 = -43946.6769
- 0% 0.13 0.00 0.00 0.04 0.43  0.0009 0.0009 0.0008  0.0150 0.0067 0.0057 2399.70 -43752.8348  0:05
- 5% 0.14 0.00 0.00 0.04 0.44  0.0009 0.0009 0.0008  0.0148 0.0064 0.0057 2340.71 -43738.0172  0:09
-10% 0.14 0.00 0.00 0.04 0.44  0.0009 0.0009 0.0008  0.0149 0.0064 0.0056 2383.91 -43739.3830  0:14
-\end{verbatim}
-Here the second acceptance proportion, at 0.00, is much too small,
-which means that the corresponding step-length (0.02 in the control
-file) is much too large.  Terminate the run (Ctrl-C) and decrease the
-value in the control file.  Then run the program again (use the up and
-down arrow keys to retrieve past commands).  Repeat this process a few
-times until every acceptance proportion is neither too small nor too
-large.  In this example, changing 0.02 to 0.002 brings the acceptance
-proportion to ~24\%, which is slightly too small but already good
-enough.
-
-Those MCMC proposals are used in all four analyses (A00, A01, A10,
-A11), so that the description here applies to all of them.  Note that
-the finetune parameters affect the efficiency of the MCMC or how fast
-one can obtain reliable results.  In theory they do not change the
-results if all runs using different finetune parameters are long
-enough to generate reliable results.
 
 
 \section{A01: Species Tree Estimation}
