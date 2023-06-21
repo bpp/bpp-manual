@@ -18,6 +18,7 @@ Printed:
 
 Quick Start
 ===========
+A test
 
 BPP Explained
 =============
@@ -25,17 +26,16 @@ BPP Explained
 Overview
 --------
 
-[BPP]{.smallcaps} is a Bayesian Markov chain Monte Carlo (MCMC) program
+Bayesian Phylogenetics & Phylogeography (BPP) is a Bayesian Markov chain Monte Carlo (MCMC) program
 for analyzing DNA sequence alignments of multiple loci from multiple
 closely-related species under the multispecies coalescent (MSC) model
 [@Yang2002; @Rannala2003]. See [@Xu2016] and [@Rannala2020a] for reviews
 of the MSC model. The program requires 3 input files:
 
-1.  Sequence data file (see [4.1](#seqfile){reference-type="ref"
-    reference="seqfile"}).
+1.  Sequence data file (see [4.1](#sequence-file)).
 
 2.  Imap file specifying the population source of each sequence
-    (see [4.2](#imapfile){reference-type="ref" reference="imapfile"}).
+    (see [4.2](#imap-file)).
 
 3.  Control file specifying other variables needed to run the program
     (e.g., initial species tree, prior distributions,
@@ -76,7 +76,7 @@ each specified using two variables in the control file:
 A detailed guide to the use of each of these 4 methods of analysis, as
 well as example control files, are provided in
 Chapter [8](#analysismethods){reference-type="ref"
-reference="analysismethods"}. The [BPP]{.smallcaps} tutorial also
+reference="analysismethods"}. The BPP tutorial also
 provides examples illustrating the four types of analyses
 [@Yang2015; @Flouri2020b].
 
@@ -141,7 +141,7 @@ because intra-locus recombination is rare for short segments (500 to
 thus have nearly independent histories. Genealogical trees are assumed
 to be a product of neutral evolution (not influenced by natural
 selection). However, protein-coding gene sequences appear to be useable
-in [BPP]{.smallcaps} analyses since most proteins are performing similar
+in BPP analyses since most proteins are performing similar
 functions in closely related species and the main effect of purifying
 selection on nonsynonymous mutations is a reduction of the neutral
 mutation rate [@Shi2018; @Thawornwattana2018MBE]. It is a good idea to
@@ -182,7 +182,7 @@ mitochondrial locus.
 
 ### Identical sequences and phylogenetic signal
 
-The model implemented in [BPP]{.smallcaps} assumes that the sequences
+The model implemented in BPP assumes that the sequences
 represent random samples from the different species. *Sequences from the
 same species that are identical should all be used*. It is incorrect to
 use only the unique haplotypes, which will lead to biased parameter
@@ -201,7 +201,7 @@ which as of release v4.3.8 is
 > Tree Inference with BPP Using Genomic Sequences and the Multispecies
 > Coalescent, Molecular Biology and Evolution 35: 2585--2593.
 
-You can also cite the one of the [BPP]{.smallcaps} tutorials and the
+You can also cite the one of the BPP tutorials and the
 original papers describing the methods you used (see above). Be sure to
 state the priors that you used since they are necessary for
 reproducibility. If you conduct a joint analysis of species delimitation
@@ -211,9 +211,9 @@ following (replace the numbers in with those you used):
 Installing and Running BPP
 ==========================
 
-This manual applies to [BPP]{.smallcaps} versions 4.1 and later. The
+This manual applies to BPP versions 4.1 and later. The
 program is written in C and executables are available for Windows, Mac
-OSX and Linux. Alternatively, the [BPP]{.smallcaps} program can be
+OSX and Linux. Alternatively, the BPP program can be
 compiled for Unix (Linux, BSD, etc), Mac OSX, or Windows. If you are
 using a Windows, Mac OSX or Linux operating system (and you are not a
 programmer who prefers to compile from source) you should download the
@@ -230,7 +230,7 @@ Section [3.3](#compiling){reference-type="ref" reference="compiling"}.
 Obtaining BPP {#download}
 -------------
 
-Executables and source code for the most recent [BPP]{.smallcaps}
+Executables and source code for the most recent BPP
 release are always available at:\
 <https://github.com/bpp/bpp/releases/latest>\
 Download the distribution file containing an executable for your
@@ -251,7 +251,7 @@ Section [3.4](#trial){reference-type="ref" reference="trial"}
 Using the Command Line {#commandline}
 ----------------------
 
-[BPP]{.smallcaps} is a command-line program, so the preferred way of
+BPP is a command-line program, so the preferred way of
 running it is to open a terminal application and execute the program
 from the terminal command line, rather than double-clicking on the
 executable file in your file explorer. If you have not used the command
@@ -294,7 +294,7 @@ If instead you see an error message such as:
 
 then you (or your system) administrator will need to install the
 compiler software (using a package manager such as apt on Ubuntu, for
-example) before you can compile [BPP]{.smallcaps}.
+example) before you can compile BPP.
 
 ### Downloading and compiling the source code
 
@@ -367,7 +367,7 @@ similar to the following:
 Alternatively, you may see one or more error messages. This may be due
 to a spelling error, or you may not be in the correct subdirectory. If
 this does not appear to be the case and the problem persists you can ask
-for help on the [BPP]{.smallcaps} discussion group at:\
+for help on the BPP discussion group at:\
 <https://groups.google.com/forum/#!forum/bpp-discussion-group>\
 When posting on the forum, please specify the exact command you typed
 and the error message you received (preferably by copying and pasting
@@ -383,7 +383,7 @@ when specific options are specified in the control file. In this Chapter
 we describe the content and format specifications of the sequence, Imap
 and control files that will be needed for most BPP analyses.
 
-Sequence File {#seqfile}
+Sequence File
 -------------
 
 The sequence alignments must be in the phylip/paml format, with one
@@ -432,7 +432,7 @@ examine the sequence files `frogs.txt` and `yu2001.txt` in the
     fox^sample1  attgtgccct
     ^ben         attgtgaagt
 
-Imap File {#imapfile}
+Imap File
 ---------
 
 Each sequence name has an individual ID tag after the caret \^ symbol.
@@ -450,10 +450,10 @@ their species/populations. For example, the following Imap file maps
 
 See also the map files `frogs.Imap.txt` and
 `Rokas2003-5species-Imap.txt` in the `examples` subdirectory. The MSC
-model implemented in [BPP]{.smallcaps} infers the relationships among
+model implemented in BPP infers the relationships among
 species/populations not individuals and so it uses only the population
 ID for a sequence (such as A, B, ... in the example), and does not use
-the individual ID. Also when [BPP]{.smallcaps} reads the sequence names,
+the individual ID. Also when BPP reads the sequence names,
 it use the individual ID to retrieve the species ID for each sequence
 but then ignores the sequence name. One motivation for the use of the
 Imap file and this two-layer design is that one may wish to analyze the
@@ -1724,7 +1724,7 @@ with strict maternal inheritance of mtDNA we expect the effective
 population size of a mitochondrial locus to be $1/4$ that of a nuclear
 locus. Other factors such as natural selection may also cause $\theta$
 to deviate from the neutral expectation even among autosomal loci.
-[BPP]{.smallcaps} implements two options for allowing such variations.
+BPP implements two options for allowing such variations.
 The first option (`heredity = 1`) specifies that locus-specific
 inheritance scalars $s_i$ be estimated, using a Gamma prior with
 parameters $\alpha$ and $\beta$ specified by the user. The prior mean
@@ -1933,8 +1933,8 @@ These lines specify the names of the files used to run the program and
 summarize the output. The program will assume that all these files are
 located in the current working directory since no path is specified. The
 line `seqfile = frogs.txt` specifies that the sequence data are in the
-file named `frogs.txt`. See section [4.1](#seqfile){reference-type="ref"
-reference="seqfile"} for a description of the sequence data file format.
+file named `frogs.txt`. See section [4.1](#sequence-file) for a 
+description of the sequence data file format.
 The line `Imapfile = frogs.Imap.txt` specifies that the map file is
 named `frogs.Imap.txt`. See
 section [4.2](#imapfile){reference-type="ref" reference="imapfile"} for
@@ -2042,7 +2042,7 @@ prior (mostly used for debugging).
 The line `nloci = 5` specifies the number of loci (alignments) to be 5.
 There may be more loci in the sequence data file than is specified here.
 For example, if 200 loci exist in the sequence data file and you specify
-`nloci = 2` in the control file, [BPP]{.smallcaps} will read the first
+`nloci = 2` in the control file, BPP will read the first
 two loci only.
 
     # remove sites with ambiguity data (1:yes, 0:no)?
@@ -2086,7 +2086,7 @@ species tree or the best species delimitation model) is identified, run
 the A00 analysis with the model fixed to estimate all parameters.
 
 Some notes about the inverse-gamma distribution. Since
-[BPP]{.smallcaps}3.4, both the $\theta$ and $\tau$ parameters are
+BPP3.4, both the $\theta$ and $\tau$ parameters are
 assigned the inverse gamma priors rather than the gamma priors in
 version 3.3 or earlier. One difference is that the gamma is light-tailed
 while the inverse-gamma is heavy-tailed, so that the inverse-gamma may
@@ -2163,7 +2163,7 @@ the dimension of the sample is changing and cannot be analysed using
 such traceplot programs.
 
 **Combining results from different runs**\
-The variable setting `print = -1` specifies that [BPP]{.smallcaps} will
+The variable setting `print = -1` specifies that BPP will
 not perform an MCMC analysis and will instead read an existing MCMC
 sample file and summarize the results. Thus, with setting `print = 1`,
 the `mcmc.txt` file receives the MCMC program output, but with
@@ -2532,16 +2532,16 @@ nearly fixed at 1.
 **The locus-rate prior in IMa.** The model of variable rates among loci
 implemented here has some differences from a similar model implemented
 in the [IMa]{.smallcaps} program [@Hey2004]. The biggest difference
-appears to be the parameterization. [BPP]{.smallcaps} defines mutation
+appears to be the parameterization. BPP defines mutation
 rate on a per-nucleotide basis, so the prior specifies that the
 expectation of the mutation rate per site is constant among loci.
 [IMa]{.smallcaps} defines mutation rate on a per-locus basis, so its
 prior specifies that the expectation of the mutation rate per locus is
 the same among loci. If locus one has 100 sites and locus two has 1000
 sites, then [IMa]{.smallcaps} assumes that the per-site rate for locus
-one is 10 times for locus two, while [BPP]{.smallcaps} assumes the same
+one is 10 times for locus two, while BPP assumes the same
 per-site rate. Also [IMa]{.smallcaps} constrains the geometric mean of
-rates across loci to be one, while [BPP]{.smallcaps} constrains their
+rates across loci to be one, while BPP constrains their
 arithmetic mean to be one.
 
 ### Among-species rate variation
@@ -2796,7 +2796,7 @@ from autosomal, mitochondrial, X and Y loci. With such mixed data, the
 effective population sizes are different among loci, so that a heredity
 multiplier [inheritance scalars @Hey2004] should be applied. Other
 factors such as natural selection may also cause $\theta$ to deviate
-from the neutral expectation. [BPP]{.smallcaps} implements two options
+from the neutral expectation. BPP implements two options
 for this. The first option (`heredity = 1`) is to estimate the
 multipliers from the data, using a gamma prior with parameters $\alpha$
 and $\beta$ specified by the user. In the example above, a gamma prior
@@ -2903,7 +2903,7 @@ examples of both a single population analysis (using the control file
 `A00.bpp.ctl`).
 
 **How many $\theta$ and $\tau$ parameters exist?**\
-The number of parameters that [BPP]{.smallcaps} includes in the MSC or
+The number of parameters that BPP includes in the MSC or
 MSci models depends on the data configuration. The program always
 includes $\theta$ and $\tau$ parameters for each internal node
 (ancestral species) on the species tree, but includes a $\theta$ for an
