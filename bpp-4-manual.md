@@ -579,106 +579,96 @@ the structure of dependencies among variables
 | (w,z)       | w and z are two different permissible types                  |
 | y [(w,z)]   | whether w or z is the permissible type depends on value of y |
 
-Symbols used to represent syntax and value types of variables in variable definitions.
+**Table 1.** Symbols used to represent syntax and value types of variables in variable definitions.
 
 
-Detailed definitions of the variables are
+Detailed definitions of all the control file variables are
 provided at the end of this section, ordered according to their indexes
-in Table [\[variableTable\]](#variableTable){reference-type="ref"
-reference="variableTable"}. If you are impatient to get started using
+in Table 2 below. If you are impatient to get started using
 the program with worked examples, you might want to now skip ahead to
-Section [4.4.2](#examplecontrolfile){reference-type="ref"
-reference="examplecontrolfile"} which explains the control file
+[Example control file](#example-control-file) which explains the control file
 variables in the context of a simple example dataset analysis. You can
 later consult this section regarding particular control file variables
 as the need arises.
 
-| Index            | Variable              | Values              | Condition          | Dependencies |
-|------------------|-----------------------|---------------------|--------------------|--------------|
-| [1](#1-seed)     | *seed*                | (-d,+d)             | True               | None         |
-| [2](#2-usedata)  | *usedata*             | b                   | True               | None         |
-| [3](#3-outfile)  | **outfile**           | s                   | True               | None         |
-| [4](#4-mcmcfile) | **mcmcfile**          | s                   | True               | None         |
-| [5](#5-seqfile)  | **seqfile**           | s                   | True               | <-17         |
-| [6](#6-finetune) | **finetune**          | b [f*]              | True               | ->8          |
-| 7                | **print**             | b b b b b           | True               | None         |
-| 8                | `burnin`              | +d                  | True               | <-6          |
-| 9                | **sampfreq**          | +d                  | True               | None         |
-| 10               | **nsample**           | +d                  | True               | None         |
-| 11               | **species&tree**      | +d s* +d* t         | True               | ->{12,16,25} |
-| 12               | `Imapfile`            | s                   | 11[1]>1            | <-11         |
-| 13               | *speciesdelimitation* | b [b f*]            | True               | ->15         |
-| 14               | *speciestree*         | b                   | True               | ->14         |
-| 15               | `speciesmodelprior`   | +d                  | 13[1]=1 OR 14[1]=1 | <-\{13,14\}  |
-| 16               | **phase**             | b*                  | 11[1]              | <-11         |
-| 17               | *nloci*               | +d                  | True               | ->5 <-31     |
-| 18               | *model*               | s                   | True               | None         |
-| 19               | *Qrates*              | b +f +f +f +f +f +f | 18=''7''           | <-18         |
-| 20               | *basefreqs*           | b +f +f +f +f       | 18=''7''           | <-18         |
-| 21               | *alphaprior*          | f f +d              | True               | None         |
-| 22               | *cleandata*           | b                   | True               | None         |
-| 23               | *thetaprior*          | s [(f*, f f s)]     | True               | None         |
-| 24               | *tauprior*            | s f f               | True               | None         |
-| 25               | `phiprior`            | f f                 | 11[4]              | <-11         |
-| 26               | *locusrate*           | +d [(f f f s, s, )] | True               | <-27 ->27    |
-| 27               | *clock*               | +d [f f f s s]      | True               | <-26 ->26    |
-| 28               | *heredity*            | +d [(f f, s)]       | True               | None         |
-| 29               | *checkpoint*          | +d [(+d)]           | True               | None         |
-| 30               | *constraintfile*      | s                   | True               | None         |
-| 31               | `threads`             | +d [ +d +d ]        | True               | ->17         |
+| Index                         | Variable              | Values              | Condition          | Dependencies |
+|-------------------------------|-----------------------|---------------------|--------------------|--------------|
+| [1](#1-seed)                  | *seed*                | (-d,+d)             | True               | None         |
+| [2](#2-usedata)               | *usedata*             | b                   | True               | None         |
+| [3](#3-outfile)               | **outfile**           | s                   | True               | None         |
+| [4](#4-mcmcfile)              | **mcmcfile**          | s                   | True               | None         |
+| [5](#5-seqfile)               | **seqfile**           | s                   | True               | <-17         |
+| [6](#6-finetune)              | **finetune**          | b [f*]              | True               | ->8          |
+| [7](#7-print)                 | **print**             | b b b b b           | True               | None         |
+| [8](#8-burnin)                | `burnin`              | +d                  | True               | <-6          |
+| [9](#9-sampfreq)              | **sampfreq**          | +d                  | True               | None         |
+| [10](#10-nsample)             | **nsample**           | +d                  | True               | None         |
+| [11](#11-species&tree)        | **species&tree**      | +d s* +d* t         | True               | ->{12,16,25} |
+| [12](#12-imapfile)            | `Imapfile`            | s                   | 11[1]>1            | <-11         |
+| [13](#13-speciesdelimitation) | *speciesdelimitation* | b [b f*]            | True               | ->15         |
+| [14](#14-speciestree)         | *speciestree*         | b                   | True               | ->14         |
+| 15                            | `speciesmodelprior`   | +d                  | 13[1]=1 OR 14[1]=1 | <-\{13,14\}  |
+| 16                            | **phase**             | b*                  | 11[1]              | <-11         |
+| 17                            | *nloci*               | +d                  | True               | ->5 <-31     |
+| 18                            | *model*               | s [s]               | True               | None         |
+| 19                            | *Qrates*              | b +f +f +f +f +f +f | 18=''7''           | <-18         |
+| 20                            | *basefreqs*           | b +f +f +f +f       | 18=''7''           | <-18         |
+| 21                            | *alphaprior*          | f f +d              | True               | None         |
+| 22                            | *cleandata*           | b                   | True               | None         |
+| 23                            | *thetaprior*          | s [(f*, f f s)]     | True               | None         |
+| 24                            | *tauprior*            | s f f               | True               | None         |
+| 25                            | `phiprior`            | f f                 | 11[4]              | <-11         |
+| 26                            | *locusrate*           | +d [(f f f s, s, )] | True               | <-27 ->27    |
+| 27                            | *clock*               | +d [f f f s s]      | True               | <-26 ->26    |
+| 28                            | *heredity*            | +d [(f f, s)]       | True               | None         |
+| 29                            | *checkpoint*          | +d [(+d)]           | True               | None         |
+| 30                            | *constraintfile*      | s                   | True               | None         |
+| 31                            | `threads`             | +d [ +d +d ]        | True               | ->17         |
+
+**Table 2.** Complete list of BPP control file variables. The column `Variable` contains the
+  control file variable name, the column `Values` specifies (using symbols) the format of the values (symbols are defined in
+  Table 1). The column `Condition` describes the conditions (if any) needed for the variable to be required. An entry
+  of True in this column means that the variable is always required/defined although possibly not explicitly (there may be a
+  default value). The column `Dependencies` lists the variables that either influence the variable (<-) or are influenced by the variable
+  (->) with the variables denoted using their index from column `Index`.
 
 
-
-Table [\[variableTable\]](#variableTable){reference-type="ref"
-reference="variableTable"} lists all the variables that can be defined
+Table 2 lists all the variables that can be defined
 in the BPP control file. The first column lists an index used to
 identify the variable in other columns of the table and to determine the
 order in which the variables are defined in subsequent text. The second
-column lists the variable name. The variable names are colored to
+column lists the variable name. The variable names are highlighted to
 indicate the structure of their dependencies among variables as follows:
 
--   Red = variable always needs to be defined, has no default value, and
+-   Bold = variable always needs to be defined, has no default value, and
     does not depend on other variables.
 
--   Blue = variable always needs to be defined, has a default value if
+-   Italic = variable always needs to be defined, has a default value if
     no value is provided in control file, and does not depend on other
     variables.
 
--   Yellow = whether variable needs to defined (and possibly also its
+-   Solid background  = whether variable needs to defined (and possibly also its
     permissible values) depends on the value of another variable.
 
--   Green = variable always needs to be defined and has no default value
+-   Regular = variable always needs to be defined and has no default value
     but its permissible values depend on the value of another variable.
 
 Column 3 lists the permissible types of each variable and the syntax for
 specifying arguments in defining the variable. The variable types are
-defined in Table [\[symbolTable\]](#symbolTable){reference-type="ref"
-reference="symbolTable"}.
+defined in Table 1.
 
 Column 4 lists the condition (state of another variable) that either
-determines whether the variable on that line exists (yellow1 variables)
-or determines its permissible values (blue and green variables). x\[y\]
+determines whether the variable on that line exists (solid background variables)
+or determines its permissible values (italic or regular variables). x [y]
 refers to value of argument y of the variable with index x. Column 5
 lists indexes of variables that either are influenced by the variable
-(the notation -\>\[c,d\] indicates that the variable influences
+(the notation ->[c,d] indicates that the variable influences
 variables c and d) or variables that influence the variable (the
-notation \<-\[a\] indicates that variable a influences the variable). If
+notation <-[a] indicates that variable a influences the variable). If
 you are writing a control file from scratch, these dependencies
-necessitate that you specify the red variables first, followed by the
-blue (only needed if changing defaults) and then the yellow/green.
+necessitate that you specify the bold variables first, followed by the
+italic (only needed if changing defaults) and then the solid background and regular.
 
-: List of BPP control variables. The column Variable contains the
-  control file variable name, the column Values specifies using symbols
-  the format of the values (symbols defined in
-  Table [\[symbolTable\]](#symbolTable){reference-type="ref"
-  reference="symbolTable"}). The column Condition describes the
-  conditions (if any) needed for the variable to be required. An entry
-  of True in this column means that the variable is always
-  required/defined although possibly not explicitly (there may be a
-  default value). The column Dependencies lists the variables that
-  either influence the variable (\<-) or are influenced by the variable
-  (-\>) with the variables denoted using their index from column
-  Index.[]{label="variableTable"}
 
 ## BPP control file variables
 
@@ -854,9 +844,9 @@ finetune = 1
 
 ### 7 print
 ------------------------------------------------------------------------
-
-\
-**`print = b b b b b`**\
+```
+print = b b b b b
+```
 **DESCRIPTION**\
 Specifies what information is saved to the output files during the
 MCMC.\
@@ -870,174 +860,185 @@ locus-specific heredity scalars if those are estimated from the data;
 variable 4 specifies locus-specific gene trees; and variable 5 specifies
 locus-specific substitution-rate parameters (qmat for the $Q$ matrix,
 freqs for base frequencies, and alpha for gamma rates for sites).\
-**EXAMPLES**\
-**`print = 0 1 1 1 0`**\
-**`print = 1 1 1 1 1`**\
-**8**\
+**EXAMPLES**
+```
+print = 0 1 1 1 0
+print = 1 1 1 1 1
+```
 
+### 8 burnin
 ------------------------------------------------------------------------
-
-\
-**`burnin = +d`**\
+```
+burnin = +d
+```
 **DESCRIPTION**\
 Specifies the number of burn-in iterations that are executed in the MCMC
 run before sampling begins.\
 **VALUES**\
-**`+d`**, a positive integer specifying the number of burn-in
+`+d`, a positive integer specifying the number of burn-in
 iterations.\
 **DEPENDENCIES**\
-If **`finetune = 1`** (automatic optimization) then **`burnin`** has to
-be \>200.\
+If `finetune = 1` (automatic optimization) then `burnin` has to
+be $>200$.\
 **COMMENTS**\
-The total number of MCMC iterations is **`burnin`** +
-**`nsample \times sampfreq`**.\
-**EXAMPLES**\
-**`burnin = 100`**\
-**`burnin = 10000`**\
-**9**\
+The total number of MCMC iterations is `burnin` + `nsample` $\times$ `sampfreq`.\
+**EXAMPLES**
+```
+burnin = 100
+burnin = 10000
+```
 
+### 9 sampfreq
 ------------------------------------------------------------------------
-
-\
-**`sampfreq = +d`**\
+```
+sampfreq = +d
+```
 **DESCRIPTION**\
 Specifies the interval at which samples from the MCMC are to be written
-to the output file specified by **`mcmcfile`**.\
+to the output file specified by `mcmcfile`.\
 **VALUES**\
-**`+d`**, a positive integer specifying the interval between samples
+`+d`, a positive integer specifying the interval between samples
 from the MCMC.\
 **COMMENTS**\
-The total number of MCMC iterations is **`burnin`** +
-**`nsample \times sampfreq`**.\
-**EXAMPLES**\
-**`sampfreq = 2`**\
-**`sampfreq = 10`**\
-**10**\
+The total number of MCMC iterations is `burnin` + `nsample` $\times$ `sampfreq`.\
+**EXAMPLES**
+```
+sampfreq = 2
+sampfreq = 10
+```
 
+### 10 nsample
 ------------------------------------------------------------------------
-
-\
-**`nsample = +d`**\
+```
+nsample = +d
+```
 **DESCRIPTION**\
 Specifies the number of samples from the MCMC that are to be written to
-the output file specified by **`mcmcfile`**.\
+the output file specified by `mcmcfile`.\
 **VALUES**\
-**`+d`**, a positive integer specifying the number of MCMC samples.\
+`+d`, a positive integer specifying the number of MCMC samples.\
 **COMMENTS**\
-The total number of MCMC iterations is **`burnin`** +
-**`nsample \times sampfreq`**.\
-**EXAMPLES**\
-**`nsample = 5000`**\
-**`nsample = 25499`**\
-**11**\
+The total number of MCMC iterations is `burnin` + `nsample` $\times$ `sampfreq`.\
+**EXAMPLES**
+```
+nsample = 5000
+nsample = 25499
+```
 
+### 11 species&tree
 ------------------------------------------------------------------------
-
-\
-**`species&tree = +d s*`**\
-**`+d*`**\
-**`t`**\
+```
+species&tree = +d s*
++d*
+t
+```
 **DESCRIPTION**\
 Specifies the number of species, the species names, the maximum number
 of sequences (at any locus) for each species, and the species tree in
 Newick format (or species graph in extended Newick format in models with
 introgression).\
 **VALUES**\
-**`+d`**, a positive integer specifying the total number of species.
-**`s*`**, a list of **`+d`** strings specifying the name of each
-species. **`+d*`**, a list of **`+d`** positive integers specifying the
-maximum number of sequences (at any locus) for each species. **`t`**, a
+`+d`, a positive integer specifying the total number of species.
+`s*`, a list of `+d` strings specifying the name of each
+species. `+d*`, a list of `+d` positive integers specifying the
+maximum number of sequences (at any locus) for each species. `t`, a
 tree (or graph) in Newick format (or Newick extended format) specifying
 the relationships among species (and possibly introgression events).\
 **DEPENDENCIES**\
-The variable **`Imapfile`** must be specified only when the number of
-species $\textbf{\texttt{+d}} > 1$. The length of the boolean array
-specified for variable **`phase`** is equal to the number of species
-**`+d`**. The variable **`phiprior`** must be specified only if **`t`**
+The variable `Imapfile` must be specified only when the number of
+species `+d` > 1. The length of the boolean array
+specified for variable `phase` is equal to the number of species
+`+d`. The variable `phiprior` must be specified only if `t`
 is an introgression graph.\
 **COMMENTS**\
 See the subsection *Notation for trees and introgression graphs* for
-details on the format of **`t`**. The role of **`t`** in the MCMC
-analysis depends on the value of the **`speciestree`** variable. If
-**`speciestree=1`** the variable **`t`** specifies the starting tree for
-the MCMC analysis, otherwise if **`speciestree=0`** it is the fixed tree
+details on the format of `t`. The role of `t` in the MCMC
+analysis depends on the value of the `speciestree` variable. If
+`speciestree=1` the variable `t` specifies the starting tree for
+the MCMC analysis, otherwise if `speciestree=0` it is the fixed tree
 used for estimating parameters or the fixed guide tree for species
 delimitation.\
-**EXAMPLES**\
-**`species&tree = 4 H C G O`**\
-**`1 1 1 1`**\
-**`(((H, C), G), O);`**\
-**12**\
+**EXAMPLES**
+```
+species&tree = 4 H C G O
+1 1 1 1
+(((H, C), G), O);
+```
 
+### 12 Imapfile
 ------------------------------------------------------------------------
-
-\
-**`Imapfile = s`**\
+```
+Imapfile = s
+```
 **DESCRIPTION**\
-Sets the path/name of the Imap file to be the string **`s`**.\
+Sets the path/name of the Imap file to be the string `s`.\
 **VALUES**\
-**`s`**, a string of characters specifying the directory path and name
+`s`, a string of characters specifying the directory path and name
 of a file that contains the species/sequence map information.\
 **DEPENDENCIES**\
-The variable **`Imapfile`** must be specified only when the number of
-species defined by the **`species&tree`** variable
-$\textbf{\texttt{+d}} > 1$.\
+The variable `Imapfile` must be specified only when the number of
+species defined by the `species&tree` variable
+`+d` > 1.\
 **COMMENTS**\
-See section [4.2](#imapfile){reference-type="ref" reference="imapfile"}
-for a complete description of the Imap file format.\
-**EXAMPLES**\
-**`Imapfile = /home/foo/bar_Imap.txt`**\
-**`Imapfile = Imap.txt`**\
-**13**\
+See [Imap File](#imap-file) for a complete description of the Imap file format.\
+**EXAMPLES**
+```
+Imapfile = /home/foo/bar_Imap.txt
+Imapfile = Imap.txt
+```
 
+### 13 speciesdelimitation
 ------------------------------------------------------------------------
-
-\
-**`speciesdelimitation = b [b f*]`**\
+```
+speciesdelimitation = b [b f*]
+```
 **DESCRIPTION**\
 Specifies whether species delimitation is performed and if so specifies
 the parameters of the species delimitation rjMCMC proposal algorithm.\
 **VALUES**\
-**`0`**, specifies no species delimitation.\
-**`1 0 \epsilon`**, specifies species delimitation with rjMCMC algorithm
+`0`, specifies no species delimitation.\
+`1 0 epsilon`, specifies species delimitation with rjMCMC algorithm
 0, with parameter $\epsilon$ as specified in equations 3 and 4 of
-[@Yang2010]. Reasonable values for $\epsilon$ are 1, 2, 5, etc.\
-**`1 1 \alpha m`**, specifies rjMCMC algorithm 1, with parameters
-$\alpha$ and $m$ as specified in equations 6 and 7 of [@Yang2010].
+[Yang and Rannala 2010](https://doi.org/10.1073/pnas.0913022107). Reasonable values for $\epsilon$ are 1, 2, 5, etc.\
+`1 1 alpha m`, specifies rjMCMC algorithm 1, with parameters
+$\alpha$ and $m$ as specified in equations 6 and 7 of [Yang and Rannala 2010](https://doi.org/10.1073/pnas.0913022107).
 Reasonable values are $\alpha = 1, 1.5, 2$, etc. and $m = 0.5, 1, 2$.\
 **DEFAULT**\
-**`0`**\
+`0`\
 **DEPENDENCIES**\
-If **`speciesdelimitation = 1`** then **`speciesmodelprior`** must be
-defined.\
-**EXAMPLES**\
-**`speciesdelimitation = 1 0 2`**\
-**`speciesdelimitation = 1 1 2 1`**\
-**14**\
+If `speciesdelimitation = 1` then `speciesmodelprior` must be defined.\
+**EXAMPLES**
+```
+speciesdelimitation = 1 0 2
+speciesdelimitation = 1 1 2 1
+```
 
+### 14 speciestree
 ------------------------------------------------------------------------
-
-\
-**`speciestree = b`**\
+```
+speciestree = b
+```
 **DESCRIPTION**\
 Specifies whether the species tree is estimated or fixed in the MCMC
 analysis.\
 **VALUES**\
-**`0`**, specifies that species tree is fixed.\
-**`1`**, specifies that species tree is estimated.\
-**``**\
+`0`, specifies that species tree is fixed.\
+`1`, specifies that species tree is estimated.\
 **DEFAULT**\
-**`0`**\
+`0`\
 **DEPENDENCIES**\
-If **`speciestree = 1`** then **`speciesmodelprior`** must be defined.\
+If `speciestree = 1` then `speciesmodelprior` must be defined.\
 \
 **COMMENTS**\
 This option invokes the nearest-neighbor interchange (NNI) or
 subtree-pruning-regrafting (SPR) algorithm to propose changes to the
 species tree topology during the MCMC run.\
-**EXAMPLES**\
-**`speciestree = 1`**\
-**`speciestree = 0`**\
+**EXAMPLES**
+```
+speciestree = 1
+speciestree = 0
+```
+
 **15**\
 
 ------------------------------------------------------------------------
@@ -1817,7 +1818,7 @@ specified.\
 **`threads = 4`**\
 **`threads = 8 4 1`**\
 
-### Example control file {#examplecontrolfile}
+### Example control file
 
 To examine the structure of a typical BPP control file, we consider the
 example file `A00.bpp.ctl` contained in the BPP distribution
