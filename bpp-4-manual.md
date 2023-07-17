@@ -217,7 +217,10 @@ have not used a command line program before, read
 [Obtaining BPP](#obtaining-bpp). If
 you want to compile the program yourself (you must do this if you are
 using a Unix variant other than Linux or Mac OSX) go to
-[Compiling the BPP Program](#compiling-the-bpp-program).
+[Compiling the BPP Program](#compiling-the-bpp-program). Note in the
+examples below that the `$` symbol represents the shell prompt, type
+the command listed *after* this prompt symbol (your prompt symbol may
+be different).
 
 Obtaining BPP
 -------------
@@ -231,12 +234,12 @@ to be the root of the subdirectory created by uncompressing the file.
 For example, on a Linux machine you could type the following to download
 and install bpp version 4.4.1 (the latest version may be different from
 this):
-
-    wget https://github.com/bpp/bpp/releases/download/\
-    v4.4.1/bpp-4.4.1-linux-x86_64.tar.gz
-    tar -xvzf bpp-4.4.1-linux-x86_64.tar.gz
-    cd bpp-4.4.1-linux-x86_64/
-
+```shell
+$ wget https://github.com/bpp/bpp/releases/download/\
+$ v4.4.1/bpp-4.4.1-linux-x86_64.tar.gz
+$ tar -xvzf bpp-4.4.1-linux-x86_64.tar.gz
+$ cd bpp-4.4.1-linux-x86_64/
+```
 You are now ready to proceed to [BPP Trial Run](#bpp-trial-run)
 
 Using the Command Line
@@ -251,7 +254,7 @@ first:\
 Windows:\
 <http://abacus.gene.ucl.ac.uk/software/CommandLine.Windows.pdf>\
 Mac OSX:\
-<http://abacus.gene.ucl.ac.uk/software/CommandLine.MACosx.pdf>\
+<http://abacus.gene.ucl.ac.uk/software/CommandLine.MACosx.pdf>
 
 Compiling the BPP Program
 -------------------------
@@ -261,28 +264,28 @@ Compiling the BPP Program
 To compile the program you will need to have a C compiler and the Make
 program installed on your machine. To test whether this software is
 installed (on a Unix machine) you can type:
-
-    cc --version; make --version
-
+```shell
+$ cc --version; make --version
+```
 which should produce output similar to the following if a compiler is
 installed:
+```
+cc (Ubuntu 9.3.0-10ubuntu2) 9.3.0
+Copyright (C) 2019 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-    cc (Ubuntu 9.3.0-10ubuntu2) 9.3.0
-    Copyright (C) 2019 Free Software Foundation, Inc.
-    This is free software; see the source for copying conditions.  There is NO
-    warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-    GNU Make 4.2.1
-    Built for x86_64-pc-linux-gnu
-    Copyright (C) 1988-2016 Free Software Foundation, Inc.
-    License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
-    This is free software: you are free to change and redistribute it.
-    There is NO WARRANTY, to the extent permitted by law.
-
+GNU Make 4.2.1
+Built for x86_64-pc-linux-gnu
+Copyright (C) 1988-2016 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+```
 If instead you see an error message such as:
-
-    Command 'cc' not found
-
+```
+Command 'cc' not found
+```
 then you (or your system) administrator will need to install the
 compiler software (using a package manager such as apt on Ubuntu, for
 example) before you can compile BPP.
@@ -298,23 +301,23 @@ subdirectory before executing the commands outlined below. The program
 needs to be compiled only once. For example, the following commands use
 the gcc compiler to compile the program and move the generated
 executable file (bpp) into the bin/ folder.
-
-    cd bpp
-    md bin
-    cd src
-    make
-    mv bpp ../bin
-
+```shell
+$ cd bpp
+$ mkdir bin
+$ cd src
+$ make
+$ mv bpp ../bin
+```
 If you use git you can instead clone the bpp repository and check out
 the master branch (which contains source code for the latest stable
 version of bpp) and then compile the program:
-
-    git clone https://github.com/bpp/bpp.git
-    cd bpp
-    git checkout master
-    cd src
-    make
-
+```shell
+$ git clone https://github.com/bpp/bpp.git
+$ cd bpp
+$ git checkout master
+$ cd src
+$ make
+```
 You are now ready to proceed to [BPP Trial Run](#bpp-trial-run)
 
 BPP Trial Run
@@ -326,34 +329,34 @@ your current directory to the top level of the directory created by
 uncompressing the bpp distribution file. For example, in Linux the
 following commands will uncompress the distribution file and move you to
 the top level of the bpp directory:
-
-    tar -xvzf bpp-4.4.1-linux-x86_64.tar.gz
-    cd bpp-4.4.1-linux-x86_64
-
+```shell
+$ tar -xvzf bpp-4.4.1-linux-x86_64.tar.gz
+$ cd bpp-4.4.1-linux-x86_64
+```
 In the bpp/ subdirectory, run the program in Windows by typing the
 following command within the Terminal application:
-
-    bin\bpp --cfile examples\frogs\A00.bpp.ctl
-
+```
+bin\bpp --cfile examples\frogs\A00.bpp.ctl
+```
 In Linux or Mac OSX type the following commands within a terminal:
-
-    cd examples/frogs/
-    ../../bin/bpp --cfile examples/frogs/A00.bpp.ctl
-
+```shell
+$ cd examples/frogs/
+$ ../../bin/bpp --cfile examples/frogs/A00.bpp.ctl
+```
 If the program executed successfully, you should see initial output
 similar to the following:
+```
+bpp v4.4.1_linux_x86_64, 31GB RAM, 12 cores
+https://github.com/bpp/bpp
+	
+Auto-selected SIMD ISA: AVX2
+	
 
-    bpp v4.4.1_linux_x86_64, 31GB RAM, 12 cores
-    https://github.com/bpp/bpp
-
-    Auto-selected SIMD ISA: AVX2
-
-
-    Starting timer..
-    Using seed: -1
-    Parsing species tree... Done
-    Parsing phylip file... Done
-
+Starting timer..
+Using seed: -1
+Parsing species tree... Done
+Parsing phylip file... Done
+```
 Alternatively, you may see one or more error messages. This may be due
 to a spelling error, or you may not be in the correct subdirectory. If
 this does not appear to be the case and the problem persists you can ask
@@ -406,8 +409,7 @@ characters are removed before analysis. An example of a sequence data
 file for 2 loci and 4 sequences per locus is given below (you can also
 examine the sequence files `frogs.txt` and `yu2001.txt` in the
 `examples` subdirectory).
-
-
+```
     4 20
 
     dog^alfy1    attgtgccctctctctctca
@@ -421,7 +423,7 @@ examine the sequence files `frogs.txt` and `yu2001.txt` in the
     dog^alfy2    attgtgccct
     fox^sample1  attgtgccct
     ^ben         attgtgaagt
-
+```
 Imap File
 ---------
 
@@ -430,14 +432,14 @@ For example, the sequence name `GI01234567^Specimen1` has the individual
 ID `Specimen1`. An **Imap file** maps the individual IDs (specimens) to
 their species/populations. For example, the following Imap file maps
 `Specimen1` to species A, `Specimen4` to species B, and so on.
-
+```
     Specimen1   A
     Specimen2   A
     Specimen3   A
     Specimen4   B
     Specimen5   C
     Specimen6   C
-
+```
 See also the map files `frogs.Imap.txt` and
 `Rokas2003-5species-Imap.txt` in the `examples` subdirectory. The MSC
 model implemented in BPP infers the relationships among
@@ -450,16 +452,12 @@ Imap file and this two-layer design is that one may wish to analyze the
 same sequence data with different population/species assignments of
 individual IDs. This can be achieved by editing the small Imap file
 rather than editing the larger sequence data file.
-![Imap file example][images/fig-imap.png]
-
-![An example Imap file showing the sequence ID in the Imap file
+![Imap file example](https://github.com/bpp/bpp-manual/blob/de6f1c41eae8129696e68d9f24882ad1cc49a37a/figures/fig-imap.png?raw=true)
+An example Imap file showing the sequence ID in the Imap file
 corresponding to that in the sequence file. Note that the caret \^
 symbol is not allowed in the sequence ID of the Imap file but is
 required in the sequence label in the sequence data
 file.
-
-
-[]{label="fig-imap"}](figures/fig-imap){#fig-imap}
 
 Outgroups and Constraints File
 ------------------------------
@@ -469,27 +467,26 @@ specified in the control file by setting variable `constraintfile` to
 the name of the constraint file. Topological constraints on species
 trees can only be specified for analyses A01 (species tree inference
 with a fixed species delimitation) and A11 (joint species tree inference
-and species delimitation). See
-Chapter [8](#analysismethods){reference-type="ref"
-reference="analysismethods"} for a detailed description of the A01 and
+and species delimitation). See [Methods of Analysis](#methods-of-analysis)
+for a detailed description of the A01 and
 A11 methods of analysis. Note that species trees are always rooted in
-[bpp]{.smallcaps}, whether you use the clock or relaxed clock. The
+BPP, whether you use the clock or relaxed clock. The
 control variable `constraintfile` in the control file has the format
-
+```
     constraintfile = constraints.txt
-
+```
 Inside the constraint file, three keywords are allowed: `define`,
 `constraint`, and `outgroup`. The `define` keyword is used to assign a
 name or alias to a clade, `constraint` defines a clade or subtree, and
 `outgroup` means that species not on the list (the ingroup species) form
 a clade.
-
+```
     define g1 as (G,H);
     # identical to constraint (D,E,F,(G,H));
     constraint (D,E,F,g1);   
     outgroup A,B,C;
     constraint (A,B);
-
+```
 Either the equal sign (=) or spaces can be used to separate the keyword
 from the specified value. In the example above, there are eight species
 in the dataset: A, B, C, D, E, F, G, and H. Line 1 defines an alias `g1`
@@ -504,42 +501,43 @@ to instead specify the complement of the species on the list. Suppose in
 the data we have 10 species of ratites (flightless birds), and two
 outgroup species, chicken and ostrich. You can specify the constraint as
 follows:
-
+```
     define ratites as NOT (chicken, ostrich);
     constraint = (chicken, (ostrich, ratites));
-
+```
 Note that [bpp]{.smallcaps} interprets `outgroup` to mean that all
 species not on the list form a clade. In theory the `outgroup` keyword
 is unnecessary because you can always achieve the same thing by using
 `define` (especially with the `NOT` option) and `constraint`. However
 `outgroup` may be more convenient or explicit in some situations. If
 there are four species (A,B,C,D),
-
+```
     outgroup = B,C,D;
-
+```
 achieves nothing since all the 15 rooted species trees are allowed,
 whereas
-
+```
     outgroup = C,D;
-
+```
 means (A,B) form a clade so that 3 rooted species trees are allowed.
 Finally if multiple compatible constraints are specified,
 [bpp]{.smallcaps} merges them into one so that
-
+```
     constraint (E,F,G,H);
     constraint (F,G,H);
     constraint (G,H);
-
+```
 is equivalent to
-
+```
     constraint (E,(F,(G,H)));
-
+```
 If any two constraints are in conflict, [bpp]{.smallcaps} will abort
 with an error message. For example the following will cause an error.
-
+```
     constraint = (E,F,G,H);
     constraint = (G,H);
     constraint = (F,G);
+```
 
 Control File
 ------------
@@ -554,9 +552,9 @@ unimportant, but there are exceptions (as explained below). Each
 non-commented line of the control file contains a variable name and an
 assignment of one or more values to the variable. The general syntax of
 a line in the control file is:
-
+```
     variable = value
-
+```
 where `variable` is the name of a valid variable and `value` is a list
 of one or more permissible values for the variable. Most variable
 assignments follow this format --- the exceptions are described later.
@@ -566,8 +564,23 @@ undefined) and what its permissible values are. Here we begin by
 defining all the variable names, the syntax of their arguments and
 permissible types (integers, floating point numbers, etc), and outline
 the structure of dependencies among variables
-(Table [\[variableTable\]](#variableTable){reference-type="ref"
-reference="variableTable"}). Detailed definitions of the variables are
+
+| Symbol/Rule | Definition                                                   |
+|-------------|--------------------------------------------------------------|
+| b           | Boolean (0,1)                                                |
+| +d          | Positive integer                                             |
+| f           | floating point number                                        |
+| s           | String (or character)                                        |
+| t           | Tree in Newick format                                        |
+| x*          | List of one or more elements of type x                       |
+| y [z]       | z is a set of variables whose form is determined by y        |
+| (w,z)       | w and z are two different permissible types                  |
+| y [(w,z)]   | whether w or z is the permissible type depends on value of y |
+
+Symbols used to represent syntax and value types of variables in variable definitions.
+
+
+Detailed definitions of the variables are
 provided at the end of this section, ordered according to their indexes
 in Table [\[variableTable\]](#variableTable){reference-type="ref"
 reference="variableTable"}. If you are impatient to get started using
@@ -577,6 +590,42 @@ reference="examplecontrolfile"} which explains the control file
 variables in the context of a simple example dataset analysis. You can
 later consult this section regarding particular control file variables
 as the need arises.
+
+| Index            | Variable              | Values              | Condition          | Dependencies |
+|------------------|-----------------------|---------------------|--------------------|--------------|
+| [1](#1-seed)     | *seed*                | (-d,+d)             | True               | None         |
+| [2](#2-usedata)  | *usedata*             | b                   | True               | None         |
+| [3](#3-outfile)  | **outfile**           | s                   | True               | None         |
+| [4](#4-mcmcfile) | **mcmcfile**          | s                   | True               | None         |
+| [5](#5-seqfile)  | **seqfile**           | s                   | True               | <-17         |
+| [6](#6-finetune) | **finetune**          | b [f*]              | True               | ->8          |
+| 7                | **print**             | b b b b b           | True               | None         |
+| 8                | `burnin`              | +d                  | True               | <-6          |
+| 9                | **sampfreq**          | +d                  | True               | None         |
+| 10               | **nsample**           | +d                  | True               | None         |
+| 11               | **species&tree**      | +d s* +d* t         | True               | ->{12,16,25} |
+| 12               | `Imapfile`            | s                   | 11[1]>1            | <-11         |
+| 13               | *speciesdelimitation* | b [b f*]            | True               | ->15         |
+| 14               | *speciestree*         | b                   | True               | ->14         |
+| 15               | `speciesmodelprior`   | +d                  | 13[1]=1 OR 14[1]=1 | <-\{13,14\}  |
+| 16               | **phase**             | b*                  | 11[1]              | <-11         |
+| 17               | *nloci*               | +d                  | True               | ->5 <-31     |
+| 18               | *model*               | s                   | True               | None         |
+| 19               | *Qrates*              | b +f +f +f +f +f +f | 18=''7''           | <-18         |
+| 20               | *basefreqs*           | b +f +f +f +f       | 18=''7''           | <-18         |
+| 21               | *alphaprior*          | f f +d              | True               | None         |
+| 22               | *cleandata*           | b                   | True               | None         |
+| 23               | *thetaprior*          | s [(f*, f f s)]     | True               | None         |
+| 24               | *tauprior*            | s f f               | True               | None         |
+| 25               | `phiprior`            | f f                 | 11[4]              | <-11         |
+| 26               | *locusrate*           | +d [(f f f s, s, )] | True               | <-27 ->27    |
+| 27               | *clock*               | +d [f f f s s]      | True               | <-26 ->26    |
+| 28               | *heredity*            | +d [(f f, s)]       | True               | None         |
+| 29               | *checkpoint*          | +d [(+d)]           | True               | None         |
+| 30               | *constraintfile*      | s                   | True               | None         |
+| 31               | `threads`             | +d [ +d +d ]        | True               | ->17         |
+
+
 
 Table [\[variableTable\]](#variableTable){reference-type="ref"
 reference="variableTable"} lists all the variables that can be defined
@@ -604,22 +653,6 @@ specifying arguments in defining the variable. The variable types are
 defined in Table [\[symbolTable\]](#symbolTable){reference-type="ref"
 reference="symbolTable"}.
 
-  Symbol/Rule   Definition                                                     
-  ------------- -------------------------------------------------------------- --
-  b             Boolean (0,1)                                                  
-  +d            Positive integer                                               
-  f             floating point number                                          
-  s             String (or character)                                          
-  t             Tree in Newick format                                          
-  x\*           List of one or more elements of type x                         
-  y \[z\]       z is a set of variables whose form is determined by y          
-  (w,z)         w and z are two different permissible types                    
-  y \[(w,z)\]   whether w or z is the permissible type depends on value of y   
-
-  : Symbols used to represent syntax and value types of variables in
-  Table [\[variableTable\]](#variableTable){reference-type="ref"
-  reference="variableTable"}[]{label="symbolTable"}
-
 Column 4 lists the condition (state of another variable) that either
 determines whether the variable on that line exists (yellow1 variables)
 or determines its permissible values (blue and green variables). x\[y\]
@@ -632,41 +665,7 @@ you are writing a control file from scratch, these dependencies
 necessitate that you specify the red variables first, followed by the
 blue (only needed if changing defaults) and then the yellow/green.
 
-  Index   Variable              Values                  Condition                   Dependencies
-  ------- --------------------- ----------------------- ------------------------ ---------------
-  1       seed                  (-d,+d)                 True                                None
-  2       usedata               b                       True                                None
-  3       outfile               s                       True                                None
-  4       mcmcfile              s                       True                                None
-  5       seqfile               s                       True                               \<-17
-  6       finetune              b \[f\*\]               True                                -\>8
-  7       print                 b b b b b               True                                None
-  8       burnin                +d                      True                                \<-6
-  9       sampfreq              +d                      True                                None
-  10      nsample               +d                      True                                None
-  11      species&tree          +d s\* +d\* t           True                       -\>{12,16,25}
-  12      Imapfile              s                       11\[1\]\>1                         \<-11
-  13      speciesdelimitation   b \[b f\*\]             True                               -\>15
-  14      speciestree           b                       True                               -\>14
-  15      speciesmodelprior     +d                      13\[1\]=1 OR 14\[1\]=1        \<-{13,14}
-  16      phase                 b\*                     11\[1\]                            \<-11
-  17      nloci                 +d                      True                          -\>5 \<-31
-  18      model                 s                       True                                None
-  19      Qrates                b +f +f +f +f +f +f     18="7"                             \<-18
-  20      basefreqs             b +f +f +f +f           18="7"                             \<-18
-  21      alphaprior            f f +d                  True                                None
-  22      cleandata             b                       True                                None
-  23      thetaprior            s \[(f\*, f f s)\]      True                                None
-  24      tauprior              s f f                   True                                None
-  25      phiprior              f f                     11\[4\]                            \<-11
-  26      locusrate             +d \[(f f f s, s, )\]   True                         \<-27 -\>27
-  27      clock                 +d \[f f f s s\]        True                         \<-26 -\>26
-  28      heredity              +d \[(f f, s)\]         True                                None
-  29      checkpoint            +d \[(+d)\]             True                                None
-  30      constraintfile        s                       True                                None
-  31      threads               +d \[ +d +d \]          True                               -\>17
-
-  : List of BPP control variables. The column Variable contains the
+: List of BPP control variables. The column Variable contains the
   control file variable name, the column Values specifies using symbols
   the format of the values (symbols defined in
   Table [\[symbolTable\]](#symbolTable){reference-type="ref"
@@ -679,22 +678,21 @@ blue (only needed if changing defaults) and then the yellow/green.
   (-\>) with the variables denoted using their index from column
   Index.[]{label="variableTable"}
 
-### BPP control file variables {#controlfilevariables}
+## BPP control file variables
 
-**1**\
-
-------------------------------------------------------------------------
-
-\
-**`seed = (-d,+d)`**\
+### 1 seed
+----------------------
+```
+seed = (-d,+d)
+```
 **DESCRIPTION**\
 Specifies the seed used for the random number generator.\
 **VALUES**\
-**`-d`**, use the wall clock (in Windows) or white noise (in Linux) to
+`-d`, use the wall clock (in Windows) or white noise (in Linux) to
 generate a seed (store seed in file `SeedUsed`).\
-**`+d`**, use +d as the seed.\
+`+d`, use +d as the seed.\
 **DEFAULT**\
-**`-1`**\
+`-1`\
 **COMMENTS**\
 Using the same positive integer seed will produce identical results in
 different runs, which is useful for debugging, and using different
@@ -707,80 +705,90 @@ generated when using option -d is stored in a file named SeedUsed and
 can be used explicitly to replicate a result. It is recommended that you
 run each analysis at least twice using different seeds to confirm that
 the results are stable across runs.\
-**EXAMPLES**\
-**`seed = -1`**\
-**`seed = 278`**\
-**2**\
+**EXAMPLES**
+```
+seed = -1
+seed = 278
+```
 
+### 2 usedata
 ------------------------------------------------------------------------
-
-\
-**`usedata = b`**\
+```
+usedata = b
+```
 **DESCRIPTION**\
 Specifies whether data (likelihood+priors) are used in calculating
 probabilities during MCMC or only priors.\
 **VALUES**\
-**`0`**, use only the priors to calculate probabilities (likelihood
+`0`, use only the priors to calculate probabilities (likelihood
 constant).\
-**`1`**, use likelihood and prior probabilities.\
+`1`, use likelihood and prior probabilities.\
 **DEFAULT**\
-**`1`**\
+`1`\
 **COMMENTS**\
-The **`0`** option can be used for debugging, or examining priors. When
+The `0` option can be used for debugging, or examining priors. When
 using option **`0`** a MCMC run produces samples from the prior for each
 variable.\
-**EXAMPLES**\
-**`usedata = 0`**\
-**`usedata = 1`**\
-**3**\
+**EXAMPLES**
+```
+usedata = 0
+usedata = 1
+```
 
+### 3 outfile
 ------------------------------------------------------------------------
-
-\
-**`outfile = s`**\
+```
+outfile = s
+```
 **DESCRIPTION**\
-Sets the path/name of the output file to be the string **`s`**\
+Sets the path/name of the output file to be the string `s`\
 **VALUES**\
-**`s`**, a string of characters specifying the directory path and name
+`s`, a string of characters specifying the directory path and name
 of file that will receive the program output.\
-**EXAMPLES**\
-**`outfile = /home/mickey/mouse_out.txt`**\
-**4**\
+**EXAMPLES**
+```
+outfile = /home/mickey/mouse_out.txt
+```
 
+### 4 mcmcfile
 ------------------------------------------------------------------------
-
-\
-**`mcmcfile = s`**\
+```
+mcmcfile = s
+```
 **DESCRIPTION**\
 Sets the name of the file receiving MCMC output to be the string
-**`s`**\
+`s`\
 **VALUES**\
-**`s`**, a string of characters specifying the directory path and name
+`s`, a string of characters specifying the directory path and name
 of file that will receive the MCMC output.\
-**EXAMPLES**\
-**`mcmcfile = /home/mickey/mouse_mcmc.txt`**\
-**`mcmcfile = mcmc.txt`**\
-**5**\
+**EXAMPLES**
+```
+mcmcfile = /home/mickey/mouse_mcmc.txt
+mcmcfile = mcmc.txt
+```
 
+### 5 seqfile
 ------------------------------------------------------------------------
-
-\
-**`seqfile = s`**\
+```
+seqfile = s
+```
 **DESCRIPTION**\
 Sets the name of the file containing the sequence data to be the string
-**`s`**\
+`s`\
 **VALUES**\
-**`s`**, a string of characters specifying the directory path and name
+`s`, a string of characters specifying the directory path and name
 of file that contains the sequence data\
-**EXAMPLES**\
-**`seqfile = /home/mickey/mouse_seq.txt`**\
-**`seqfile = sequences.txt`**\
-**6**\
+**EXAMPLES**
+```
+seqfile = /home/mickey/mouse_seq.txt
+seqfile = sequences.txt
+```
 
+### 6 finetune
 ------------------------------------------------------------------------
-
-\
-**`finetune = b: [f*]`**\
+```
+finetune = b: [f*]
+```
 **DESCRIPTION**\
 Determines whether step lengths in MCMC proposals are automatically
 optimized or manually set to fixed values as well as setting either the
@@ -793,40 +801,40 @@ ignored by the program. The sizes of proposal steps for each parameter
 are provided (from left to right) in the same order as listed (from top
 to bottom in table. The proposals are as follows:
 
-  Abbreviation   Parameter Proposal Description
-  -------------- ---------------------------------------------------------------
-  Gage           Node age on gene tree
-  Gspr           Subtree pruning and regrafting move
-  thet           Theta
-  tau            Tau
-  mix            Mixing step (jointly changing mu, tau and gene tree node ages
-  lrht           empty
-  phi            Introgression probability
-  pi             Stationary frequencies of substitution model
-  qmat           Q matrix elements of substitution model
-  alfa           Alpha parameter of gamma model for rate variation among sites
-  mubr           empty
-  nubr           empty
-  mu\_i          empty
-  nu\_i          empty
-  brte           empty
+| Abbreviation | Parameter Proposal Description                                |
+|--------------|---------------------------------------------------------------|
+| Gage         | Node age on gene tree                                         |
+| Gspr         | Subtree pruning and regrafting move                           |
+| thet         | Theta                                                         |
+| tau          | Tau                                                           |
+| mix          | Mixing step (jointly changing mu, tau and gene tree node ages |
+| lrht         | empty                                                         |
+| phi          | Introgression probability                                     |
+| pi           | Stationary frequencies of substitution model                  |
+| qmat         | Q matrix elements of substitution model                       |
+| alfa         | Alpha parameter of gamma model for rate variation among sites |
+| mubr         | empty                                                         |
+| nubr         | empty                                                         |
+| mu\_i        | empty                                                         |
+| nu\_i        | empty                                                         |
+| brte         | empty                                                         |
 
-\
+
 **VALUES**\
-**`0: Gage Gspr thet tau mix lrht phi pi qmat alfa mubr nubr mu_i nu_i brte`**\
+`0: Gage Gspr thet tau mix lrht phi pi qmat alfa mubr nubr mu_i nu_i brte`\
 Use fixed step lengths in MCMC proposals as specified, where Gage is the
 specified step length for proposal Gage, and so on.\
-**`1: Gage Gspr thet tau mix lrht phi pi qmat alfa mubr nubr mu_i nu_i brte`**\
+`1: Gage Gspr thet tau mix lrht phi pi qmat alfa mubr nubr mu_i nu_i brte`\
 Automatically optimize step lengths in MCMC proposals using specified
 initial step lengths.\
 **DEFAULT**\
-**`0`**\
+`0`\
 Manually fixes all step lengths to be $0.1$.\
-**`1`**\
+`1`\
 Fixes all initial proposal step lengths to $0.1$ prior to optimization.\
 **DEPENDENCIES**\
-If **`b`** is set to 1 (automatic optimization) then **`burnin`** has to
-be \>200.\
+If `b` is set to 1 (automatic optimization) then `burnin` has to
+be $>200$.\
 **COMMENTS**\
 The first value, before the colon, is a switch, with 0 meaning no
 automatic adjustments by the program and 1 meaning automatic adjustments
@@ -836,11 +844,13 @@ will be the initial step lengths, and the program will try to adjust
 them using the information collected during the burnin step. This option
 appears to work fine. Some notes about manually adjusting those finetune
 step lengths are provided below in section 3.2.\
-**EXAMPLES**\
-**`finetune = 0: .01 .02 .03 .04 .05 .01 .01 .01 .01 .01 .01 .01 .01 .01 .01`**\
-**`finetune = 1`**\
-**7**\
+**EXAMPLES**
+```
+finetune = 0: .01 .02 .03 .04 .05 .01 .01 .01 .01 .01 .01 .01 .01 .01 .01
+finetune = 1
+```
 
+### 7 print
 ------------------------------------------------------------------------
 
 \
