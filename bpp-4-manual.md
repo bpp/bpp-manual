@@ -1,20 +1,3 @@
----
-bibliography:
-- 'bpp-4-manual.bib'
----
-
-Printed:
-
-  ---------------------------- --------------------------------------------
-  `User input`                 Commands to be typed at command line
-  `Control file entries`       Entries placed in the program control file
-  `BPP screen output`          Output that BPP prints to screen
-  *Important detail*           Important assumptions or other warnings
-  **New term**                 A new term when first defined
-  [Program Name]{.smallcaps}   A software program name
-  ---------------------------- --------------------------------------------
-
-  : **Typographical Conventions.** The following conventions are used.
 
 Quick Start
 ===========
@@ -29,18 +12,17 @@ Overview
 Bayesian Phylogenetics & Phylogeography (BPP) is a Bayesian Markov chain Monte Carlo (MCMC) program
 for analyzing DNA sequence alignments of multiple loci from multiple
 closely-related species under the multispecies coalescent (MSC) model
-[@Yang2002; @Rannala2003]. See [@Xu2016] and [@Rannala2020a] for reviews
+([Yang 2002](https://doi.org/10.1093/genetics/162.4.1811); [Rannala and Yang 2003](https://doi.org/10.1093/genetics/164.4.1645)). See [Xu 2016](https://doi.org/10.1534/genetics.116.190173) and [Rannala et al 2020](https://inria.hal.science/PGE/hal-02535622) for reviews
 of the MSC model. The program requires 3 input files:
 
-1.  Sequence data file (see [4.1](#sequence-file)).
+1.  Sequence data file (see [Sequence File](#sequence-file)).
 
 2.  Imap file specifying the population source of each sequence
-    (see [4.2](#imap-file)).
+    (see [Imap file](#imap-file)).
 
 3.  Control file specifying other variables needed to run the program
     (e.g., initial species tree, prior distributions,
-    etc)(see [4.4](#ctrlfile){reference-type="ref"
-    reference="ctrlfile"}).
+    etc)(see [Control File](#control-file)).
 
 This manual will provide details for creating these input files
 (describing syntax and permissible values for variables). The input
@@ -48,10 +30,14 @@ files should be in text format and edited using a text format editor
 (for example, a Unix editor such as emacs, or vi). A basic set of map
 and control files using sensible default priors based on the sequence
 data can also be created using the web tool *Minimalist BPP* available
-at <https://brannala.github.io/bpps/>. These auto-produced files can
+at
+
+<https://brannala.github.io/bpps/> 
+
+These auto-produced files can
 then be used as a template for more editing.
 
-### Methods of analysis
+### Possible types of analyses
 
 The program can be used to conduct four different types of analyses,
 each specified using two variables in the control file:
@@ -59,26 +45,26 @@ each specified using two variables in the control file:
 -   **A00** (`speciesdelimitation = 0`, `speciestree = 0`): estimation
     of species divergence times and population sizes under the MSC, IM
     and MSci models when the species tree is specified by the user
-    [@Rannala2003; @Flouri2020a]
+	([Rannala and Yang 2003](https://doi.org/10.1093/genetics/164.4.1645); [Flouri et al 2020](https://inria.hal.science/PGE/hal-02536475))
+
 
 -   **A01** (`speciesdelimitation = 0`, `speciestree = 1`): inference of
     the species tree when sequences are assigned to species by the user
-    [@Rannala2017]
+    ([Rannala and Yang 2017](https://doi.org/10.1093/sysbio/syw119))
 
 -   **A10** (`speciesdelimitation = 1`, `speciestree = 0`): species
     delimitation using a user-specified guide tree
-    [@Yang2010; @Rannala2013]
+    ([Yang and Rannala 2010](https://doi.org/10.1073/pnas.0913022107); [Rannala and Yang 2013](https://doi.org/10.1534/genetics.112.149039))
 
 -   **A11** (`speciesdelimitation = 1`, `speciestree = 1`): joint
     species delimitation and species tree inference using unguided
-    species delimitation [@Yang2014a]
+    species delimitation [Yang and Rannala 2014](https://doi.org/10.1093/molbev/msu279)
 
 A detailed guide to the use of each of these 4 methods of analysis, as
 well as example control files, are provided in
-Chapter [8](#analysismethods){reference-type="ref"
-reference="analysismethods"}. The BPP tutorial also
+[Methods of Analysis](#methods-of-analysis). The BPP tutorial also
 provides examples illustrating the four types of analyses
-[@Yang2015; @Flouri2020b].
+([Yang 2015](https://doi.org/10.1093/czoolo/61.5.854); [Flouri et al 2020](https://inria.hal.science/PGE/hal-02536475)).
 
 Model Parameters
 ----------------
@@ -104,33 +90,28 @@ parameters when the species delimitation and species tree are fixed
 and model probabilities of the different MSC models. The
 multispecies-coalescent-with-introgression (MSci) model, first
 implemented in BPP version 4.1 and described in
-Chapter [6](#introgression){reference-type="ref"
-reference="introgression"}, adds introgression nodes to the tree, each
-with a new parameter, the **introgression probability** ($\varphi$) [see
-@Flouri2020a]. The Isolation-with-migration (IM) model adds a matrix of
-**instantaneous migration rates** (**M**) (see
-Chapter [6](#introgression){reference-type="ref"
-reference="introgression"}) For reviews of the MSC model, see @Yang2014b
-[Chapter 9], @Xu2016, and @Rannala2020a.
+[Introgression Models](#introgression-models), adds introgression nodes to the tree, each
+with a new parameter, the **introgression probability** ($\varphi$) see [Flouri et al 2020](https://doi.org/10.1093/molbev/msz296). 
+The Isolation-with-migration (IM) model adds a matrix of
+**instantaneous migration rates** (**M**) (see [Isolation With Migration Models](#isolation-with-migration-models)) 
+For reviews of the MSC model, see [Yang 2014](https://global.oup.com/academic/product/molecular-evolution-9780199602605?lang=es&cc=gb) (Chapter 9), [Xu 2016](https://doi.org/10.1534/genetics.116.190173) and [Rannala et al 2020](https://inria.hal.science/PGE/hal-02535622).
 
 Model Assumptions
 -----------------
 
 The MSC model implemented in BPP makes two basic assumptions about the
 data: *no recombination between sites of the same locus*, and *free
-recombination between loci*. The original MSC model [@Rannala2003] also
+recombination between loci*. The original MSC model ([Rannala and Yang 2003](https://doi.org/10.1093/genetics/164.4.1645)) also
 assumes complete genetic isolation between populations, but more recent
 implementations allow gene flow between species (either continuous
 migration or episodic introgression); the MSci model implemented in BPP
-allows episodic introgression [@Flouri2020a] and the IM model allows
+allows episodic introgression [Flouri et al 2020](https://doi.org/10.1093/molbev/msz296) and the IM model allows
 continuous migration (see
-Chapter [6](#introgression){reference-type="ref"
-reference="introgression"}). The default model assumes a strict
+[Introgression Models](#introgression-models) and [Isolation With Migration Models](#isolation-with-migration-models)). The default model assumes a strict
 molecular clock (constant substitution rates among lineages) and
 relaxed-clocks (with substitution rates varying among lineages) are
 implemented through variable clock models (see
-Chapter [5](#substitutions){reference-type="ref"
-reference="substitutions"}).
+[Substitution Models](#substitution-models)).
 
 ### Nuclear genomic data
 
@@ -144,8 +125,8 @@ selection). However, protein-coding gene sequences appear to be useable
 in BPP analyses since most proteins are performing similar
 functions in closely related species and the main effect of purifying
 selection on nonsynonymous mutations is a reduction of the neutral
-mutation rate [@Shi2018; @Thawornwattana2018MBE]. It is a good idea to
-separate the noncoding and coding regions of the genome into two
+mutation rate ([Shi and Yang 2018](https://doi.org/10.1093/molbev/msx277); [Thawornwattana et al 2018](https://doi.org/10.1093/molbev/msy158)). 
+It is a good idea to separate the noncoding and coding regions of the genome into two
 datasets.
 
 The program allows the option of either a constant rate (strict
@@ -160,8 +141,7 @@ closely related species with sequence divergence not much higher than
 GTR substitution model in combination with one of the relaxed clock
 models. Models allowing substitution rate variation among sites and
 among loci are also implemented in BPP (see
-Chapter [5](#substitutions){reference-type="ref"
-reference="substitutions"})
+[Substitution Models](#substitution-models))
 
 ### Mitochondrial data
 
@@ -206,7 +186,21 @@ original papers describing the methods you used (see above). Be sure to
 state the priors that you used since they are necessary for
 reproducibility. If you conduct a joint analysis of species delimitation
 and species tree inference, your method description may look like the
-following (replace the numbers in with those you used):
+following (replace the specific values in bold with those you used):
+
+> "Joint Bayesian species delimitation and species tree estimation was conducted using the program
+> BPP (Flouri et al., 2018; Yang, 2015). The method uses the multispecies coalescent model to compare
+> different models of species delimitation (Yang and Rannala, 2010; Rannala and Yang, 2013) and species
+> phylogeny (Yang and Rannala, 2014; Rannala and Yang, 2017) in a Bayesian framework, accounting
+> for incomplete lineage sorting due to ancestral polymorphism and gene tree-species tree discordance.
+> The population size parameters ($\theta$s) are assigned the **inverse-gamma prior IG(3, 0.002)**, with mean
+> **0.002/(3–1) = 0.001**. The divergence time at the root of the species tree ($\tau_0$) is assigned the 
+> **inverse-gamma prior IG(3, 0.004)**, with mean **0.002**, while the other divergence time parameters are specified
+> by the uniform Dirichlet distribution (Yang and Rannala, 2010, eq. 2). Each analysis is run at least twice
+> to confirm consistency between runs.”
+
+
+
 
 Installing and Running BPP
 ==========================
@@ -217,17 +211,15 @@ OSX and Linux. Alternatively, the BPP program can be
 compiled for Unix (Linux, BSD, etc), Mac OSX, or Windows. If you are
 using a Windows, Mac OSX or Linux operating system (and you are not a
 programmer who prefers to compile from source) you should download the
-latest release executables for your machine (go to Section
- [3.1](#download){reference-type="ref" reference="download"}). If you
+latest release executables for your machine (go to [Obtaining BPP](#obtaining-bpp)). If you
 have not used a command line program before, read
-Section [3.2](#commandline){reference-type="ref"
-reference="commandline"} then go to
-Section [3.1](#download){reference-type="ref" reference="download"}. If
+[Using the Command Line](#using-the-command-line) then go to
+[Obtaining BPP](#obtaining-bpp). If
 you want to compile the program yourself (you must do this if you are
 using a Unix variant other than Linux or Mac OSX) go to
-Section [3.3](#compiling){reference-type="ref" reference="compiling"}.
+[Compiling the BPP Program](#compiling-the-bpp-program).
 
-Obtaining BPP {#download}
+Obtaining BPP
 -------------
 
 Executables and source code for the most recent BPP
@@ -245,10 +237,9 @@ this):
     tar -xvzf bpp-4.4.1-linux-x86_64.tar.gz
     cd bpp-4.4.1-linux-x86_64/
 
-You are now ready to proceed to
-Section [3.4](#trial){reference-type="ref" reference="trial"}
+You are now ready to proceed to [BPP Trial Run](#bpp-trial-run)
 
-Using the Command Line {#commandline}
+Using the Command Line
 ----------------------
 
 BPP is a command-line program, so the preferred way of
@@ -262,7 +253,7 @@ Windows:\
 Mac OSX:\
 <http://abacus.gene.ucl.ac.uk/software/CommandLine.MACosx.pdf>\
 
-Compiling the BPP Program {#compiling}
+Compiling the BPP Program
 -------------------------
 
 ### Requirements
@@ -324,10 +315,9 @@ version of bpp) and then compile the program:
     cd src
     make
 
-You are now ready to proceed to
-Section [3.4](#trial){reference-type="ref" reference="trial"}
+You are now ready to proceed to [BPP Trial Run](#bpp-trial-run)
 
-BPP Trial Run {#trial}
+BPP Trial Run
 -------------
 
 Run the program from the command line (rather than double-clicking the
@@ -373,13 +363,13 @@ When posting on the forum, please specify the exact command you typed
 and the error message you received (preferably by copying and pasting
 this information from your terminal or attaching a screen shot).
 
-Input File Formats {#files}
+Input File Formats
 ==================
 
 Two input files are required for every BPP analysis, the sequence file
 and the control file. If more than one species is being analyzed an Imap
 file is also required. A few additional input files are required only
-when specific options are specified in the control file. In this Chapter
+when specific options are specified in the control file. Here
 we describe the content and format specifications of the sequence, Imap
 and control files that will be needed for most BPP analyses.
 
@@ -407,11 +397,11 @@ missing data can be specified using a `?` symbol, and IUPAC ambiguity
 codes may be used. The interpretation of an ambiguity code (as either an
 uncertain base or a diploid genotype) depends on whether the data are
 specified as phased in the control file. By default (control file
-variable `cleandata = 0`, see
-Section [4.4](#ctrlfile){reference-type="ref" reference="ctrlfile"}),
+variable `cleandata = 0`, see [Control File](#control-file)),
 alignment gaps and ambiguity nucleotides are used in the likelihood
-calculation, with gaps treated as question marks [see @Yang2014b
-pp. 111-112]. If `cleandata = 1`, all columns with gaps or ambiguity
+calculation, with gaps treated as question marks 
+(see [Yang 2014](https://global.oup.com/academic/product/molecular-evolution-9780199602605?lang=es&cc=gb) pp. 111-112). 
+If `cleandata = 1`, all columns with gaps or ambiguity
 characters are removed before analysis. An example of a sequence data
 file for 2 loci and 4 sequences per locus is given below (you can also
 examine the sequence files `frogs.txt` and `yu2001.txt` in the
@@ -460,12 +450,16 @@ Imap file and this two-layer design is that one may wish to analyze the
 same sequence data with different population/species assignments of
 individual IDs. This can be achieved by editing the small Imap file
 rather than editing the larger sequence data file.
+![Imap file example][images/fig-imap.png]
 
 ![An example Imap file showing the sequence ID in the Imap file
 corresponding to that in the sequence file. Note that the caret \^
 symbol is not allowed in the sequence ID of the Imap file but is
 required in the sequence label in the sequence data
-file.[]{label="fig-imap"}](figures/fig-imap){#fig-imap}
+file.
+
+
+[]{label="fig-imap"}](figures/fig-imap){#fig-imap}
 
 Outgroups and Constraints File
 ------------------------------
@@ -547,7 +541,7 @@ with an error message. For example the following will cause an error.
     constraint = (G,H);
     constraint = (F,G);
 
-Control File {#ctrlfile}
+Control File
 ------------
 
 The **control file** specifies most aspects of a BPP analysis, including
@@ -1987,11 +1981,9 @@ The line `(((K, C), L), H);` specifies the (fixed) species tree in
 Newick format ending with a semicolon (;). This example specifies a tree
 with no introgression (the MSC model). Specification of the MSci model
 with introgression is different (see
-Chapter [6](#introgression){reference-type="ref"
-reference="introgression"} for a description of the MSci model). The
+[Introgression Models](#introgression-models) for a description of the MSci model). The
 Newick and extended Newick formats for specifying phylogenetic trees are
-described in Chapter [6](#introgression){reference-type="ref"
-reference="introgression"} and a good overview is found at
+described in [Introgression Models](#introgression-models) and a good overview is found at
 <https://en.wikipedia.org/wiki/Newick_format>.
 
     # sequence data are unphased for all 4 populations
@@ -2181,7 +2173,7 @@ The header lines of any files being concatenated should also be deleted.
 Do not combine the MCMC samples from different types of analyses (i.e.,
 using different data files and/or variable settings or priors).
 
-Substitution Models {#substitutions}
+Substitution Models
 ===================
 
 BPP includes several models that allow more realistic representations of
@@ -2711,15 +2703,15 @@ $\bar\nu$ has prior mean $\alpha_{\bar{\nu}}/\beta_{\bar{\nu}}$. If
 log-normal model $\nu = 0.5$ suggests a serious violation of the clock
 while $\nu < 0.1$ represents only a slight violation.
 
-Introgression Models {#introgression}
+Introgression Models
 ====================
 
 Another important factor influencing the results of species tree
 inference is introgression (gene flow) between species (or populations).
 BPP also implements a model of episodic introgression between species or
-populations [@Flouri2020a] as well as a model of ongoing gene flow (IM).
+populations [Flouri et al 2020](https://doi.org/10.1093/molbev/msz296) as well as a model of ongoing gene flow (IM).
 Since version 4.1, [bpp]{.smallcaps} implements the MSci model
-[@Flouri2020a] and since version 4.4 it implements the IM model.
+[Flouri et al 2020](https://doi.org/10.1093/molbev/msz296) and since version 4.4 it implements the IM model.
 Currently, introgression (MSci) and ongoing gene flow (IM) analyses can
 only be performed using the A00 method of analysis (fixed species tree
 and delimitation, see Chapter [8](#analysismethods){reference-type="ref"
@@ -2830,7 +2822,7 @@ multiplier is used to multiply all $\theta$ parameters for the locus but
 not the $\tau$s. Nevertheless, those parameters are quite likely to be
 strongly correlated, especially when the species tree is small.
 
-Methods of Analysis {#analysismethods}
+Methods of Analysis
 ===================
 
 Here we describe the specifics of the four different types of analyses
@@ -2844,7 +2836,7 @@ delimitation, 1 = species delimitation) and `speciestree` (0 = fixed
 species tree, 1 = inferred species tree). Therefore, analysis A00 infers
 the biogeographical parameters $\theta$ and $\tau$ on a fixed (user
 specified) tree with a fixed (delimited) number of species/populations
-as described in [@Rannala2003]. Analysis A10 delimits the number of
+as described in ([Rannala and Yang 2003](https://doi.org/10.1093/genetics/164.4.1645). Analysis A10 delimits the number of
 species and infers biogeographical parameters using a fixed species tree
 (guide tree) as described in [@Yang2010]. Analysis A01 infers the
 species tree and biogeographical parameters using a fixed number of
@@ -2853,8 +2845,7 @@ jointly infers the species tree, species delimitation and
 biogeographical parameters as described in [@Yang2014a]. Under Model A00
 it is also possible to include a model of either instantaneous
 introgression or ongoing gene flow -- examples of such analyses are
-given in Chapter [6](#introgression){reference-type="ref"
-reference="introgression"}. For each of these 4 major types of analyses
+given in [Introgression Models](#introgression-models). For each of these 4 major types of analyses
 the control file specifications will differ as well as the form of
 output printed to the screen and output files. Therefore, we will
 include two subsections in our discussion of each analysis method: input
@@ -2889,7 +2880,7 @@ user-specified species tree topology, given by variable `species&tree`
 in the control file, and infers the $\theta$ and $\tau$ parameters on
 this fixed tree. The theory underlying estimation of species divergence
 times and population sizes ($\tau$s and $\theta$s) under the MSC model
-when the species phylogeny is given is described in [@Rannala2003]. Note
+when the species phylogeny is given is described in ([Rannala and Yang 2003](https://doi.org/10.1093/genetics/164.4.1645). Note
 that if there are $s$ species in the species tree, the model will
 minimally contain the following parameters: $s – 1$ species divergence
 times ($\tau$s) and $s – 1$ ancestral species $\theta$s. A $\theta$
@@ -3333,7 +3324,7 @@ automatically, and they are used as given.
 There are seven finetune steplengths here. They are in a fixed order and
 always read by the program even if the concerned proposal is not used.
 The first five of them are $\epsilon_1$, $\epsilon_2$, $\epsilon_3$,
-$\epsilon_4$, and $\epsilon_5$, described in [@Rannala2003]. These are
+$\epsilon_4$, and $\epsilon_5$, described in ([Rannala and Yang 2003](https://doi.org/10.1093/genetics/164.4.1645). These are
 the step lengths used in the MCMC proposals that (1) change internal
 node ages in the gene tree, (2) prune and re-graft nodes in the gene
 tree, (3) update $\theta$, (4) update $\tau$s using the rubber-band
@@ -3455,7 +3446,7 @@ proportion for the SPR/Nodeslider moves that change the species
 phylogeny [@Rannala2017]. The next two numbers are posterior means of
 $\theta$ for the root population (-1 is printed if $\theta$s are
 integrated out) and $\tau_0$ for the root age. The last two numbers are
-the log MSC gene-tree density [@Rannala2003] and the average log
+the log MSC gene-tree density ([Rannala and Yang 2003](https://doi.org/10.1093/genetics/164.4.1645) and the average log
 sequence likelihood [@Felsenstein1981].
 
 **The MCMC sample** of species trees is collected in the file mcmc.txt.
@@ -4009,8 +4000,8 @@ Simulation Using BPP
 
 The simulation option of [bpp4]{.smallcaps} is the MCCOAL program in
 version 3.4 and earlier. This can be used to simulate gene trees and
-sequence alignments at multiple loci under the MSC [@Rannala2003] and
-MSci [@Flouri2020a] models. While the inference program
+sequence alignments at multiple loci under the MSC ([Rannala and Yang 2003](https://doi.org/10.1093/genetics/164.4.1645) and
+MSci [Flouri et al 2020](https://doi.org/10.1093/molbev/msz296) models. While the inference program
 [bpp]{.smallcaps} implements the JC model only, the simulation program
 allows GTR+G (and its special cases) and allows among-loci heterogeneity
 in the process of sequence evolution. The different loci can have
