@@ -70,12 +70,12 @@ Model Parameters
 ----------------
 
 The basic parameters in the MSC model include the **species divergence times** 
-( $\tau$ s) and mutation scaled **population sizes**
-$\theta = 4N\mu$, where $N$ is the effective population size and $\mu$
+( $\tau$ ) and mutation scaled **population sizes**
+$$\theta = 4N\mu$$ where $N$ is the effective population size and $\mu$
 is the mutation rate per site per generation. Note that $\theta$
 specifies the average proportion of sites that have different bases when
 comparing two sequences sampled at random from the population. Both
-$\tau$s and $\theta$s are measured in units of expected number of
+$\tau$ and $\theta$ are measured in units of expected number of
 mutations per site ($\tau$s can be converted to units of years if the
 substitution rate per site per year is known. For example, if $\tau$ is
 an estimated divergence time in units of expected substitutions per site
