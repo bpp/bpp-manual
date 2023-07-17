@@ -85,8 +85,8 @@ $$\tau' = \frac{\tau}{\mu}$$
 and the diploid effective population size is 
 $$N = \frac{\theta}{4\mu}$$ 
 For a species tree with $s$ species,
-there are ($s – 1$) divergence times ( $\tau$ ) and at most ($2s – 1$)
-population size parameters ($\theta$s). Analysis A00 estimates those
+there are ($s – 1$) divergence times ($\tau$) and at most ($2s – 1$)
+population size parameters ($\theta$s. Analysis A00 estimates those
 parameters when the species delimitation and species tree are fixed
 (specified by the user). Analyses A01, A10, and A11 estimate parameters
 and model probabilities of the different MSC models. The
