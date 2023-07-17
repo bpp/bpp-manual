@@ -69,8 +69,8 @@ provides examples illustrating the four types of analyses
 Model Parameters
 ----------------
 
-The basic parameters in the MSC model include the **species divergence
-times** ($\tau$s) and mutation scaled **population sizes**
+The basic parameters in the MSC model include the **species divergence times** 
+( $\tau$ s) and mutation scaled **population sizes**
 $\theta = 4N\mu$, where $N$ is the effective population size and $\mu$
 is the mutation rate per site per generation. Note that $\theta$
 specifies the average proportion of sites that have different bases when
@@ -81,8 +81,8 @@ substitution rate per site per year is known. For example, if $\tau$ is
 an estimated divergence time in units of expected substitutions per site
 (from a BPP analysis) and the substitution rate per site per year is
 $\mu$, then the estimated divergence time in years is, $\tau^*$, is
-$\tau^* = \frac{\tau}{\mu}$ and the diploid effective population size
-is $N = \frac{\theta}{4\,u}$. For a species tree with $s$ species,
+$$\tau^* = \frac{\tau}{\mu}$$ and the diploid effective population size
+is $$N = \frac{\theta}{4\,u}$$. For a species tree with $s$ species,
 there are ($s – 1$) divergence times ($\tau$s) and at most ($2s – 1$)
 population size parameters ($\theta$s). Analysis A00 estimates those
 parameters when the species delimitation and species tree are fixed
