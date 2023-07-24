@@ -607,23 +607,23 @@ as the need arises.
 | [12](#12-imapfile)            | `Imapfile`            | s                   | 11[1]>1            | <-11         |
 | [13](#13-speciesdelimitation) | *speciesdelimitation* | b [b f*]            | True               | ->15         |
 | [14](#14-speciestree)         | *speciestree*         | b                   | True               | ->14         |
-| 15                            | `speciesmodelprior`   | +d                  | 13[1]=1 OR 14[1]=1 | <-\{13,14\}  |
-| 16                            | **phase**             | b*                  | 11[1]              | <-11         |
-| 17                            | *nloci*               | +d                  | True               | ->5 <-31     |
-| 18                            | *model*               | s [s]               | True               | None         |
-| 19                            | *Qrates*              | b +f +f +f +f +f +f | 18=''7''           | <-18         |
-| 20                            | *basefreqs*           | b +f +f +f +f       | 18=''7''           | <-18         |
-| 21                            | *alphaprior*          | f f +d              | True               | None         |
-| 22                            | *cleandata*           | b                   | True               | None         |
-| 23                            | *thetaprior*          | s [(f*, f f s)]     | True               | None         |
-| 24                            | *tauprior*            | s f f               | True               | None         |
-| 25                            | `phiprior`            | f f                 | 11[4]              | <-11         |
-| 26                            | *locusrate*           | +d [(f f f s, s, )] | True               | <-27 ->27    |
-| 27                            | *clock*               | +d [f f f s s]      | True               | <-26 ->26    |
-| 28                            | *heredity*            | +d [(f f, s)]       | True               | None         |
-| 29                            | *checkpoint*          | +d [(+d)]           | True               | None         |
-| 30                            | *constraintfile*      | s                   | True               | None         |
-| 31                            | `threads`             | +d [ +d +d ]        | True               | ->17         |
+| [15](#15-speciesmodelprior)   | `speciesmodelprior`   | +d                  | 13[1]=1 OR 14[1]=1 | <-\{13,14\}  |
+| [16](#16-phase)               | **phase**             | b*                  | 11[1]              | <-11         |
+| [17](#17-nloci)               | *nloci*               | +d                  | True               | ->5 <-31     |
+| [18](#18-model)               | *model*               | s [s]               | True               | None         |
+| [19](#19-qrates)              | *Qrates*              | b +f +f +f +f +f +f | 18=''7''           | <-18         |
+| [20](#20-basefreqs)           | *basefreqs*           | b +f +f +f +f       | 18=''7''           | <-18         |
+| [21](#21-alphaprior)          | *alphaprior*          | f f +d              | True               | None         |
+| [22](#22-cleandata)           | *cleandata*           | b                   | True               | None         |
+| [23](#thetaprior)             | *thetaprior*          | s [(f*, f f s)]     | True               | None         |
+| [24](#tauprior)               | *tauprior*            | s f f               | True               | None         |
+| [25](#phiprior)               | `phiprior`            | f f                 | 11[4]              | <-11         |
+| [26](#locusrate)              | *locusrate*           | +d [(f f f s, s, )] | True               | <-27 ->27    |
+| [27](#clock)                  | *clock*               | +d [f f f s s]      | True               | <-26 ->26    |
+| [28](#heredity)               | *heredity*            | +d [(f f, s)]       | True               | None         |
+| [29](#checkpoint)             | *checkpoint*          | +d [(+d)]           | True               | None         |
+| [30](#constraintfile)         | *constraintfile*      | s                   | True               | None         |
+| [31](#threads)                | `threads`             | +d [ +d +d ]        | True               | ->17         |
 
 **Table 2.** Complete list of BPP control file variables. The column `Variable` contains the
   control file variable name, the column `Values` specifies (using symbols) the format of the values (symbols are defined in
@@ -719,7 +719,7 @@ constant).\
 `1`\
 **COMMENTS**\
 The `0` option can be used for debugging, or examining priors. When
-using option **`0`** a MCMC run produces samples from the prior for each
+using option `0`** a MCMC run produces samples from the prior for each
 variable.\
 **EXAMPLES**
 ```
@@ -1039,60 +1039,61 @@ speciestree = 1
 speciestree = 0
 ```
 
-**15**\
-
+### 15 speciesmodelprior
 ------------------------------------------------------------------------
-
-\
-**`speciesmodelprior`**\
+```
+speciesmodelprior
+```
 **DESCRIPTION**\
 Specifies the prior distribution for rooted species trees and species
 delimitations.\
 **VALUES**\
-**`0`**, specifies equal probabilities for the labeled histories (rooted
+`0`, specifies equal probabilities for the labeled histories (rooted
 trees with the internal nodes ordered by age).\
-**`1`**, specifies equal probabilities for the rooted species trees.\
-**`2`**, specifies equal probabilities for the numbers of species ($1/s$
+`1`, specifies equal probabilities for the rooted species trees.\
+`2`, specifies equal probabilities for the numbers of species ($1/s$
 each for $1,2,\ldots,s$ species given $s$ populations) and divides the
 probability for any specific number of species among the compatible
 models (of species delimitation and species phylogeny) in proportion to
 the number of labeled histories.\
-**`3`**, specifies equal probabilities for the numbers of species ($1/s$
+`3`, specifies equal probabilities for the numbers of species ($1/s$
 each for $1,2,\ldots,s$ species given $s$ populations) and divides the
 probability for any specific number of species among the compatible
 models (of species delimitation and species phylogeny) uniformly.\
 **DEPENDENCIES**\
-The variable **`speciesmodelprior`** must be defined if either (or both)
-**`speciestree = 1`** or **`speciesdelimitation = 1`**. If
-**`speciestree = 1`** and **`speciesdelimitation = 0`** then only
-options **`speciesmodelprior = 0`** or **`speciesmodelprior = 1`** may
+The variable `speciesmodelprior` must be defined if either (or both)
+`speciestree = 1` or `speciesdelimitation = 1`. If
+`speciestree = 1` and `speciesdelimitation = 0` then only
+options `speciesmodelprior = 0` or `speciesmodelprior = 1` may
 be used.\
 **COMMENTS**\
 The priors specified by options 2 and 3 are discussed by [@Yang2014a]
 and implemented by [@Yang2015]. The prior specified by option 3 may be
 suitable when there are many populations.\
-**EXAMPLES**\
-**`speciesmodelprior = 0`**\
-**`speciesmodelprior = 3`**\
-**16**\
+**EXAMPLES**
+```
+speciesmodelprior = 0
+speciesmodelprior = 3
+```
 
+### 16 phase
 ------------------------------------------------------------------------
-
-\
-**`phase = b*`**\
+```
+phase = b*
+```
 **DESCRIPTION**\
 Specifies whether the sequence data for each species is phased.\
 **VALUES**\
-**`1`**, in position $i$ of the list indicates that data is unphased for
-species $i$ in the list of species in variable **`species&tree`**,
-otherwise **`0`** indicates it is phased.\
+`1`, in position $i$ of the list indicates that data is unphased for
+species $i$ in the list of species in variable `species&tree`,
+otherwise `0` indicates it is phased.\
 **DEFAULT**\
-**`0`**\
+`0`\
 **DEPENDENCIES**\
 The number of boolean (0,1) variables in the list must equal the number
-of species **`d+`** specified in the **`species&tree`** variable.\
+of species `d+` specified in the `species&tree` variable.\
 **COMMENTS**\
-If at position $i$ the **`phase`** variable is 1, each sequence from
+If at position $i$ the `phase` variable is 1, each sequence from
 species $i$ is treated as an unphased diploid sequence, with
 heterozygous sites represented using the ambiguity characters `YRMKSW`.
 The missing data tokens `N-?` are allowed and are all treated as ?, but
@@ -1113,47 +1114,51 @@ identical sequences. The MSC model effectively averages over different
 phase resolutions of the heterozygous sites in performing the likelihood
 calculation. The option may increase memory usage and CPU time
 considerably if many sequences exist with many heterozygote sites at a
-locus. If the **`phase`** variable for a species is 0, all sequences
+locus. If the `phase` variable for a species is 0, all sequences
 from that species are treated as resolved haplotype sequences, and
 ambiguities are interpreted in the usual way. For example, an ambiguity
 code `Y` at a position is interpreted to mean that one sequence exists
 with an uncertain nucleotide at that position that is either a T or a C.
 The program does not allow some sequences from a species to be phased
 and other sequences from that same species to be unphased.\
-**EXAMPLES**\
-**`phase = 0 0 0 0 1`**\
-**`phase = 1 1 1 1 1`**\
-**17**\
+**EXAMPLES**
+```
+phase = 0 0 0 0 1
+phase = 1 1 1 1 1
+```
 
+### 17 nloci
 ------------------------------------------------------------------------
-
-\
-**`nloci = +d`**\
+```
+nloci = +d
+```
 **DESCRIPTION**\
 Specifies the number of loci present in the sequence data file specified
-by variable **`seqfile`** that will be analysed.\
+by variable `seqfile` that will be analysed.\
 **VALUES**\
-**`+d`**, a positive integer specifying the number of loci to be
+`+d`, a positive integer specifying the number of loci to be
 analyzed.\
 **DEFAULT**\
-If **`nloci`** is not specified, all the loci present in the sequence
-file specified by **`seqfile`** will be analysed.\
+If `nloci` is not specified, all the loci present in the sequence
+file specified by `seqfile` will be analysed.\
 **DEPENDENCIES**\
-**`nloci`** must be less than or equal to the number of loci available
-in the sequence file specified by **`seqfile`**.\
+`nloci` must be less than or equal to the number of loci available
+in the sequence file specified by `seqfile`.\
 **COMMENTS**\
-If **`nloci`** is less than the number of loci present in the file
-specified by **`seqfile`** only the first **`nloci`** present in that
-file wil be analysed.\
-**EXAMPLES**\
-**`nloci = 1`**\
-**`nloci = 2000`**\
-**18**\
+If `nloci` is less than the number of loci present in the file
+specified by `seqfile` only the first `nloci` present in that
+file will be analysed.\
+**EXAMPLES**
+```
+nloci = 1
+nloci = 2000
+```
 
+### 18 model
 ------------------------------------------------------------------------
-
-\
-**`model = s [s]`**\
+```
+model = s [s]
+```
 **DESCRIPTION**\
 Specifies the DNA substitution model (or amino acid substitution model)
 that will be used. For DNA sequences the simplest (default) model that
@@ -1165,65 +1170,67 @@ available. If a model other than `Custom` is specified it will apply to
 all loci. If `Custom filename` is specified, an additional file
 `filename` must be provided that contains one or more lines with the
 format:
-
-    loci_indices data_type model
-
+```
+loci_indices data_type model
+```
 where `loci_indices` is an index or range of indexes for loci (indexed
 according to their order of occurrence in the sequence data file),
 `data_type` is either `DNA` or `AA`, and model specifies the
 substitution model variable for the indexed loci as described above. For
 example, the entry
-
-    1-10 DNA JC69
-    11 AA DAYHOFF
-
+```
+1-10 DNA JC69
+11 AA DAYHOFF
+```
 specifies that loci 1 to 10 comprise DNA sequences that will have the
 `JC69` model applied to them, while locus 11 is an amino acid sequence
 that will have the `DAYHOFF` model applied to it.\
 **VALUES**\
-For DNA sequences: **`JC69`**, **`K80`**, **`F81`**, **`HKY`**,
-**`T92`**, **`TN93`**, **`F84`**, **`GTR`**.\
-For amino acid sequences: **`DAYHOFF`**, **`LG`**, **`DCMUT`**,
-**`JTT`**, **`MTREV`**, **`WAG`**, **`RTREV`**, **`CPREV`**, **`VT`**,
-**`BLOSUM62`**, **`MTMAM`**, **`MTART`**, **`MTZOA`**, **`PMB`**,
-**`HIVB`**, **`HIVW`**, **`JTTDCMUT`**, **`FLU`**, and **`STMTREV`**.\
-Among-locus model variation: **`Custom filename`**.\
+For DNA sequences: `JC69`, `K80`, `F81`, `HKY`,
+`T92`, `TN93`, `F84`, `GTR`.\
+For amino acid sequences: `DAYHOFF`, `LG`, `DCMUT`,
+`JTT`, `MTREV`, `WAG`, `RTREV`, `CPREV`, `VT`,
+`BLOSUM62`, `MTMAM`, `MTART`, `MTZOA`, `PMB`,
+`HIVB`, `HIVW`, `JTTDCMUT`, `FLU`, and `STMTREV`.\
+Among-locus model variation: `Custom filename`.\
 **DEFAULT**\
-**`JC69`**\
+`JC69`\
 **DEPENDENCIES**\
-If **`model = GTR`** the variables **`Qrates`** and **`basefreqs`** can
+If `model = GTR` the variables `Qrates` and `basefreqs` can
 be optionally defined which provide priors on the rate matrix and base
 frequencies, respectively (default priors will be used otherwise).\
-**EXAMPLES**\
-**`model = GTR`**\
-**`model = CPREV`**\
-**`model = Custom models.txt`**\
-**19**\
+**EXAMPLES**
+```
+model = GTR
+model = CPREV
+model = Custom models.txt
+```
 
+### 19 Qrates
 ------------------------------------------------------------------------
-
-\
-**`Qrates = b +f +f +f +f +f +f`**\
+```
+Qrates = b +f +f +f +f +f +f
+```
 **DESCRIPTION**\
 Specifies whether the exchangeability parameters in the GTR model are
 fixed or variable and either their fixed values or prior relative mean
 values.\
 **VALUES**\
-**`b`**, specifies either fixed (1) or variable (0) exchangeability
+`b`, specifies either fixed (1) or variable (0) exchangeability
 parameters in the GTR model.\
-**`+f +f +f +f +f +f`**, specify the exchangeability parameters in the
+`+f +f +f +f +f +f`, specify the exchangeability parameters in the
 order $a, b, c, d, e, f$ for TC, TA, TG, CA, CG, and AG, as described in
 @Yang1994a.\
 **DEFAULT**\
-**`0 1 2 1 1 2 1`**\
+`0 1 2 1 1 2 1`\
 **DEPENDENCIES**\
-The variable **`Qrates`** is defined only if **`model = GTR`**.\
+The variable `Qrates` is defined only if `model = GTR`.\
 **COMMENTS**\
 Two example cases are discussed here with either fixed, or variable
 rates. The following specifies fixed rates:
-
-    Qrates = 1  2 1 1 1 1 2
-
+```
+Qrates = 1  2 1 1 1 1 2
+```
 This specifies fixed rates at $a = 2, b = c = d = e = 1$ and $f = 2$, so
 that the transition rate is twice as high as the transversion rate, and
 the model corresponds to K80 or HKY. Note that only the relative rates
@@ -1231,9 +1238,9 @@ matter, because the rate matrix ($Q$) is scaled so that the average rate
 (over the base frequencies) is 1 and branch lengths are measured in the
 expected number of mutations/substitutions per site. Nevertheless the
 program expects six rate parameters.
-
-    Qrates = 0  10 5 5 5 5 10 
-
+```
+Qrates = 0  10 5 5 5 5 10 
+```
 This specifies variable rates with a prior on $a, b, c, d, e$ that is a
 Dirichlet distribution for every locus. The above specifies Dir(10, 5,
 5, 5, 5, 10), with parameters
@@ -1245,45 +1252,49 @@ $\alpha_a/\alpha$ with
 $\alpha = \alpha_a + \alpha_b + \alpha_c + \alpha_d + \alpha_e +
 \alpha_f$. This specifies an average transition/transversion rate ratio
 of 2 (if base frequencies are all fixed at $\frac{1}{4}$).\
-**EXAMPLES**\
-**`Qrates = 1 2 1 1 1 1 2`**\
-**`Qrates = 0 1 1 1 1 1 1`**\
-**20**\
+**EXAMPLES**
+```
+Qrates = 1 2 1 1 1 1 2
+Qrates = 0 1 1 1 1 1 1
+```
 
+### 20 basefreqs
 ------------------------------------------------------------------------
-
-\
-**`basefreqs = b +f +f +f +f`**\
+```
+basefreqs = b +f +f +f +f
+```
 **DESCRIPTION**\
 Specifies whether the base frequency parameters are fixed or variable
 and either their fixed values or prior relative mean values.\
 **VALUES**\
-**`b`**, specifies either fixed (1) or variable (0) base frequency
+`b`, specifies either fixed (1) or variable (0) base frequency
 parameters in the GTR model.\
-**`+f +f +f +f`**, specify the base frequency parameters in the order
+`+f +f +f +f`, specify the base frequency parameters in the order
 TCAG.\
 **DEFAULT**\
-**`0 1 1 1 1`**\
+`0 1 1 1 1`\
 **DEPENDENCIES**\
-The variable **`basefreqs`** is defined only if **`model = GTR`**.\
+The variable `basefreqs` is defined only if `model = GTR`.\
 **COMMENTS**\
 The parameters $\pi_T, \pi_C, \pi_A, \pi_G$ can be either fixed or
 variable with a prior specified by the Dirichlet distribution with
 $\alpha$ parameters specifying the relative mean frequencies.\
-**EXAMPLES**\
-**`basefreqs = 1 0.15 0.35 0.15 0.35 `**\
-**`basefreqs = 0 10 10 10 10 `**\
-**21**\
+**EXAMPLES**
+```
+basefreqs = 1 0.15 0.35 0.15 0.35
+basefreqs = 0 10 10 10 10
+```
 
+### 21 alphaprior
 ------------------------------------------------------------------------
-
-\
-**`alphaprior = f f +d `**\
+```
+alphaprior = f f +d
+```
 **DESCRIPTION**\
 Specifies the prior probability density for the shape parameter
 controlling the pattern of among-site rate variation.\
 **VALUES**\
-**`f f +d`**, specify the $\alpha_p$ and $\beta_p$ parameters of the
+`f f +d`, specify the $\alpha_p$ and $\beta_p$ parameters of the
 prior on the Gamma shape parameter and the number of rate categories
 ncatG, respectively.\
 **DEFAULT**\
@@ -1298,67 +1309,71 @@ in the approximation -- more rate categories provide a better
 approximation but incur greater computational expense. A value for ncatG
 of 4 is recommended. The prior on $\alpha$ is also a Gamma distribution
 with parameters $\alpha_p$ and $\beta_p$. The variance and mean of the
-prior on $\alpha$ are: $$\begin{aligned}
-  \textrm{Mean}(\alpha) & = & \frac{\alpha_p}{\beta_p}, \nonumber \\
-  \textrm{Var}(\alpha) & = & \frac{\alpha_p}{\beta_p^2} \nonumber\end{aligned}$$
-**EXAMPLES**\
-**`alphaprior = 1 1 4`**\
-**22**\
+prior on $\alpha$ are: 
+$$ \textrm{Mean}(\alpha) = \frac{\alpha_p}{\beta_p}, $$
+$$ \textrm{Var}(\alpha) = \frac{\alpha_p}{\beta_p^2} $$
+**EXAMPLES**
+```
+alphaprior = 1 1 4
+```
 
+### 22 cleandata
 ------------------------------------------------------------------------
-
-\
-**`cleandata = b`**\
+```
+cleandata = b
+```
 **DESCRIPTION**\
 Specifies whether columns in the alignment which have gaps or ambiguity
 characters will be removed prior to analysis, or will instead be
 retained for use in the likelihood calculation.\
 **VALUES**\
-**`0`**, specifies that columns in the alignment which have gaps or
+`0`, specifies that columns in the alignment which have gaps or
 ambiguity characters will be treated as missing data and used in the
 likelihood calculation.\
-**`1`**, specifies the removal of columns in the alignment which have
+`1`, specifies the removal of columns in the alignment which have
 gaps or ambiguity characters.\
 **DEFAULT**\
-**`0`**\
-**EXAMPLES**\
-**`cleandata = 1`**\
-**`cleandata = 0`**\
-**23**\
+`0`\
+**EXAMPLES**
+```
+cleandata = 1
+cleandata = 0
+```
 
+### 23 thetaprior
 ------------------------------------------------------------------------
-
-\
-**`thetaprior = s [(f*, f f s)] `**\
+```
+thetaprior = s [(f*, f f s)]
+```
 **DESCRIPTION**\
 Specifies the distribution model and parameters of the prior
 distribution on the contemporary and ancestral population parameters
 $\theta$ and whether the MCMC integrates over the parameters or the
 integration is instead performed analytically.\
 **VALUES**\
-**`s`**, specifies the form of the prior distribution on theta and
+`s`, specifies the form of the prior distribution on theta and
 should be either `invgamma`, `gamma` or `beta` to specify either an
 inverse gamma, gamma, or beta distribution, respectively.
-**`[(f*, f f s)]`**, specifies the parameters of the prior distribution.
+`[(f*, f f s)]`, specifies the parameters of the prior distribution.
 The form for the parameters depends on the type of distribution
 specified in the first argument. The permissible combinations of
 distributions and parameters are:
-
+```
     invgamma a b
     invgamma a b e
-
+```
 which specifies an inverse gamma prior with $\alpha$ and $\beta$
 parameters a and b, respectively. The first entry specifies that
 $\theta$s are integrated over analytically and the second entry (with
 trailing e) specifies that $\theta$s are estimated.
-
+```
     gamma a b
-
+```
 which specifies a gamma prior with $\alpha$ and $\beta$ parameters a and
 b, respectively.
-
+```
     beta p q l u
-
+```
 which specifies a beta prior constrained to the interval $(l,u)$ with
 parameters p and q, respectively. All the distributions above, except
 the inverse Gamma distribution (without the e argument) integrate over
@@ -1366,10 +1381,10 @@ the $\theta$ parameters numerically as part of the MCMC, estimating the
 posterior distribution of $\theta$ for each population.\
 **COMMENTS**\
 The inverse-gamma prior `invgamma a b`, where a and b are the parameters
-$\alpha$ and $\beta$, has mean and variance: $$\begin{aligned}
-  \textrm{Mean}(\theta) & = & \frac{\beta}{\alpha - 1}, \nonumber \\
-    \textrm{Var}(\theta) & = & \frac{\beta^2}{(\alpha - 1)^2 (\alpha - 2)}. \nonumber\end{aligned}$$
-For example, if $\alpha=3$ $\beta=0.002$ the mean is
+$\alpha$ and $\beta$, has mean and variance: 
+$$ \textrm{Mean}(\theta) = \frac{\beta}{\alpha - 1}, $$
+$$ \textrm{Var}(\theta) = \frac{\beta^2}{(\alpha - 1)^2 (\alpha - 2)}. $$
+For example, if $\alpha=3$ and $\beta=0.002$ the mean is
 $0.002/(3 – 1) = 0.001$ (one variable site per kb on average). Note that
 all $\theta$ parameters in the MSC model (for both modern species and
 extinct ancestral species) are assigned the same specified prior
@@ -1382,9 +1397,9 @@ This typically leads to improved mixing of the MCMC. However, with this
 option, the posterior of the $\theta$ parameters will not be produced.
 To estimate the $\theta$ parameters when using an inverse gamma prior,
 add the letter e (or E) on the line, as follows
-
+```
     thetaprior = 3 0.002 e
-
+```
 Whether $\theta$s are integrated out or estimated, other results (such
 as the posterior probability of species trees or species-delimitation
 models) should be identical if the same prior is used. The analytical
@@ -1392,55 +1407,56 @@ integration of $\theta$ is only possible with an inverse gamma prior
 distribution, if any other prior is used the $\theta$s are automatically
 estimated and the E flag is not needed and should not be used. The gamma
 prior `gamma a b`, where a and b are the parameters $\alpha$ and
-$\beta$, has mean and variance: $$\begin{aligned}
-  \textrm{Mean}(\theta) & = & \frac{\alpha}{\beta}, \nonumber \\
-  \textrm{Var}(\theta) & = & \frac{\alpha}{\beta^2}. \nonumber\end{aligned}$$
+$\beta$, has mean and variance: 
+$$ \textrm{Mean}(\theta) = \frac{\alpha}{\beta}, $$
+$$ \textrm{Var}(\theta) = \frac{\alpha}{\beta^2}. $$
 For example, if $\alpha=0.001$ and $\beta=1$ the mean is
 $0.001/1 = 0.001$ (one variable site per kb on average). The beta prior
-`beta p q l u` has mean and variance: $$\begin{aligned}
-  \textrm{Mean}(\theta) & = & \frac{p u + q l}{p + q}, \nonumber \\
-  \textrm{Var}(\theta) & = & \frac{p q (u - l)^2}{(p + q)^2 (p + q + 1)}. \nonumber                              \end{aligned}$$
+`beta p q l u` has mean and variance: 
+$$ \textrm{Mean}(\theta) = \frac{p u + q l}{p + q}, $$
+$$ \textrm{Var}(\theta) = \frac{p q (u - l)^2}{(p + q)^2 (p + q + 1)}. $$
 For example, with `beta 2 18 1e-6 0.1` the mean is
 $[2(0.1)+18(10^{-6})]/[2+18] = 0.0100009$ (10 variable sites per kb on
 average),\
-**EXAMPLES**\
-**`thetaprior = invgamma 3 0.002`**\
-**`thetaprior = invgamma 4 0.001 e`**\
-**`thetaprior = beta 2 18 1e-6 0.1`**\
-**`thetaprior = beta 2 18 1e-6 0.01`**\
-**`thetaprior = beta 1 10 0.0001 0.2`**\
-**`thetaprior = gamma 0.001 1`**\
-**24**\
+**EXAMPLES**
+```
+thetaprior = invgamma 3 0.002
+thetaprior = invgamma 4 0.001 e
+thetaprior = beta 2 18 1e-6 0.1
+thetaprior = beta 2 18 1e-6 0.01
+thetaprior = beta 1 10 0.0001 0.2
+thetaprior = gamma 0.001 1
+```
 
+### 24 tauprior 
 ------------------------------------------------------------------------
-
-\
-**`tauprior = s f f`**\
+```
+tauprior = s f f
+```
 **DESCRIPTION**\
 Specifies the prior probability distribution of the divergence time
 parameter for the root in the species tree.\
 **VALUES**\
-**`s f f`**, specifies either the gamma or inverse gamma prior
+`s f f`, specifies either the gamma or inverse gamma prior
 distribution and the $\alpha$ and $\beta$ parameters, respectively for
 $\tau_0$, the divergence time parameter for the root in the species
 tree.
-
+```
     gamma a b
     invgamma a b
-
+```
 specifies a gamma distribution, or an inverse gamma distribution,
 respectively with a and b to be the parameters $\alpha$ and $\beta$,
 respectively.\
 **COMMENTS**\
 If the specified prior on $\tau_0$, the age of the root of the tree is
 an inverse-gamma distribution IG($\alpha, \beta$) with $\alpha > 2$ the
-mean and variance are: $$\begin{aligned}
-  \textrm{Mean}(\tau_0) & = & \frac{\beta}{\alpha - 1}, \nonumber \\
-  \textrm{Var}(\tau_0) & = & \frac{\beta^2}{(\alpha - 1)^2 (\alpha - 2)}. \nonumber\end{aligned}$$
+mean and variance are: 
+$$ \textrm{Mean}(\tau_0) = \frac{\beta}{\alpha - 1}, $$
+$$ \textrm{Var}(\tau_0) = \frac{\beta^2}{(\alpha - 1)^2 (\alpha - 2)}. $$
 If the prior is a gamma distribution the mean and variance are:
-$$\begin{aligned}
-  \textrm{Mean}(\tau_0) & = & \frac{\alpha}{\beta}, \nonumber \\
-  \textrm{Var}(\tau_0) & = & \frac{\alpha}{\beta^2}. \nonumber\end{aligned}$$
+$$ \textrm{Mean}(\tau_0) = \frac{\alpha}{\beta}, $$
+$$ \textrm{Var}(\tau_0) = \frac{\alpha}{\beta^2}. $$
 The remaining species divergence times are generated from the uniform
 Dirichlet distribution [@Yang2010 eq. 2]. As an example, suppose that
 `tauprior = 3 0.03` specifies the prior for $\tau_0$, the divergence
@@ -1449,59 +1465,61 @@ then $0.03/(3 – 1) = 0.015$ (which means 1.5% of sequence divergence
 between the root of the species tree and the present time). If the
 mutation rate is $10^{–9}$ mutations/site/year, this distance will
 translate to an absolute prior mean divergence time of 15 MY.\
-**EXAMPLES**\
-**`tauprior = invgamma 3 0.03`**\
-**`tauprior = gamma 0.01 1`**\
-**25**\
+**EXAMPLES**
+```
+tauprior = invgamma 3 0.03
+tauprior = gamma 0.01 1
+```
 
+### 25 phiprior
 ------------------------------------------------------------------------
-
-\
-**`phiprior = f f`**\
+```
+phiprior = f f
+```
 **DESCRIPTION**\
 Specifies the parameters of the prior distribution on $\varphi$, the
 introgression probability under the MSci model.\
 **VALUES**\
-**`f f`**, specify the parameters $\alpha$ and $\beta$, respectively, of
+`f f`, specify the parameters $\alpha$ and $\beta$, respectively, of
 the beta distribution prior $\textrm{B}(\alpha,\beta)$ for $\varphi$.\
 **DEPENDENCIES**\
-If the **`species&tree`** variable **`t`** specifies a tree with
-introgression nodes then **`phiprior`** must be defined.\
+If the `species&tree` variable `t` specifies a tree with
+introgression nodes then `phiprior` must be defined.\
 **COMMENTS**\
 The introgression probability $\varphi$ takes values on the interval
 $(0,1)$ and the prior distribution for $\varphi$ is assumed to be beta
 $\textrm{B}(\alpha, \beta)$ which has mean and variance:
-$$\begin{aligned}
-  \textrm{Mean}(\varphi) & = & \frac{\alpha}{\alpha+\beta}, \nonumber \\
-  \textrm{Var}(\varphi) & = & \frac{\alpha \beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)}. \nonumber\end{aligned}$$
+$$ \textrm{Mean}(\varphi) = \frac{\alpha}{\alpha+\beta}, $$
+$$ \textrm{Var}(\varphi) = \frac{\alpha \beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)}. $$
 For example, `phiprior = 1 1` specifies the beta prior
-$\textrm{B}(\alpha,\beta)$ with $\alpha = 1$ and $\beta
-= 1$ for $\varphi$, which has a mean of $1/2$ and a variance of $1/12$.\
-**EXAMPLES**\
-**`phiprior = 1 1`**\
-**`phiprior = 1.5 1.5`**\
-**26**\
+$\textrm{B}(\alpha,\beta)$ with $\alpha = 1$ and $\beta = 1$ for $\varphi$, which has a mean of $1/2$ and a variance of $1/12$.\
+**EXAMPLES**
+```
+phiprior = 1 1
+phiprior = 1.5 1.5
+```
 
+### 26 locusrate
 ------------------------------------------------------------------------
-
-\
-**`locusrate = +d[(f f f s, s)]`**\
+```
+locusrate = d+[(f f f s, s)]
+```
 **DESCRIPTION**\
 Specifies the model of substitution rate variation among loci, as well
 as the parameters, and the prior on the parameters of the model.\
 **VALUES**\
-**`d+[(f f f s, s)]`**, specifies the model and parameters. The variable
+`d+[(f f f s, s)]`, specifies the model and parameters. The variable
 d+ takes one of 3 possible values with different numbers of additional
 variables depending on d+. The permissible combinations are:
 
-  **d+**   **\[args\]**                                                            **Description**
-  -------- ----------------------------------------------------------------------- ------------------------------------
-  0                                                                                Loci have same rate
-                                                                                   
-  1        f f f s                                                                 Locus rates variable and estimated
-           $\alpha_{\bar{\mu}} \,\, \beta_{\bar{\mu}} \,\, \alpha_{\mu_i}$ prior   
-  2        s                                                                       Locus rates variable and specified
-           Filename with locus rates                                               
+| **d+** | **[args]**                                                          | **Description**                    |
+|--------|-----------------------------------------------------------------------|------------------------------------|
+| 0      |                                                                       | Loci have identical rates                |
+| 1      | f f f s                                                               | Locus rates variable and estimated |
+|        | $\alpha_{\bar{\mu}} \,\, \beta_{\bar{\mu}} \,\, \alpha_{\mu_i}$ prior |                                    |
+| 2      | s                                                                     | Locus rates variable and specified |
+|        | Filename of file containing locus rates                               |                                    |
+
 
 where $\alpha_{\bar{\mu}}$ and $\beta_{\bar{\mu}}$ are the parameters of
 the Gamma distribution prior on the average rate among loci $\bar{\mu}$
@@ -1511,7 +1529,7 @@ for a conditional iid (hierarchical) prior on $\mu_i$ or `dir` for a
 Gamma-Dirichlet prior. The prior variable is optional, if it is not
 specified `iid` is used.\
 **DEFAULT**\
-**`0`**\
+`0`\
 **DEPENDENCIES**\
 If both the `prior` option for the variable `locusrate` and the `prior`
 option for the variable `clock` are set, they should take the same
@@ -1537,10 +1555,10 @@ returns, as the number of loci (nloci). The program re-scales those
 rates so that the average across all loci is 1 and then use those
 relative rates as fixed constants. Specifically the mean rate across
 loci ($\bar{\mu}$) is assigned a gamma prior:
-$$\bar{\mu} = \mathrm{G}(\alpha_{\bar{\mu}},\beta_{\bar{\mu}}),$$ with
-mean and variance $$\begin{aligned}
-  \textrm{Mean}(\bar{\mu}) & = & \frac{\alpha_{\bar{\mu}}}{\beta_{\bar{\mu}}}, \nonumber \\
-  \textrm{Var}(\bar{\mu}) & = & \frac{\alpha_{\bar{\mu}}}{\beta_{\bar{\mu}}^2}. \nonumber \end{aligned}$$
+$$\bar{\mu} = \mathrm{G}(\alpha_{\bar{\mu}},\beta_{\bar{\mu}}),$$ 
+with mean and variance:
+$$ \textrm{Mean}(\bar{\mu}) = \frac{\alpha_{\bar{\mu}}}{\beta_{\bar{\mu}}}, $$
+$$ \textrm{Var}(\bar{\mu}) = \frac{\alpha_{\bar{\mu}}}{\beta_{\bar{\mu}}^2}.$$
 When there are no fossil calibrations in the species tree, the rates
 should all be relative. In this case we suggest fixing
 $\alpha_{\bar{\mu}}=\beta_{\bar{\mu}}=0$ (with 0 causing the program to
@@ -1570,18 +1588,20 @@ the population size parameter ($\theta$) for the root node on the
 species tree [@Burgess2008]. The $L$ locus rates ($\mu_i$) are
 parameters in the model. If $\alpha_{\bar{\mu}} > 0$, the mean rate
 ($\bar\mu$) is a parameter as well.\
-**EXAMPLES**\
-**`locusrate = 0`**\
-**`locusrate = 2 rates.txt`**\
-**`locusrate = 1 0 0 2`**\
-**`locusrate = 1 2 3 2 dir`**\
-**`locusrate = 1 1 1 1 iid`**\
-**27**\
+**EXAMPLES**
+```
+locusrate = 0
+locusrate = 2 rates.txt
+locusrate = 1 0 0 2
+locusrate = 1 2 3 2 dir
+locusrate = 1 1 1 1 iid
+```
 
+### 27 clock
 ------------------------------------------------------------------------
-
-\
-**clock = +d \[f f f s s\]**\
+```
+clock = +d [f f f s s]
+```
 **DESCRIPTION**\
 Specifies whether a strict molecular clock (equal substitution rates
 among lineages) is used or instead a specific variable clock model
@@ -1589,10 +1609,10 @@ among lineages) is used or instead a specific variable clock model
 clock model is specified, the priors on the parameters of the variable
 clock model are also specified.\
 **VALUES**\
-**`+d`**, specifies a strict clock (1), a variable clock with
+`+d`, specifies a strict clock (1), a variable clock with
 independent rates among branches (2), or a variable clock with
 autocorrelated rates between ancestral and descendent branches (3).\
-**`f f f s s`**, are required when `clock =` 2 or 3 and specify
+`f f f s s`, are required when `clock =` 2 or 3 and specify
 respectively the parameters $\alpha_{\bar{\nu}}$, $\beta_{\bar{\nu}}$
 and $\alpha_{\nu_i}$, the prior distribution for the locus rate
 ($\mu_i$) which is either `dir` for Dirichlet or `iid` for conditional
@@ -1608,7 +1628,7 @@ of the distribution of $\mu_i$ given the mean rate $\bar\mu$ when
 modeling among-locus rate variation; see notes above about the
 `locusrate` variable.\
 **DEFAULT**\
-**`1`**\
+`1`\
 **DEPENDENCIES**\
 If both the `prior` option for the variable `locusrate` and the `prior`
 option for the variable `clock` are set, they should take the same
@@ -1690,16 +1710,18 @@ $\alpha_{\bar{\nu}} = 10$ and $\beta_{\bar{\nu}} = 100$, the prior mean
 will be 0.1. Thus, for the log-normal model $\nu = 0.5$ represents a
 serious violation of the clock while $\nu < 0.1$ represents only a
 slight violation.\
-**EXAMPLES**\
-**`clock = 1`**\
-**`clock = 2 10.0 100.0 5.0 dir LN`**\
-**`clock = 3 10.0 50.0 3.0 dir G`**\
-**28**\
+**EXAMPLES**
+```
+clock = 1
+clock = 2 10.0 100.0 5.0 dir LN
+clock = 3 10.0 50.0 3.0 dir G
+```
 
+### 28 heredity
 ------------------------------------------------------------------------
-
-\
-**`heredity = +d [(f f, s, )]`**\
+```
+heredity = +d [(f f, s, )]
+```
 **DESCRIPTION**\
 Specifies whether proportional differences exist between all $\theta$
 values for different loci, and if so whether the proportionality
@@ -1707,18 +1729,18 @@ multipliers (called inheritance scalars) are estimated from the data, or
 set to specified fixed values. If inheritance scalars are estimated, the
 parameters of the prior also must be specified.\
 **VALUES**\
-**`+d`**, specifies whether no differences in $\theta$ exist among loci
+`+d`, specifies whether no differences in $\theta$ exist among loci
 (0), proportional differences exist and inheritance scalars are
 estimated (1), or proportional differences exist and inheritance scalars
 are fixed to specified values (2).\
-**`f f`**, is only specified when `+d` is 1 and specifies the $\alpha$
+`f f`, is only specified when `+d` is 1 and specifies the $\alpha$
 and $\beta$ parameters, respectively, of the Gamma prior on the scalar
 $s_i$ for locus $i$.\
-**`s`**, is only specified when `+d` is 2 and specifies the name of a
+`s`, is only specified when `+d` is 2 and specifies the name of a
 file containing $L$ (number of loci) heredity scalars (which must be
 positive numbers) separated by spaces or linebreaks.\
 **DEFAULT**\
-**`0`**\
+`0`\
 **COMMENTS**\
 `heredity = 0` is the default and constrains $\theta$ to be equal across
 loci. `heredity = 1` or `2` specifies two models that allow $\theta$ to
@@ -1735,31 +1757,33 @@ BPP implements two options for allowing such variations.
 The first option (`heredity = 1`) specifies that locus-specific
 inheritance scalars $s_i$ be estimated, using a Gamma prior with
 parameters $\alpha$ and $\beta$ specified by the user. The prior mean
-and variance of $s_i$ are $$\begin{aligned}
-  \textrm{Mean}(s_i) & = & \frac{\alpha}{\beta}, \nonumber \\
-  \textrm{Var}(s_i) & = & \frac{\alpha}{\beta^2}. \nonumber \end{aligned}$$
+and variance of $s_i$ are:
+$$ \textrm{Mean}(s_i) = \frac{\alpha}{\beta}, $$
+$$ \textrm{Var}(s_i) = \frac{\alpha}{\beta^2}.$$
 For example, `(heredity = 1 4 4)` specifies a Gamma prior
 $\textrm{G}(4, 4)$, with mean $4/4 = 1$ and variance $1/4$, for the
 inheritance scalar at each locus. The MCMC then generates the posterior
 distribution of $s_i$ for each locus. The second option (`heredity = 2`)
 allows the user to specify the $s_i$ in a file so they remain fixed
 constants during the MCMC run.\
-**EXAMPLES**\
-**`heredity = 0`**\
-**`heredity = 1 4 4`**\
-**`heredity = 2 scalars.txt`**\
-**29**\
+**EXAMPLES**
+```
+heredity = 0
+heredity = 1 4 4
+heredity = 2 scalars.txt
+```
 
+### 29 checkpoint
 ------------------------------------------------------------------------
-
-\
-**`checkpoint = +d [(+d)]`**\
+```
+checkpoint = +d [(+d)]
+```
 **DESCRIPTION**\
 Specifies whether one or more checkpoint files are created to allow the
 BPP program to resume using the current state of the MCMC at the
 iteration during which the checkpoint file was created.\
 **VALUES**\
-**`+d[(+d)]`**, specifies the iteration at which the first checkpoint
+`+d[(+d)]`, specifies the iteration at which the first checkpoint
 file is created (first argument) and how frequently checkpoint files are
 subsequently created (second optional argument).\
 **DEFAULT**\
@@ -1771,41 +1795,45 @@ checkpoint file (the first checkpoint file is labeled 1, the second 2,
 and so on). To resume execution of the program starting from a
 checkpoint use the BPP `–resume` switch followed by the checkpoint file
 name. For example, `bpp –resume outrun1.1.chk`.\
-**EXAMPLES**\
-**`checkpoint = 100000`**\
-**`checkpoint = 100000 10000`**\
-**30**\
+**EXAMPLES**
+```
+checkpoint = 100000
+checkpoint = 100000 10000
+```
 
+### 30 constraintfile
 ------------------------------------------------------------------------
-
-\
-**`constraintfile = s`**\
+```
+constraintfile = s
+```
 **DESCRIPTION**\
 Specifies the name of a file containing information for placing
 topological constraints on inferred trees and specifying outgroups for
 tree rooting.\
 **VALUES**\
-**`s`**, a string specifying the name of the constraint file.\
+`s`, a string specifying the name of the constraint file.\
 **DEFAULT**\
 If `constraintfile` is undefined no constraints or outgroups are used in
 the analysis.\
-**EXAMPLES**\
-**`constraintfile = myconstraints.txt`**\
-**31**\
+**EXAMPLES**
+```
+constraintfile = myconstraints.txt
+```
 
+### 31 threads
 ------------------------------------------------------------------------
-
-\
-**`threads = +d [+d +d]`**\
+```
+threads = +d [+d +d]
+```
 **DESCRIPTION**\
 Specifies the number of CPU threads to be used and optionally the
 specific threads to be used.\
 **VALUES**\
-**`+d` \[+d +d\]**, either 1 or 3 positive integers. A single integer
+`+d [+d +d\]`, either 1 or 3 positive integers. A single integer
 argument specifies the number of threads to use. If three integers are
 given the first specifies the number of threads, the second specifies
 the index of the first thread used and the third specifies the
-increment. For example, **`12 4 1`** specifies that 12 threads should be
+increment. For example, `12 4 1` specifies that 12 threads should be
 used, the first with index 4 and incrementing by one so that threads
 4-15 are used.\
 **DEFAULT**\
@@ -1814,33 +1842,28 @@ different threads when possible.\
 **DEPENDENCIES**\
 The number of specified threads cannot exceed the number of loci
 specified.\
-**EXAMPLES**\
-**`threads = 4`**\
-**`threads = 8 4 1`**\
+**EXAMPLES**
+```
+threads = 4
+threads = 8 4 1
+```
 
-### Example control file
+## Example control file
 
 To examine the structure of a typical BPP control file, we consider the
 example file `A00.bpp.ctl` contained in the BPP distribution
-subdirectory `data/frogs`. The goal here is to provide an example of a
+subdirectory `examples/frogs`. The goal here is to provide an example of a
 correctly formatted control file and briefly explain the syntax and
 meaning of specified variables, as well as proposing some conventions
 for writing optional comments in control files. An exhaustive
 description of all control file variables, their effects, and
 permissible values is provided in the definitions of
-section [4.4.1](#controlfilevariables){reference-type="ref"
-reference="controlfilevariables"} and
-Table [\[variableTable\]](#variableTable){reference-type="ref"
-reference="variableTable"}. In depth descriptions of specific model and
-prior choices can be found in
-Chapters [5](#substitutions){reference-type="ref"
-reference="substitutions"}, and [6](#introgression){reference-type="ref"
-reference="introgression"} Control files illustrating the 4 methods of
-analysis A00, A01, A10 and A11 are found in
-Chapter [8](#analysismethods){reference-type="ref"
-reference="analysismethods"} The content of the control file
-`A00.bpp.ctl` is displayed below:
-
+[BPP Control File Variables](#bpp-control-file-variables). 
+In depth descriptions of specific model and prior choices can be found in
+[Substitution Models](#substitution-models), [Introgression Models](#introgression-models), and [Isolation with Migration Models](). 
+Control files illustrating the 4 methods of analysis A00, A01, A10 and A11 are found in
+[Methods of Analysis](#methods-of-analysis). The content of the control file `A00.bpp.ctl` is displayed below:
+```
     seed =  -1
 
     seqfile = frogs.txt
@@ -1888,7 +1911,7 @@ reference="analysismethods"} The content of the control file
     sampfreq = 2
 
     nsample = 100000
-
+```
 **A comment about comments**\
 Optional comments may be added to the control file. If either a '\#' or
 a '\*' symbol occurs on a line, everything following the symbol up to
@@ -1909,17 +1932,15 @@ purposes:
 It is good practice to make use of these conventions for comments in
 your own bpp control files.
 
-#### Explanation of the control file variables
+### Explanation of the control file variables
 
 Here we walk through the variables in the above control file example
 explaining the meaning of each and the valid values that can be
 specified. An exhaustive description of all control file variables and
-permissible values is given in
-Table [\[variableTable\]](#variableTable){reference-type="ref"
-reference="variableTable"}.
-
+permissible values is given in [Control File](#control-file).
+```
     seed = -1
-
+```
 This line specifies the seed value used to initialize the random number
 generator. Because BPP uses pseudorandom numbers to drive a stochastic
 algorithm for inference the results will vary between analyses initiated
@@ -1930,33 +1951,30 @@ that BPP use the clock on the computer to generate a seed. With this
 setting, every run of the program will automatically be started with a
 different seed. The seed that was used for a run is stored in a file
 generated by the program called SeedUsed.
-
+```
     seqfile = frogs.txt
     Imapfile = frogs.Imap.txt
     outfile = out.txt
     mcmcfile = mcmc.txt
-
+```
 These lines specify the names of the files used to run the program and
 summarize the output. The program will assume that all these files are
 located in the current working directory since no path is specified. The
 line `seqfile = frogs.txt` specifies that the sequence data are in the
-file named `frogs.txt`. See section [4.1](#sequence-file) for a 
+file named `frogs.txt`. See [Sequence File](#sequence-file) for a 
 description of the sequence data file format.
 The line `Imapfile = frogs.Imap.txt` specifies that the map file is
-named `frogs.Imap.txt`. See
-section [4.2](#imapfile){reference-type="ref" reference="imapfile"} for
+named `frogs.Imap.txt`. See [Imap File](#imap-file) for
 a description of the map file format. The lines `outfile = out.txt` and
 `mcmcfile = mcmc.txt` specify that the program output and mcmc samples
 are printed to files named `out.txt` and `mcmc.txt`, respectively. The
 format of the output file depends on the type of analysis being
-performed and is described in
-Chapter [8](#analysismethods){reference-type="ref"
-reference="analysismethods"}
-
+performed and is described in [Methods of Analysis](#methods-of-analysis).
+```
     # fixed species tree
     speciesdelimitation = 0 
     speciestree = 0
-
+```
 The line `speciesdelimitation = 0 ` specifies that the number of species
 is fixed (not delimited) and the line `speciestree = 0` specifies that
 the species phylogeny (topology) is fixed (not estimated). This
@@ -1965,11 +1983,11 @@ estimation under a MSC using multiple-loci and multiple-species data on
 a fixed species tree [@Rannala2003; @Burgess2008]. Analysis A00 is
 described in detail in section [8.1](#a00){reference-type="ref"
 reference="a00"}.
-
+```
     species&tree = 4  K  C  L  H
                    9  7 14  2
                    (((K, C), L), H);
-
+```
 The line `species&tree = 4 K C L H` specifies the number of
 species/populations and their names. This example specifies 4 species in
 the data, which are K, C, L and H. The next line ` 9 7 14 2` specifies
@@ -1998,10 +2016,10 @@ with introgression is different (see
 Newick and extended Newick formats for specifying phylogenetic trees are
 described in [Introgression Models](#introgression-models) and a good overview is found at
 <https://en.wikipedia.org/wiki/Newick_format>.
-
+```
     # sequence data are unphased for all 4 populations
     phase =   1  1  1  1
-
+```
 The `phase` variable is specified using a boolean (0/1) indicator
 variable for each species/population, with 0 (the default) specifying
 that sequences from that species are fully phased haplotypes and 1
@@ -2032,35 +2050,35 @@ phase flag for a species is 0, all sequences from that species are
 treated as resolved haplotype sequences, and ambiguities are interpreted
 in the usual way (for example, Y means one nucleotide that is either T
 or C).
-
+```
     # 0: no data (prior); 1:seq like
     usedata = 1  
-
+```
 The line `usedata = 1` specifies that the likelihood is used in the MCMC
 run to generate the posterior distribution of parameters. Setting this
 to 0 allows one to run the MCMC without sequence data to generate the
 prior (mostly used for debugging).
-
+```
     # number of data sets in seqfile
     nloci = 5  
-
+```
 The line `nloci = 5` specifies the number of loci (alignments) to be 5.
 There may be more loci in the sequence data file than is specified here.
 For example, if 200 loci exist in the sequence data file and you specify
 `nloci = 2` in the control file, BPP will read the first
 two loci only.
-
+```
     # remove sites with ambiguity data (1:yes, 0:no)?
     cleandata = 0    
-
+```
 The line `cleandata = 0` specifies that columns in the alignment which
 have gaps or ambiguity characters are retained and used in the
 likelihood calculation. Setting `cleandata = 1` instead specifies that
 such data are removed prior to analysis.
-
+```
     # invgamma(a, b) for theta
     thetaprior = invgamma 3 0.004 E  
-
+```
 The line `thetaprior = 3 0.004 E` specifies the inverse-gamma prior
 IG($\alpha, \beta$) for the $\theta$ parameters, with the mean to be
 $\beta/(\alpha-1)$. In the example, the mean is $0.004/(3 – 1) = 0.002$
@@ -2079,9 +2097,9 @@ the parameter space is reduced. This typically leads to improved mixing
 of the MCMC. However, with this option, the posterior of the $\theta$
 parameters will not be produced. To estimate the $\theta$ parameters,
 add the letter e (or E) on the line, as follows
-
+```
     thetaprior = invgamma 3 0.002 e
-
+```
 Whether $\theta$s are integrated out or estimated, other results (such
 as the posterior of the $\theta$ parameters or the posterior probability
 of species trees or species-delimitation models) should be identical. A
@@ -2107,10 +2125,10 @@ $\theta_H \approx 0.0006$, which means that two random sequences from
 the human population are different at  0.06% of sites, less than 1
 difference per kb. A sensible diffuse prior is then
 `thetaprior = 3 0.002`, with mean $0.002/(3 – 1) = 0.001$.
-
+```
     # invgamma(a, b) for root tau & Dirichlet(a) for other tau's
     tauprior = invgamma 3 0.002    
-
+```
 The line `tauprior = 3 0.002` specifies the inverse-gamma prior
 IG($\alpha, \beta$) for $\tau_0$, the divergence time parameter for the
 root in the species tree. Other divergence times are generated from the
@@ -2119,10 +2137,10 @@ mean is $0.002/(3 – 1) = 0.001$ (which means 0.1% average sequence
 divergence between the root of the species tree and the present time).
 If the mutation rate is $10^{–9}$ mutations/site/year, this distance
 will translate to a divergence time of 1 MY.
-
+```
     # finetune for GBtj, GBspr, theta, tau, mix, locusrate, seqerr
     finetune =  1: 5 0.001 0.001  0.001 0.3 0.33 1.0  
-
+```
 The line `finetune = 1: 5 0.001 0.001 0.001 0.3 0.33 1.0 ` specifies the
 step lengths used in proposals for the parameters of the MCMC algorithm.
 These step lengths can affect both mixing and convergence of the MCMC.
@@ -2136,7 +2154,7 @@ lengths, with the program adjusting/optimizing step lengths using the
 information collected during the burnin step. Automatic adjustment works
 well in most cases and is usually the best option. Some notes about
 manually adjusting the step lengths are provided below in section ?.
-
+```
     # MCMC samples, locusrate, heredityscalars, Genetrees
     print = 1 0 0 0   
 
@@ -2145,7 +2163,7 @@ manually adjusting the step lengths are provided below in section ?.
     sampfreq = 2
 
     nsample = 100000
-
+```
 The line `print = 1 0 0 0` specifies the information that is printed out
 during the MCMC run. It has several boolean variables (0 for off and 1
 for on) that control the printouts during the MCMC. The first variable
@@ -2241,9 +2259,9 @@ bases are $1/4$ each. This model is the default in BPP and will be used
 if no model is specified in the control file. The control file variable
 `model` specifies the substitution model and the explicit specification
 of the JC69 model is:
-
+```
     model = JC69
-
+```
 The JC69 model appears exceedingly unrealistic. However, for closely
 related sequences (with few multiple substitutions) it often performs as
 well as more sophisticated models while incurring much less
@@ -2262,17 +2280,17 @@ to A and so on. The GTR model accommodates factors such as
 transition-transversion bias and should be used when sequences are more
 divergent (distantly related species). The control file specification of
 the GTR model is:
-
+```
     model = GTR
-
+```
 Note that if the GTR model is used, two other variables may be specified
 in the control file: `Qrates` and `basefreqs`. The `Qrates` variable
 specifies whether the exchangeability parameters of the GTR model are
 fixed or variable as well as either their fixed values, or prior mean
 values, respectively. The control file specification is:
-
+```
     Qrates = B a b c d e f
-
+```
 The variable `B` is either 0 (variable exchangeability parameters) or 1
 (fixed exchangeability parameters). The variables `a b c d e f` are
 positive numbers specifying the exchangeability parameters for TC, TA,
@@ -2282,18 +2300,18 @@ the relative rates matter because the rate matrix is scaled to have an
 overall average substitution rate of 1. Thus, for the model of fixed
 rates if x is any positive number a b c d e f and xa xb xc xd xe xf are
 equivalent specifications. An example with fixed rates is as follows:
-
+```
     Qrates = 1  2 1 1 1 1 2
-
+```
 which specifies $a=2,b=c=d=e=1,f=2$ so that the transition rate is twice
 as high as the transversion rate, corresponding to a K80 or HKY model.
 In most cases, users will want to use the GTR model with exchangeability
 parameters variable. Using this specification, the posterior
 distribution of the parameters will be estimated from the data. An
 example with variable rates is as follows:
-
+```
     Qrates = 0  10 5 5 5 5 10
-
+```
 The absolute magnitude of the numbers *does matter* in this case as it
 determines the variance of the prior probability distribution on
 exchangeability parameters. The variance is inversely proportional to
@@ -2317,23 +2335,23 @@ GTR model is the `basefreqs` variable which specifies whether the
 stationary nucleotide (base) frequencies are fixed, or variable, and
 either their fixed values, or relative prior means, respectively. The
 control file specification is:
-
+```
     basefreqs = B T C A G
-
+```
 where B is either 0 (variable base frequencies) or 1 (fixed base
 frequencies) and T C A and G are numbers specifying the frequencies of
 bases T, C, A and G, respectively. An example with fixed base
 frequencies is as follows:
-
+```
     basefreqs = 1  0.1 0.2 0.2 0.5
-
+```
 In most cases, users will want to use the variable base frequencies
 setting which specifies that the posterior distribution of base
 frequencies is estimated from the data. An example with variable base
 frequencies is as follows:
-
+```
     0  10 10 10 10
-
+```
 Here the 4 variables T C A G specify the alpha parameters of a Dirichlet
 prior distribution on the nucleotide frequencies. So, the prior mean
 frequency of base A in this example is $10/40 = 1/4$ and the variance is
