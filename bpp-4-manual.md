@@ -2793,6 +2793,7 @@ A and B.
 ![Four different types of MSci models implemented in [bpp]{.smallcaps}.
 The models are specified using the extended Newick format, as follows:\
 ` (A): ((A, (C)H[&phi=0.5,&tau-parent=yes])S, (H[&tau-parent=yes], B) T)R; (B): ((A, (C)H[&phi=0.5,&tau-parent=no])S, (H[&tau-parent=yes], B) T)R; (C): ((A, (C)H[&phi=0.5,&tau-parent=no])S, (H[&tau-parent=no], B) T)R; (D): ((A, (B) Y[&phi=0.3])X, (X[&phi=0.1])Y)R; (D): ((A, (B)Y)X, (X)Y)R; (D): ((A, Y)X, (B, X)Y) R; (D): ((A, y)x, (B, x) y) r; `
+![MSCI-models]()
 []{label="fig-msci-models"}](figures/fig-msci-models){#fig-msci-models}
 
 The control file variable `phiprior` specifies the prior probability for
