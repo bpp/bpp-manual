@@ -454,7 +454,9 @@ Imap file and this two-layer design is that one may wish to analyze the
 same sequence data with different population/species assignments of
 individual IDs. This can be achieved by editing the small Imap file
 rather than editing the larger sequence data file.
-![Imap file example](https://github.com/bpp/bpp-manual/blob/de6f1c41eae8129696e68d9f24882ad1cc49a37a/figures/fig-imap.png?raw=true)
+
+![Imap file example](https://github.com/bpp/bpp-manual/blob/ed4235ec6797b653b89dc096800887672b794da5/figures/fig-imap.png?raw=true)
+
 An example Imap file showing the sequence ID in the Imap file
 corresponding to that in the sequence file. Note that the caret \^
 symbol is not allowed in the sequence ID of the Imap file but is
@@ -2790,7 +2792,7 @@ finally in model (C), none of those four parameters exists in the model.
 Model (D) specifies a bidirectional introgression event between species
 A and B.
 
-![MSCI-models](https://github.com/bpp/bpp-manual/blob/00a68834bf0d442b74d13fd170a387fc92aa0485/figures/fig-msci-models.png?raw=true)
+![MSCI-models](?raw=true)
 
 **Four different types of MSci models implemented in BPP**
 The models are specified using the extended Newick format, as follows:\
