@@ -2790,11 +2790,11 @@ finally in model (C), none of those four parameters exists in the model.
 Model (D) specifies a bidirectional introgression event between species
 A and B.
 
-![Four different types of MSci models implemented in [bpp]{.smallcaps}.
+![MSCI-models](https://github.com/bpp/bpp-manual/blob/00a68834bf0d442b74d13fd170a387fc92aa0485/figures/fig-msci-models.png?raw=true)
+
+**Four different types of MSci models implemented in BPP**
 The models are specified using the extended Newick format, as follows:\
 ` (A): ((A, (C)H[&phi=0.5,&tau-parent=yes])S, (H[&tau-parent=yes], B) T)R; (B): ((A, (C)H[&phi=0.5,&tau-parent=no])S, (H[&tau-parent=yes], B) T)R; (C): ((A, (C)H[&phi=0.5,&tau-parent=no])S, (H[&tau-parent=no], B) T)R; (D): ((A, (B) Y[&phi=0.3])X, (X[&phi=0.1])Y)R; (D): ((A, (B)Y)X, (X)Y)R; (D): ((A, Y)X, (B, X)Y) R; (D): ((A, y)x, (B, x) y) r; `
-![MSCI-models]()
-[]{label="fig-msci-models"}](figures/fig-msci-models){#fig-msci-models}
 
 The control file variable `phiprior` specifies the prior probability for
 the $\varphi$ parameter, which is a beta distribution with parameters
