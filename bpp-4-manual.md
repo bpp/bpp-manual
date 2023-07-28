@@ -454,8 +454,9 @@ Imap file and this two-layer design is that one may wish to analyze the
 same sequence data with different population/species assignments of
 individual IDs. This can be achieved by editing the small Imap file
 rather than editing the larger sequence data file.
+![imap](https://github.com/bpp/bpp-manual/blob/main/figures/fig-imap.png?raw=true)
 
-![Imap file example](https://github.com/bpp/bpp-manual/blob/ed4235ec6797b653b89dc096800887672b794da5/figures/fig-imap.png?raw=true)
+
 
 An example Imap file showing the sequence ID in the Imap file
 corresponding to that in the sequence file. Note that the caret \^
@@ -2766,13 +2767,11 @@ tree with one or more introgression events as well as a prior
 distribution for the introgression probability $\varphi$. The MSci model
 is specified in the `species&tree` block using the extended Newick
 notation [@Cardona2008]
-(fig. [6.1](#fig-msci-models){reference-type="ref"
-reference="fig-msci-models"}).
-
+```
     species&tree = 3  A  B  C
     10 10 10
     ((A, (C)H[&phi=0.5,&tau-parent=yes])S, (H[&tau-parent=yes], B) T)R;
-
+```
 The rules for the extended Newick format are as follows. '(A, B)S'
 specifies two branches from S to A and from S to B, while '(A)H'
 specifies one branch from H to A. Every branch in the tree model is
@@ -2792,7 +2791,7 @@ finally in model (C), none of those four parameters exists in the model.
 Model (D) specifies a bidirectional introgression event between species
 A and B.
 
-![MSCI-models](?raw=true)
+![MSCI-models](https://github.com/bpp/bpp-manual/blob/191d107413566b145360597fdfdfef3e68ce9173/figures/fig-msci-models.png?raw=true)
 
 **Four different types of MSci models implemented in BPP**
 The models are specified using the extended Newick format, as follows:\
@@ -3817,22 +3816,22 @@ instruction sets (also called vector instructions) available on modern
 processors. It automatically detects and uses the best instruction set
 available so you don't have to do anything about this. However, you can
 manually specify and force an instruction set in the control file using
-the arch tag. For instance, arch=SSE forces [bpp]{.smallcaps} to use the
+the arch tag. For instance, arch=SSE forces BPP to use the
 SSE instruction set even if AVX (which has twice the register size of
 SSE and thus in theory yields twice the speedup) is present on the
 system. To completely disable vector instruction, one can use the
 arch=CPU option. The available values for the arch tag are 'CPU', 'SSE',
 'AVX' and 'AVX2'.
 
-![Modern computer architecture using Non-Uniform momery access (NUMA).
-[]{label="fig-numa"}](figures/fig-numa){#fig-numa}
+![Fig-Numa](https://github.com/bpp/bpp-manual/blob/191d107413566b145360597fdfdfef3e68ce9173/figures/fig-numa.png?raw=true)
 
-[Bpp4]{.smallcaps} can use multiple cores/threads. The control variable
-threads has the following syntax.
+Modern computer architecture using Non-Uniform momery access (NUMA).
 
+BPP4 can use multiple cores/threads. The control variable threads has the following syntax.
+```
     Threads = 8 19 1
-
-This means [bpp]{.smallcaps} will use 8 threads, starting from
+```
+This means BPP will use 8 threads, starting from
 core/thread 19, with increment 1; in other words hardware threads 19-36
 will be used. The software threads are pinned onto the hardware threads
 and they not allowed to migrate. We found that this helps with
@@ -3869,15 +3868,15 @@ your servers. Adjust the step lengths first. Then use burnin=0 and a
 small nsample so that the running time is about 1-2 minutes. Change
 threads and record running time.
 
-Make sure all threads for the same [bpp]{.smallcaps} job are on the same
+Make sure all threads for the same BPP job are on the same
 CPU. Use lscpu to see the machine configuration and htop to examine the
 load on the hardware threads.
 
 ### Checkpointing
 
-This option instructs [bpp]{.smallcaps} to create a checkpoint file
+This option instructs BPP to create a checkpoint file
 (save the progress) after a specified number of MCMC iterations. The
-MCMC loop in [bpp]{.smallcaps} consists of
+MCMC loop in BPP consists of
 `N = burnin + sampfreq*nsample` iterations, numbered as $1,2,\cdots,N$.
 There are two formats, where X, Y are whole numbers:
 
@@ -3968,7 +3967,7 @@ inserted at the beginning, like the following
     BayesFactorBeta = 0.122298 *  w=0.124629.ctl
 
 This specifies the beta value when the control file is used to run
-[bpp]{.smallcaps}.
+BPP.
 
 Second `BFdriver` creates a file named `betaweights.txt`, which lists
 the beta values and Gauss-Legendre weights. I have copied those values
@@ -4014,7 +4013,7 @@ My runs gave the log marginal likelihood for tree 2 to be $-3186.14$.
 The ratio of the posterior probabilities for the two trees is then
 estimated to be
 $P_1/P_2 = \exp\{-3185.93 - (-3186.14)\} = exp\{0.21\} = 1.24$. With
-[bpp]{.smallcaps}4.0 and the inverse-gamma priors on $\theta$ and
+BPP4.0 and the inverse-gamma priors on $\theta$ and
 $\tau$s, the MCMC runs (A01) gave the posterior probabilities for trees
 1 and 2 as 0.167 and 0.137, with the ratio 1.22. The MCMC runs and the
 marginal likelihood calculations seem to agree with each other. (Note
@@ -4036,7 +4035,7 @@ The simulation option of [bpp4]{.smallcaps} is the MCCOAL program in
 version 3.4 and earlier. This can be used to simulate gene trees and
 sequence alignments at multiple loci under the MSC ([Rannala and Yang 2003](https://doi.org/10.1093/genetics/164.4.1645) and
 MSci [Flouri et al 2020](https://doi.org/10.1093/molbev/msz296) models. While the inference program
-[bpp]{.smallcaps} implements the JC model only, the simulation program
+BPP implements the JC model only, the simulation program
 allows GTR+G (and its special cases) and allows among-loci heterogeneity
 in the process of sequence evolution. The different loci can have
 different exchangeability parameters ($a, b, c, d, e, f$) and base
@@ -4099,7 +4098,7 @@ locus.
 By default MCcoal prints out the sequence alignment at each locus, but
 if you use file format 1 (`seqfile = MySeq.txt 1`), the program will
 print out site pattern counts instead. The file may then be smaller.
-This format is readable by [bpp]{.smallcaps} and [3s]{.smallcaps}, but
+This format is readable by BPP and [3s]{.smallcaps}, but
 not by other programs.
 
 `phase.` This variable is used in the same way as in the inference (data
