@@ -17,9 +17,9 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-domain: bpp.github.io/bpp-manual/
-url: https://bpp.github.io/bpp-manual/
-baseurl: /docs/
+domain: bpp.github.io
+url: https://bpp.github.io
+baseurl: /bpp-manual/docs/
 title: BPP Phylogenetics and Phylogeography
 email: your-email@example.com
 description: >- # this means to ignore newlines until "baseurl:"
