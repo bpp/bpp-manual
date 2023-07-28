@@ -29,7 +29,7 @@ description: >- # this means to ignore newlines until "baseurl:"
 github_username:  bpp
 
 # Build settings
-theme: minima
+theme: minimal
 plugins:
   - jekyll-feed
 
