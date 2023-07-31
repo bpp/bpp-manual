@@ -44,7 +44,7 @@ each specified using two variables in the control file:
 
 -   **A00** (`speciesdelimitation = 0`, `speciestree = 0`): estimation
     of species divergence times and population sizes under the MSC, IM
-    and MSci models when the species tree is specified by the user
+    and MSC-I models when the species tree is specified by the user
 	([Rannala and Yang 2003](https://doi.org/10.1093/genetics/164.4.1645); [Flouri et al 2020](https://inria.hal.science/PGE/hal-02536475))
 
 
@@ -90,9 +90,9 @@ population size parameters ($\theta$). Analysis A00 estimates those
 parameters when the species delimitation and species tree are fixed
 (specified by the user). Analyses A01, A10, and A11 estimate parameters
 and model probabilities of the different MSC models. The
-multispecies-coalescent-with-introgression (MSci) model, first
+multispecies-coalescent-with-introgression (MSC-I) model, first
 implemented in BPP version 4.1 and described in
-[Introgression Models](#introgression-models), adds introgression nodes to the tree, each
+[Introgression and Migration Models](#introgression-and-migration-models), adds introgression nodes to the tree, each
 with a new parameter, the **introgression probability** ($\varphi$) see [Flouri et al 2020](https://doi.org/10.1093/molbev/msz296). 
 The Isolation-with-migration (IM) model adds a matrix of
 **instantaneous migration rates** (**M**) (see [Isolation With Migration Models](#isolation-with-migration-models)) 
@@ -106,10 +106,10 @@ data: *no recombination between sites of the same locus*, and *free
 recombination between loci*. The original MSC model ([Rannala and Yang 2003](https://doi.org/10.1093/genetics/164.4.1645)) also
 assumes complete genetic isolation between populations, but more recent
 implementations allow gene flow between species (either continuous
-migration or episodic introgression); the MSci model implemented in BPP
+migration or episodic introgression); the MSC-I model implemented in BPP
 allows episodic introgression [Flouri et al 2020](https://doi.org/10.1093/molbev/msz296) and the IM model allows
 continuous migration (see
-[Introgression Models](#introgression-models) and [Isolation With Migration Models](#isolation-with-migration-models)). The default model assumes a strict
+[Introgression and Migration Models](#introgression-and-migration-models) and [Isolation With Migration Models](#isolation-with-migration-models)). The default model assumes a strict
 molecular clock (constant substitution rates among lineages) and
 relaxed-clocks (with substitution rates varying among lineages) are
 implemented through variable clock models (see
@@ -142,8 +142,7 @@ closely related species with sequence divergence not much higher than
 10%. Sequences from distantly related species should be analyzed using a
 GTR substitution model in combination with one of the relaxed clock
 models. Models allowing substitution rate variation among sites and
-among loci are also implemented in BPP (see
-[Substitution Models](#substitution-models))
+among loci are also implemented in BPP (see [Substitution Models](#substitution-models))
 
 ### Mitochondrial data
 
@@ -1481,7 +1480,7 @@ phiprior = f f
 ```
 **DESCRIPTION**\
 Specifies the parameters of the prior distribution on $\varphi$, the
-introgression probability under the MSci model.\
+introgression probability under the MSC-I model.\
 **VALUES**\
 `f f`, specify the parameters $\alpha$ and $\beta$, respectively, of
 the beta distribution prior $\textrm{B}(\alpha,\beta)$ for $\varphi$.\
@@ -1702,7 +1701,7 @@ $\mu_i$ and variance $\nu_i$. Then given the rate for each ancestral
 branch, the rates for its two daughter branches are specified as
 independent gamma variables with the mean to be the rate of the parental
 branch and with the variance to be $\nu_i$. Clock 3 is currently
-implemented for the MSC model only and is unavailable under the MSci
+implemented for the MSC model only and is unavailable under the MSC-I
 model.
 
 Note that a larger variance $\nu_i$ implies a more serious violation of
@@ -1863,7 +1862,7 @@ description of all control file variables, their effects, and
 permissible values is provided in the definitions of
 [BPP Control File Variables](#bpp-control-file-variables). 
 In depth descriptions of specific model and prior choices can be found in
-[Substitution Models](#substitution-models), [Introgression Models](#introgression-models), and [Isolation with Migration Models](). 
+[Substitution Models](#substitution-models), [Introgression and Migration Models](#introgression-and-migration-models), and [Isolation with Migration Models](). 
 Control files illustrating the 4 methods of analysis A00, A01, A10 and A11 are found in
 [Methods of Analysis](#methods-of-analysis). The content of the control file `A00.bpp.ctl` is displayed below:
 ```
@@ -1983,9 +1982,8 @@ is fixed (not delimited) and the line `speciestree = 0` specifies that
 the species phylogeny (topology) is fixed (not estimated). This
 combination specifies an analysis of type A00, which is parameter
 estimation under a MSC using multiple-loci and multiple-species data on
-a fixed species tree [@Rannala2003; @Burgess2008]. Analysis A00 is
-described in detail in section [8.1](#a00){reference-type="ref"
-reference="a00"}.
+a fixed species tree ([Rannala and Yang 2003](https://doi.org/10.1093/genetics/164.4.1645); [Burgess and Yang 2008](https://doi.org/10.1093/molbev/msn148)). Analysis A00 is
+described in detail in [A00: Demography and Divergence Time Estimation](#a00-demography-and-divergence-time-estimation).
 ```
     species&tree = 4  K  C  L  H
                    9  7 14  2
@@ -2013,11 +2011,11 @@ contain one parameter only, $\theta$ for that species.
 
 The line `(((K, C), L), H);` specifies the (fixed) species tree in
 Newick format ending with a semicolon (;). This example specifies a tree
-with no introgression (the MSC model). Specification of the MSci model
+with no introgression (the MSC model). Specification of the MSC-I model
 with introgression is different (see
-[Introgression Models](#introgression-models) for a description of the MSci model). The
+[Introgression and Migration Models](#introgression-and-migration-models) for a description of the MSC-I model). The
 Newick and extended Newick formats for specifying phylogenetic trees are
-described in [Introgression Models](#introgression-models) and a good overview is found at
+described in [Introgression and Migration Models](#introgression-and-migration-models) and a good overview is found at
 <https://en.wikipedia.org/wiki/Newick_format>.
 ```
     # sequence data are unphased for all 4 populations
@@ -2036,7 +2034,7 @@ characters `YRMKSW`. The chararcters `N`, `-` and `?` are allowed in the
 sequence file and are all treated as `?`, but other ambiguities (HBVD)
 are not allowed. Each sequence is then expanded/resolved into two
 sequences, and the program averages over all the possible phase
-resolutions according to the approach of @Gronau2011. For example a
+resolutions according to the approach of [Gronau et al 2011](https://doi.org/10.1038/ng.937). For example a
 sequence with two heterozygous sites R and Y is resolved into two
 possible haplotypes: (i) A\...T and G\...C, and (ii) A\...C and G\...T.
 Note that this option forces a sequence with no heterozygote sites to be
@@ -2092,7 +2090,7 @@ extinct ancestral species) are assigned the inverse-gamma prior with the
 same parameters.
 
 **Analytical integration of $\theta$ and the inverse gamma prior**\
-The inverse-gamma is a conjugate prior for $\theta$ [@heynielsen2007],
+The inverse-gamma is a conjugate prior for $\theta$ ([Hey and Nielsen 2007](https://doi.org/10.1073/pnas.0611164104))
 which means that both the prior and the posterior of $\theta$ will be
 inverse-gamma. Use of the conjugate priors allows the $\theta$
 parameters to be integrated out analytically, and thus the dimension of
@@ -2135,7 +2133,7 @@ difference per kb. A sensible diffuse prior is then
 The line `tauprior = 3 0.002` specifies the inverse-gamma prior
 IG($\alpha, \beta$) for $\tau_0$, the divergence time parameter for the
 root in the species tree. Other divergence times are generated from the
-uniform Dirichlet distribution [@Yang2010 eq. 2]. In the example, the
+uniform Dirichlet distribution ([Yang and Rannala 2010, eq.2](https://doi.org/10.1073/pnas.0913022107)). In the example, the
 mean is $0.002/(3 – 1) = 0.001$ (which means 0.1% average sequence
 divergence between the root of the species tree and the present time).
 If the mutation rate is $10^{–9}$ mutations/site/year, this distance
@@ -2184,7 +2182,7 @@ example, are taken every 2 iterations, with a total of 100,000 samples
 taken. The total number of MCMC iterations is `burnin` + `sampfreq`
 $\times$ `nsample`. The resulting file can be large. For analysis A00
 (`speciesdelimitation = 0, speciestree = 0`), this file can be analysed
-using R or [tracer]{.smallcaps}. For other analyses (A01, A10, and A11),
+using the R package or tracer. For other analyses (A01, A10, and A11),
 the dimension of the sample is changing and cannot be analysed using
 such traceplot programs.
 
@@ -2226,7 +2224,7 @@ adequate, while the GTR often performs better for more distantly related
 species. The remaining DNA substitution models (K80, F81, HKY, T92,
 TN93, and F84) are all special cases (submodels) of the GTR model and
 are of intermediate complexity, usually having one or two free
-parameters [see @Yang2014b]. Many fixed substitution matrix models (no
+parameters ([see Yang 2014](https://global.oup.com/academic/product/molecular-evolution-9780199602605?lang=es&cc=gb)). Many fixed substitution matrix models (no
 free parameters) for modeling substitutions among amino acid sequences
 are also available.
 
@@ -2297,7 +2295,7 @@ values, respectively. The control file specification is:
 The variable `B` is either 0 (variable exchangeability parameters) or 1
 (fixed exchangeability parameters). The variables `a b c d e f` are
 positive numbers specifying the exchangeability parameters for TC, TA,
-TG, CA, CG and AG substitutions respectively [see @Yang1994a]. Note that
+TG, CA, CG and AG substitutions respectively (see [Yang 1994](https://doi.org/10.1007/BF00178256)). Note that
 TC is the rate of either T-\>C or C-\>T substitutions. Note that only
 the relative rates matter because the rate matrix is scaled to have an
 overall average substitution rate of 1. Thus, for the model of fixed
@@ -2377,8 +2375,7 @@ program.
 
 There are many amino acid substitution models available. These models
 completely specify the substitution matrix so there are no free
-parameters. Many of the models are described in @Yang2014b. The
-available models are: DAYHOFF, LG, DCMUT, JTT, MTREV, WAG, RTREV, CPREV,
+parameters. Many of the models are described in [Yang 2014](https://global.oup.com/academic/product/molecular-evolution-9780199602605?lang=es&cc=gb). The available models are: DAYHOFF, LG, DCMUT, JTT, MTREV, WAG, RTREV, CPREV,
 VT, BLOSUM62, MTMAM, MTART, MTZOA, PMB, HIVB, HIV,W, JTTDCMUT, FLU, and
 STMTREV.
 
@@ -2413,7 +2410,7 @@ Models of Substitution Rate Variation
 Substitution rates vary among sites due to many factors, including
 purifying selection in coding regions. BPP allows among-site rate
 variation to be accomodated using the canonical Gamma distributed rate
-variation model (see Yang 1994). In this model, the mean rate among
+variation model ([see Yang 1994](https://doi.org/10.1007/BF00178256)). In this model, the mean rate among
 sites is constrained to be 1 so that the expected number of
 substitutions on a branch is proportional to its length (in units of
 expected substitutions). If the mean of the Gamma distribution is fixed,
@@ -2482,13 +2479,14 @@ prior). If `prior = dir` (Gamma-Dirichlet distribution of locus rates),
 the total rate $L\bar\mu$, given the mean rate ($\bar\mu$), is
 partitioned into locus rate variables , $\mu_i$, that are constrained to
 sum to $L\bar\mu$ and have a Dirichlet distribution with concentration
-parameter $\alpha_\mu$. The model and notation follow @Burgess2008
-[eq. 4] and @dosReis2014 [eqs. 3-5]. If `prior = iid`
-(Conditional-i.i.d. or hierarchical prior of locus rates), the locus
+parameter $\alpha_\mu$. The model and notation follow 
+[Burgess and Yang 2008](https://doi.org/10.1093/molbev/msn148) eq.4
+and [Dos Reis et al 2014](https://doi.org/10.1093/sysbio/syu020) eqs.3-5. 
+If `prior = iid` (Conditional-i.i.d. or hierarchical prior of locus rates), the locus
 rates, $\mu_i$, are independent and identically distributed i.i.d. given
 the mean rate $\bar\mu$, so the prior distribution of $\mu_i$ is:
 $$\mathtt{P}(\mu_i) = \textrm{Gamma}(\alpha_{\mu_i}, \alpha_{\mu_i/\bar{\mu}}).$$
-This model is described in @Zhu2015 [eq. 8] and implemented in
+This model is described in [Zhu et al 2015](https://doi.org/10.1093/sysbio/syu109) eq.8 and implemented in
 [mcmctree]{.smallcaps}. In both the Gamma-Dirichlet and the Conditional
 i.i.d. models, the parameter $\alpha_{\mu_i}$ is inversely related to
 the extent of rate variation among loci, with a large $\alpha_{\mu_i}$
@@ -2497,7 +2495,7 @@ noncoding, the rates are probably similar, so $\alpha_{\mu_I} =$ 10 or
 20 may be reasonable, while for coding loci or exons,
 $\alpha_{\mu_i} = 2$ or 1 may be appropriate. The $\alpha_{\mu_i}$
 parameter may affect the estimates of the population size parameter
-($\theta$) for the root node on the species tree [@Burgess2008]. The $L$
+($\theta$) for the root node on the species tree ([Burgess and Yang 2008](https://doi.org/10.1093/molbev/msn148)). The $L$
 locus rates ($\mu_i$) are parameters in the model. If
 $\alpha_{\bar{\mu}} > 0$, the mean rate, $\bar\mu$, is a parameter as
 well.
@@ -2534,8 +2532,8 @@ configuration file settings are:
     locusrate = 2 LocusRateFileName    
 
 Note that `locusrate = 2 LocusRateFileName` specifies the fixed-rates
-model of locus-rate variation [@Burgess2008]. This is the strategy used
-by @Yang2002, with the relative rates estimated by the distance to an
+model of locus-rate variation ([Burgess and Yang 2008](https://doi.org/10.1093/molbev/msn148)). This is the strategy used
+by [Yang 2002](https://doi.org/10.1093/genetics/162.4.1811), with the relative rates estimated by the distance to an
 outgroup species. The relative locus rates are listed in the file: there
 should be as many numbers in the file, separately by spaces or line
 returns, as the number of loci (`nloci`). The program re-scales those
@@ -2557,16 +2555,16 @@ nearly fixed at 1.
 
 **The locus-rate prior in IMa.** The model of variable rates among loci
 implemented here has some differences from a similar model implemented
-in the [IMa]{.smallcaps} program [@Hey2004]. The biggest difference
+in the IMa program [Hey and Nielsen 2004](https://doi.org/10.1534/genetics.103.024182). The biggest difference
 appears to be the parameterization. BPP defines mutation
 rate on a per-nucleotide basis, so the prior specifies that the
 expectation of the mutation rate per site is constant among loci.
-[IMa]{.smallcaps} defines mutation rate on a per-locus basis, so its
+IMa defines mutation rate on a per-locus basis, so its
 prior specifies that the expectation of the mutation rate per locus is
 the same among loci. If locus one has 100 sites and locus two has 1000
-sites, then [IMa]{.smallcaps} assumes that the per-site rate for locus
+sites, then IMa assumes that the per-site rate for locus
 one is 10 times for locus two, while BPP assumes the same
-per-site rate. Also [IMa]{.smallcaps} constrains the geometric mean of
+per-site rate. Also IMa constrains the geometric mean of
 rates across loci to be one, while BPP constrains their
 arithmetic mean to be one.
 
@@ -2649,13 +2647,14 @@ variance parameter of the lognormal.
 
 The autocorrelated-rates model (control file option `clock = 3`) with
 the log-normal distribution (LN) specifies the geometric Brownian motion
-model of @Rannala2007. This assigns a rate to each species-tree branch,
+model of [Rannala and Yang 2007](https://doi.org/10.1080/10635150701420643). 
+This assigns a rate to each species-tree branch,
 that is, to the mid-point of the branch. Given the rate at the
 species-tree root ($\mu_i$ at locus $i$), the rates for the two branches
 around the root are specified. Then given the rate for each ancestral
 branch, the rates for its two daughter branches are specified, by
 integrating over the rate at the internal node that is ancestral to the
-daughter branches. See figure 1 and equations 3-8 in @Rannala2007. The
+daughter branches. See figure 1 and equations 3-8 in [Rannala and Yang 2007](https://doi.org/10.1080/10635150701420643). The
 rates for all species-tree branches are thus assigned through a
 pre-order tree traversal, starting from the root moving to the tips,
 until all branches are visited.
@@ -2668,7 +2667,7 @@ each ancestral branch, the rates for its two daughter branches are
 specified as independent gamma variables with the mean to be the rate of
 the parental branch and with the variance to be $\nu_i$. The
 autocorrelated relaxed clock model is only implemented for the MSC model
-and is not available when using the MSci model.
+and is not available when using the MSC-I model.
 
 **Rates vary among species tree branches**\
 The rate-drift model specifies rates for branches on the species tree
@@ -2737,34 +2736,33 @@ $\bar\nu$ has prior mean $\alpha_{\bar{\nu}}/\beta_{\bar{\nu}}$. If
 log-normal model $\nu = 0.5$ suggests a serious violation of the clock
 while $\nu < 0.1$ represents only a slight violation.
 
-Introgression Models
+Introgression and Migration Models
 ====================
 
 Another important factor influencing the results of species tree
 inference is introgression (gene flow) between species (or populations).
 BPP also implements a model of episodic introgression between species or
-populations [Flouri et al 2020](https://doi.org/10.1093/molbev/msz296) as well as a model of ongoing gene flow (IM).
-Since version 4.1, [bpp]{.smallcaps} implements the MSci model
-[Flouri et al 2020](https://doi.org/10.1093/molbev/msz296) and since version 4.4 it implements the IM model.
-Currently, introgression (MSci) and ongoing gene flow (IM) analyses can
+populations [Flouri et al 2020](https://doi.org/10.1093/molbev/msz296) as well as a model of ongoing gene flow (MSC-M).
+Since version 4.1, BPP implements the MSC-I model
+[Flouri et al 2020](https://doi.org/10.1093/molbev/msz296) and since version 4.4 it implements the MSC-M model.
+Currently, introgression (MSC-I) and ongoing gene flow (MSC-M) analyses can
 only be performed using the A00 method of analysis (fixed species tree
-and delimitation, see Chapter [8](#analysismethods){reference-type="ref"
-reference="analysismethods"}). In other words, the user has to specify
+and delimitation, see [Methods of Analysis](#methods-of-analysis)). In other words, the user has to specify
 the number of introgression events (or bands of gene flow), their
 directions, and the populations involved on a fixed species tree. The
-program will then estimate the parameters of the MSci (or IM) models
-using MCMC. We hope to implement MCMC moves that change the MSci (or IM)
+program will then estimate the parameters of the MSC-I (or MSC-M) models
+using MCMC. We hope to implement MCMC moves that change the MSC-I (or MSC-M)
 models and species tree topology in the future.
 
-Features of the Basic MSci Model
+The MSC-I Model
 --------------------------------
 
-The MSci model involves three types of parameters: the species
+The MSC-I model involves three types of parameters: the species
 divergence or hybridization times ($\tau$s), the population size
 parameters ($\theta$s), and the introgression probabilities
 ($\varphi$s). The control file must specify an extended Newick format
 tree with one or more introgression events as well as a prior
-distribution for the introgression probability $\varphi$. The MSci model
+distribution for the introgression probability $\varphi$. The MSC-I model
 is specified in the `species&tree` block using the extended Newick
 notation [@Cardona2008]
 ```
@@ -2793,7 +2791,7 @@ A and B.
 
 ![MSCI-models](https://github.com/bpp/bpp-manual/blob/191d107413566b145360597fdfdfef3e68ce9173/figures/fig-msci-models.png?raw=true)
 
-**Four different types of MSci models implemented in BPP**
+**Four different types of MSC-I models implemented in BPP**
 The models are specified using the extended Newick format, as follows:\
 ` (A): ((A, (C)H[&phi=0.5,&tau-parent=yes])S, (H[&tau-parent=yes], B) T)R; (B): ((A, (C)H[&phi=0.5,&tau-parent=no])S, (H[&tau-parent=yes], B) T)R; (C): ((A, (C)H[&phi=0.5,&tau-parent=no])S, (H[&tau-parent=no], B) T)R; (D): ((A, (B) Y[&phi=0.3])X, (X[&phi=0.1])Y)R; (D): ((A, (B)Y)X, (X)Y)R; (D): ((A, Y)X, (B, X)Y) R; (D): ((A, y)x, (B, x) y) r; `
 
@@ -2805,7 +2803,7 @@ $a$ and $b$. The syntax is
 
 where $a$ and $b$ are positive numbers. For example, `phiprior = 1 1`
 specifies the beta prior beta($a, b$) with $a = 1$ and $b = 1$ for
-$\varphi$, the introgression probability under the MSci model.
+$\varphi$, the introgression probability under the MSC-I model.
 
 Odds and Ends
 =============
@@ -2871,21 +2869,20 @@ the biogeographical parameters $\theta$ and $\tau$ on a fixed (user
 specified) tree with a fixed (delimited) number of species/populations
 as described in ([Rannala and Yang 2003](https://doi.org/10.1093/genetics/164.4.1645). Analysis A10 delimits the number of
 species and infers biogeographical parameters using a fixed species tree
-(guide tree) as described in [@Yang2010]. Analysis A01 infers the
+(guide tree) as described in [Yang and Rannala 2010](https://doi.org/10.1073/pnas.0913022107). Analysis A01 infers the
 species tree and biogeographical parameters using a fixed number of
-species (delimitation) as described in [@Rannala2017]. Analysis A11
+species (delimitation) as described in [Rannala and Yang 2017](https://doi.org/10.1093/sysbio/syw119). Analysis A11
 jointly infers the species tree, species delimitation and
-biogeographical parameters as described in [@Yang2014a]. Under Model A00
-it is also possible to include a model of either instantaneous
+biogeographical parameters as described in [Yang and Rannala 2014](https://doi.org/10.1093/molbev/msu279). 
+Under Model A00 it is also possible to include a model of either instantaneous
 introgression or ongoing gene flow -- examples of such analyses are
-given in [Introgression Models](#introgression-models). For each of these 4 major types of analyses
+given in [Introgression and Migration Models](#introgression-and-migration-models). For each of these 4 major types of analyses
 the control file specifications will differ as well as the form of
 output printed to the screen and output files. Therefore, we will
 include two subsections in our discussion of each analysis method: input
 and output. Here we only consider the control file variables specific to
 the methods of analysis under consideration. For a general discussion of
-other control file variables see the example control file discussed in
-section [4.4](#ctrlfile){reference-type="ref" reference="ctrlfile"}.
+other control file variables see the example control file discussed in [Control File](#control-file).
 Note that for most analyses the output printed to screen during the run
 and that printed to the specified output file will be identical.
 
@@ -2905,7 +2902,7 @@ $\tau_0$ (the divergence time of the root), and these parameters (for
 different models) are assigned the same prior, specified by the
 `tauprior` control file variable.
 
-A00: Estimating $\theta$s and $\tau$s {#a00}
+A00: Demography and Divergence Time Estimation 
 -------------------------------------
 
 Analysis A00`(speciesdelimitation = 0, speciestree = 0)`, requires a
@@ -2921,14 +2918,14 @@ parameter will also exist for each contemporary species with at least
 two sequences present at some locus. If the data are for a single
 species/population, the model will contain one parameter only, $\theta$
 for that species. If there is only one species, the MSC model becomes
-the single-population coalescent [@Kingman1982]. We will provide
+the single-population Kingman coalescent. We will provide
 examples of both a single population analysis (using the control file
 `yu2001.bpp.ctl`) and a multi-species analysis (using the control file
 `A00.bpp.ctl`).
 
 **How many $\theta$ and $\tau$ parameters exist?**\
 The number of parameters that BPP includes in the MSC or
-MSci models depends on the data configuration. The program always
+MSC-I models depends on the data configuration. The program always
 includes $\theta$ and $\tau$ parameters for each internal node
 (ancestral species) on the species tree, but includes a $\theta$ for an
 extant species (tip) if and only if that species has at least 2
@@ -2955,17 +2952,18 @@ available from species C.
 ### Input A00 (single population)
 
 Our first example is a dataset of human sequence data generated by
-@Yu2001. The control file is found in the BPP distribution at location:
-
+[Yu et al 2001](https://doi.org/10.1093/oxfordjournals.molbev.a003795). 
+The control file is found in the BPP distribution at location:
+```
     examples/yu2001/yu2001.bpp.ctl
-
+```
 The data comprise 61 phased sequences for a single locus that will be
 analyzed to estimate the single parameter $\theta$. There is no need to
 specify an Imap file, or tag the sequence names in the sequence file
 (`yu2001.txt`); the sequence names are read and then ignored. Multiple
 loci may be included in the sequence file. The contents of the control
 file `yu2001.bpp.ctl` are shown below:
-
+```
     seed = -1
 
     seqfile = yu2001.txt
@@ -3000,26 +2998,26 @@ file `yu2001.bpp.ctl` are shown below:
     burnin = 4000
     sampfreq = 2
     nsample = 10000
-
+```
 The two lines:
-
+```
     speciesdelimitation = 0 
     speciestree = 0
-
+```
 specify that the species delimitation (number of species) is fixed as
 well as the species tree topology. In this case, there is no species
 tree and only a single species exists. There is no need for a species
 tree, so the block for specifying species names and species tree looks
 like this:
-
+```
     species&tree = 1  H
                       61
-
+```
 The line:
-
+```
     # gamma(a, b) for theta
     thetaprior = gamma 2 2000
-
+```
 specifies a gamma distribution for the prior on $\theta$ with parameters
 $\alpha = 2$ and $\beta = 2000$ which has mean $0.001$ and variance
 $5 \times 10^{-7}$.
@@ -3034,7 +3032,7 @@ number of columns and their specific content varies somewhat. Omitting
 some mostly irrelevant output related to the adjustment of proposal
 moves, the output to screen when this control file is run appears as
 follows:
-
+```
          |  Acceptance proportions  |
     Prgs | Gage Gspr thet  tau  mix | mthet1       log-PG         log-L
     -------------------------------------------------------------------
@@ -3075,13 +3073,13 @@ follows:
     97.5%HPD  0.000574  -12715.718000
     ESS*      757.838791  1180.434956
     Eff*      0.075784  0.118043
-
+```
 The line:
-
+```
          |  Acceptance proportions  |
     Prgs | Gage Gspr thet  tau  mix | mthet1       log-PG         log-L
     -------------------------------------------------------------------
-
+```
 is a header that explains the content of each column printed during the
 run. The `Prgs` (progress) column will appear in all analyses and
 indicates the percentage of the MCMC iterations that have been
@@ -3090,7 +3088,7 @@ still running the burn-in iterations. For example, `-15%` means that 15
 percent of the burn-in iterations remain to be completed. The next 5
 columns are the current acceptance proportions for different parameter
 proposals in the MCMC. The proposals are defined as follows:
-
+```
 -   `Gage`: proposal to change ages of nodes on gene trees
 
 -   `Gsbr`: proposal to change gene tree topology using SPR move
@@ -3100,7 +3098,7 @@ proposals in the MCMC. The proposals are defined as follows:
 -   `tau`: proposal to change $\tau$ parameter
 
 -   `mix`: mixing step proposal
-
+```
 In the output the acceptance proportions are stable. The fifth column
 (the $\tau$ proposal acceptance proportion) is zero; this is expected
 because there are no species divergence times ($\tau$s) in the model
@@ -3123,18 +3121,19 @@ $(0.000145,0.000574)$.
 ### Input A00 (multiple populations)
 
 Our second example is a dataset of frog sequence data generated by
-[@Zhou2012]. This same dataset will also be used to illustrate analyses
+[Zhou et al 2012](https://doi.org/10.1111/j.1365-294X.2011.05411.x). 
+This same dataset will also be used to illustrate analyses
 A01, A10 and A11. The control file is found in the BPP distribution at
 location:
-
+```
     examples/frogs/A00.bpp.ctl
-
+```
 The data comprise 5 loci for 4 populations, with the number of sequences
 at each locus varying between 21 and 30. We will be estimating $\theta$s
 for each of the 4 contemporary and 3 ancestral populations as well as
 the 3 species divergence times ($\tau$s). The contents of the control
 file `A00.bpp.ctl` are shown below:
-
+```
     seed =  -1
 
     seqfile = frogs.txt
@@ -3178,51 +3177,50 @@ file `A00.bpp.ctl` are shown below:
     burnin = 8000
     sampfreq = 2
     nsample = 100000
-
+```
 As in the previous analysis, the two lines:
-
+```
     speciesdelimitation = 0 
     speciestree = 0
-
+```
 specify that the species delimitation (number of species) is fixed as
 well as the species tree topology. In this case, a species tree is
 specified along with population labels. The block for specifying species
 names and the species tree looks like this:
-
+```
     species&tree = 4  K  C  L  H
                         9  7 14  2
                      (((K, C), L), H);
-
+```
 The first line above lists the number of species (populations) which is
 4 in this example. This is followed by the label for each species (these
 should match the labels in the map file):
-
+```
     K  C  L  H
-
+```
 The next line specifies the maximum number of sequences per species in
 the same order as the species labels:
-
+```
     9  7 14  2
-
+```
 the actual number of sequences at any locus must be less than this
 value. The third line is a rooted phylogenetic tree topology specified
 in Newick format:
-
+```
     (((K, C), L), H);
-
+```
 The next line specifies that the loci for each of the 4 populations are
 unphased:
-
+```
     phase = 1 1 1 1
-
+```
 The specified phase variables should include a 0 or 1 (Boolean) entry
 for each population, where the populations are assumed to be in the same
 order as specified above (in the `species&tree` block) and the Boolean
 variable indicates that the sequence data for a population are either
 unphased (1) or phased (0). Ambiguity characters are used to represent
-genotypes for unphased sequences (see
-Section [4.4.1](#controlfilevariables){reference-type="ref"
-reference="controlfilevariables"}). In the example data the sequences
+genotypes for unphased sequences (see [BPP control file variables](#bpp-control-file-variables). 
+In the example data the sequences
 are unphased for all 4 populations. Currently, it is not possible to
 have partially phased data (e.g., only some loci unphased in a
 particular population). The program will infer the phase as part of the
@@ -3236,15 +3234,15 @@ for both $\theta$ and $\tau_0$. The lines below specify a gamma
 distribution as the prior for $\theta$ with parameters $\alpha = 2$ and
 $\beta = 2000$ (the prior mean and variance of $\theta$ are $0.001$ and
 $0.0000005$):
-
+```
     # gamma(a, b) for theta
     thetaprior = gamma 2 2000 
-
+```
 The lines:
-
+```
     # invgamma(a, b) for root tau & Dirichlet(a) for other tau's
     tauprior = invgamma 3 0.002 
-
+```
 specify an inverse gamma distribution as a prior for the root age and
 the remaining $\tau$s have a uniform Dirichlet distribution conditional
 on the root age (the prior mean and variance of the root age are $0.001$
@@ -3254,7 +3252,7 @@ and $0.000001$,respectively):
 
 When BPP is run using the above control file a summary of the progress
 of the MCMC is again printed to screen as follows:
-
+```
          |  Acceptance proportions  |
     Prgs | Gage Gspr thet  tau  mix | mthet1 mthet2 mthet3   mtau1  mtau2  mtau3       log-PG        log-L
     ------------------------------------------------------------------------------------------------------
@@ -3295,7 +3293,7 @@ of the MCMC is again printed to screen as follows:
     97.5%HPD  0.004928  0.012469  0.008903  0.004650  0.005573  0.003312  0.003512  0.002308  0.002237  0.002185  -4421.90
     ESS*      2721.25   8954.56   5279.29   11762.38  1199.63   4543.27   3299.32   850.33    970.61    932.00    420.40
     Eff*      0.027213  0.089546  0.052793  0.117624  0.011996  0.045433  0.032993  0.008503  0.009706  0.009320  0.004204
-
+```
 There are again 5 acceptance proportions for the 5 parameter proposals,
 but now the current mean values of 6 parameters are printed. The current
 mean values of $\theta$ for nodes 1, 2 and 3 (`mthet1 mthet2 mthet3`)
@@ -3351,9 +3349,9 @@ Below are some notes about adjusting the step lengths manually (finetune
 First note the following line in the control file ChenLi2001.bpp.ctl.
 Here finetune = 0 means that MCMC step lengths will not be adjusted
 automatically, and they are used as given.
-
+```
     finetune = 0: .01 .02 .03 .04 .05 .01 .01  # auto (0 or 1): MCMC step lengths
-
+```
 There are seven finetune steplengths here. They are in a fixed order and
 always read by the program even if the concerned proposal is not used.
 The first five of them are $\epsilon_1$, $\epsilon_2$, $\epsilon_3$,
@@ -3378,12 +3376,12 @@ increase the finetune parameter.
 
 Run the program for a small number of iterations and look at the screen
 output for the acceptance proportions.
-
+```
     lnpG0 = 2440.0952  lnL0 = -43946.6769
      0% 0.13 0.00 0.00 0.04 0.43  0.0009 0.0009 0.0008  0.0150 0.0067 0.0057 2399.70 -43752.8348  0:05
      5% 0.14 0.00 0.00 0.04 0.44  0.0009 0.0009 0.0008  0.0148 0.0064 0.0057 2340.71 -43738.0172  0:09
     10% 0.14 0.00 0.00 0.04 0.44  0.0009 0.0009 0.0008  0.0149 0.0064 0.0056 2383.91 -43739.3830  0:14
-
+```
 Here the second acceptance proportion, at 0.00, is much too small, which
 means that the corresponding step-length (0.02 in the control file) is
 much too large. Terminate the run (Ctrl-C) and decrease the value in the
@@ -3402,22 +3400,22 @@ reliable results.
 
 `A01` means species tree estimation when the assignments and
 delimitation are fixed.
-
+```
     speciesdelimitation = 0    *
     speciestree = 1    * NNI/SPR over species trees
     speciesmodelprior = 1  * 0: uniform LH; 1:uniform rooted trees; 2: uniformSLH; 3: uniformSRooted
-
+```
 This invokes the NNI or SPR algorithm to change the species tree
 topology, while species delimitation is fixed (so that the number of
 species and the assignment of individuals to species are fixed).
 
 A10, for species delimitation using a user-specified guide tree
 [@Yang2010; @Rannala2013], is specified using
-
+```
     speciesdelimitation = 1 0 2   * speciesdelimitation algorithm0 and finetune(e)
     speciesdelimitation = 1 1 2 1 * speciesdelimitation algorithm1 finetune (a m)
     speciesmodelprior = 1  * 0: uniform LH; 1:uniform rooted trees
-
+```
 The first line specifies rjMCMC algorithm 0, with $\epsilon = 2$ in
 equations 3 and 4 of [@Yang2010]. Reasonable values for $\epsilon$ are
 1, 2, 5, etc.\
@@ -3435,12 +3433,12 @@ for nodes described by [@Rannala2013] is deleted since version 2.3(?).
 
 `A11`, for joint species delimitation and species tree inference or for
 unguided species delimitation [@Yang2014a], is specified as follows.
-
+```
     speciesdelimitation = 1 0 2    * rjMCMC speciesdelimitation algorithm0(e)
     *speciesdelimitation = 1 1 2 1  * rjMCMC speciesdelimitation algorithm1(a m)
     speciestree = 1    * NNI over species trees
     speciesmodelprior = 1  * 0: uniform LH; 1:uniform rooted trees; 2: uniformSLH; 3: uniformSRooted
-
+```
 In this case, [bpp]{.smallcaps} will use the rjMCMC algorithm (either
 algorithm 0 or algorithm 1 of [@Yang2010] to change the species
 delimitation model and the NNI/SPR move to change the species tree
@@ -3467,12 +3465,12 @@ tree estimation with species delimitation and assignment fixed
 (speciesdelimitation = 0, speciestree = 1).
 
 The screen output will look like this:
-
+```
      5% 0.28 0.28 0.28 0.35 0.29  0.0000  0.0033 0.0138 2403.43 -43721.0651  0:13
     10% 0.27 0.27 0.27 0.36 0.30  0.0000  0.0028 0.0142 2304.08 -43723.0804  0:21
     15% 0.26 0.27 0.26 0.36 0.30  0.0000  0.0025 0.0143 2308.11 -43723.8564  0:27
       ^^ Pjump for MCMC moves ^^  PSPR   theta  tau     lnpG    E(lnL)
-
+```
 Here the five Pjump values are the acceptance proportions for the five
 conventional MCMC moves, as discussed above. PSPR is the acceptance
 proportion for the SPR/Nodeslider moves that change the species
@@ -3486,13 +3484,13 @@ sequence likelihood [@Felsenstein1981].
 Below are two lines from that file. The numbers after : are the branch
 lengths ($\tau$s), while those after \# are $\theta$s. I hope to change
 the output format to be more consistent with the Newark format.
-
+```
     (((H #0.000708: 0.004728, C #0.000740: 0.004728) #0.002814: 0.001190, G #0.000574: 0.005918) #0.004132: 0.007626, O #0.002036: 0.013544) #0.003835;
     (((H #0.000708: 0.004728, C #0.000740: 0.004728) #0.002814: 0.001190, G #0.000574: 0.005918) #0.003740: 0.007351, O #0.002786: 0.013268) #0.003506;
-
+```
 The [bpp]{.smallcaps} summary of the sample will look like the
 following.
-
+```
     Read tree sample, count trees & splits
     tree 20000  (((H, C), G), O);
     20001 trees read, 1 distinct trees.
@@ -3515,7 +3513,7 @@ following.
 
     (D) Best tree (or trees from the mastertree file) with support values
     (O, (G, (H, C) #1.000000) #1.000000);  [P = 1.00000]
-
+```
 Section (A) lists the species trees in decreasing order of posterior
 probabilities. From this you can easily identify the 95% or 99%
 credibility set of species trees. Section (B) lists the splits (or
@@ -3528,10 +3526,10 @@ consensus tree, with posterior probabilities for nodes.
 
 We apply rjMCMC algorithm to the frogs data (A10:
 `speciesdelimitation = 1, speciestree = 0`).
-
+```
     cd frogs\r1
     ..\..\bin\bpp ..\A10.bpp.ctl
-
+```
 **The screen output** will look like the following. The species
 delimitation models that can be generated from the fixed guide tree are
 listed, together with their prior probabilities calculated by
@@ -3548,9 +3546,7 @@ divergence time parameters ($\tau$s), so you can work out the order by
 looking at the list of nodes in the screen output (look at the
 "population by population table", "\# species divergence times in the
 order:", etc.).
-
--100pt100pt
-
+```
     Number of species-delimitation models =  5
     delimitation model   1: 000  prior  0.20000
     delimitation model   2: 100  prior  0.20000
@@ -3606,7 +3602,7 @@ order:", etc.).
     15% 0.70 0.30 0.00 0.30 0.34   2 0.0225 110 P[5]=0.8879  -1.0000 0.0007  762.56 -3125.9276  0:53
 
     ^^ Pjump for MCMC moves ^^       Prj      P[model 5]     theta    tau   lnpG     E(lnL)
-
+```
 The starting species delimitation model is generated by choosing at
 random one of the models defined by the guide tree or starting tree.
 
@@ -3640,7 +3636,7 @@ with the posterior at 0.8879.
 After the MCMC is finished, the program will summarize the sample. The
 output looks like the following. The seven delimitation models are
 listed again, together with their posterior and prior probabilities.
-
+```
     Summarizing the species-delimitation sample in file mcmc.txt
 
     Number of species-delimitation models =  5
@@ -3655,7 +3651,7 @@ listed again, together with their posterior and prior probabilities.
 
     Guide tree with posterior probability for presence of nodes
     ((K, C) #0.999620, (L, H) #0.899810) #1.000000;
-
+```
 The MCMC sample file mcmc.txt. As the number of parameters changes when
 the rjMCMC moves between models, the mcmc sample file may not be very
 useful, so you can ignore it. Right now the header line is generated
@@ -3663,7 +3659,7 @@ using the starting species tree and should be ignored. After the header
 line, each line of output has the following numbers, separated by TABs:
 iteration number, the number of parameters, the tree, the sampled
 parameter values, and lnL.
-
+```
     Gen np  tree    tau_5KCLH   tau_6KC tau_7LH lnL
     2   3   111 0.00079675  0.0007372   0.00065989  -3122.248
     4   3   111 0.00074995  0.00067776  0.00059457  -3122.427
@@ -3677,12 +3673,12 @@ parameter values, and lnL.
     798 2   110 0.00034214  0.0002618   -3142.615
     800 3   111 0.00044038  0.00033698  9.8583e-05  -3129.386
     802 3   111 0.00060202  0.00047807  7.7594e-05  -3121.725
-
+```
 If you know the unix command grep, you can retrieve the lines for the
 same tree model to summarize the posterior for parameters in that model.
-
+```
     grep "3 111" mcmc.txt > result.Tree111.txt
-
+```
 In theory this should give you the same posterior as if you run analysis
 A00 with the species tree fixed at tree 111. In practice I think it is
 simpler that you edit the Imap file and the control file to run analysis
@@ -3727,11 +3723,10 @@ A00.
 ### A11: joint species delimitation and species tree estimation
 
 Again, we use the frogs example (`A11.bpp.ctl`) to illustrate joint
-species delimitation and species tree estimation (A11:
-`speciesdelimitation = 1, speciestree = 1`).
+species delimitation and species tree estimation (A11: `speciesdelimitation = 1, speciestree = 1`).
 
 The screen output looks like this:
-
+```
     Initial parameters, np = 3.
     Genetrees generated from the MSC density.
 
@@ -3743,7 +3738,7 @@ The screen output looks like this:
      5% 0.70 0.30 0.00 0.24 0.34   4  3 0.0231 0.0967 P(4)=0.9368  -1.0000 0.0007  750.67 -3125.9098  0:30
     10% 0.70 0.30 0.00 0.24 0.34   4  3 0.0189 0.0954 P(4)=0.9474  -1.0000 0.0007  732.19 -3125.9363  0:46
       ^^ Pjump for MCMC moves ^^   S  p   Prj   PSPR  P(S=4)       theta   tau0    lnpG    E(lnL)
-
+```
 Here S is the number of species in the current model, and p is the
 number of parameters in the current model. Prj is acceptance proportion
 for the rjMCMC moves, while PNNI is acceptance proportion for the NNI or
@@ -3757,7 +3752,7 @@ likelihood.
 
 The summary of the sample by [bpp]{.smallcaps} has four sections, as
 follows.
-
+```
     Summarizing the species-tree sample in file mcmc.txt
     read tree 100000  ((K, C), (H, L));
     (A) List of best models (count postP #species SpeciesTree)
@@ -3791,7 +3786,7 @@ follows.
     P[ 2] =   0.0000  prior[ 2] =  0.23810
     P[ 3] =   0.0447  prior[ 3] =  0.28571
     P[ 4] =   0.9553  prior[ 4] =  0.23810
-
+```
 Section (A) lists the best models in the decreasing order of the
 posterior probabilities. Here a model is a full MSC model that species
 both the species delimitation and species phylogeny. From this section,
@@ -3801,7 +3796,7 @@ section is further summarized to produce sections B, C, and D. Section
 Section (C) lists the delimited species and their posterior
 probabilities, and section (D) lists the posterior probability for the
 number of species, together with the prior probabilities calculated by
-[bpp]{.smallcaps}.
+BPP.
 
 Advanced Features of BPP
 ========================
@@ -3811,7 +3806,7 @@ Threading and Checkpointing
 
 ### Threads
 
-[Bpp4]{.smallcaps} can use Single-Instruction-Multiple-Data (SIMD)
+BPP4 can use Single-Instruction-Multiple-Data (SIMD)
 instruction sets (also called vector instructions) available on modern
 processors. It automatically detects and uses the best instruction set
 available so you don't have to do anything about this. However, you can
@@ -3844,7 +3839,7 @@ local bus to a shared memory on a single motherboard.
 
 You can use commands like `lscpu` to see the machine architecture. For
 example, on our server lscpu gives the following output:
-
+```
     Architecture:          x86_64
     CPU op-mode(s):        32-bit, 64-bit
     Byte Order:            Little Endian
@@ -3859,7 +3854,7 @@ example, on our server lscpu gives the following output:
     NUMA node1 CPU(s):     18-35,90-107
     NUMA node2 CPU(s):     36-53,108-125
     NUMA node3 CPU(s):     54-71,126-143
-
+```
 This means that hardware threads 1-18 are on CPU0, while threads 73-90
 are the hyperthreads on CPU0. The specification Threads = 8 19 1 thus
 uses 8 threads on CPU1. Our recommendation is that you do some tests
@@ -3879,10 +3874,10 @@ This option instructs BPP to create a checkpoint file
 MCMC loop in BPP consists of
 `N = burnin + sampfreq*nsample` iterations, numbered as $1,2,\cdots,N$.
 There are two formats, where X, Y are whole numbers:
-
+```
     checkpoint = X
     checkpoint = X Y
-
+```
 In the first format, a single checkpoint is created after X MCMC
 iterations (including burnin).
 
@@ -3896,8 +3891,9 @@ specified for the outfile option, and Z is the number of the checkpoint
 file, starting from 1 and incrementing with every new checkpoint file.
 
 To resume from a checkpoint file, use the resume switch, i.e.
-
+```
     bpp --resume checkpoint-file.chk
+```
 
 Marginal Likelihood Calculations
 --------------------------------
@@ -3921,11 +3917,11 @@ use BFdriver to generate the control files and run the MCMC jobs from
 the command line.
 
 ### Compiling and running BFdriver
-
+```
     cc -o BFdriver -O3 BFdriver.c tools.c -lm
     BFdriver <controlfilename> <npoints> <scriptname.sh>
     BFdriver A00.ctl 16 tmp.sh
-
+```
 You may need to edit the following two lines inside BFdriver.c, and if
 you do, remember to compile the program after editing. Here bpp is
 assumed to be on your search path. You can use a full path for the
@@ -3933,17 +3929,18 @@ executable prorgam, such as `/home/gooduser/bin/bpp3.3`. Also the second
 line is for submitting the jobs using `qsub`. Here the limits are set to
 4G of RAM and 360 hours of running time. Check those values if necessary
 (and recompile).
-
+```
     fprintf(fcommand, "     echo \"bpp %s.b$I.ctl > log.b$I.txt\" > %s\n", ctlf, scriptf);
     fprintf(fcommand, "     qsub -S /bin/bash -l h_vmem=4G -l tmem=4G -l h_rt=360:0:0 -cwd %s\n", scriptf);
+```
 
 ### Running the program 
 
 Create a folder inside `frogs/`, say `bf1`:
-
+```
     mkdir frogs/bf1
     cd frogs/bf1
-
+```
 Prepare a control file (A00.ctl, say) for the A00 analysis in the
 folder. Check that it works. This should have a fixed species tree,
 which is ((K, C), (L, H)). Species delimitation and species tree
@@ -3951,9 +3948,9 @@ estimation should be turned off. The control file specifies the priors
 for theta, tau, and also specifies burnin, nsample, sampfreq etc. Run
 bpp to confirm that the control file works. Then run BDdriver as
 follows:
-
+```
     BFdriver A00.ctl 16 tree1.sh
-
+```
 Here A00.ctl is the control file we have prepared. $K = 16$ is the
 number of points in the Gauss-Legendre qradrature algorithm for
 numerical integration. You can use 8 for testing, and 16 or 32 for real
@@ -3963,9 +3960,9 @@ control file specified (`A00.ctl`) and creates 16 control files with
 names like `A00.b01.ctl`, \..., `A00.b16.ctl`. Each of those control
 files has the same content as `A00.ctl` except that one extra line is
 inserted at the beginning, like the following
-
+```
     BayesFactorBeta = 0.122298 *  w=0.124629.ctl
-
+```
 This specifies the beta value when the control file is used to run
 BPP.
 
@@ -3976,27 +3973,27 @@ into an excel file in `frogs/BFdriver.frogs.xls`.
 Third `BFdriver` creates a file named commands, which has the bash shell
 scripts for submitting the 16 jobs using `qsub`. You use the following
 to submit the jobs.
-
+```
     source commands
-
+```
 You can look at the content of `tree1.sh` to see the script for the last
 job:
-
+```
     more tree1.sh
-
+```
 which should have the content like the following:
-
+```
     bpp --cfile bpp.b16.ctl > log.b16.txt
-
+```
 You can use `qstat` to check the status of the 16 jobs you have
 submitted. When the jobs are running, they generate output files in the
 current folder, such as `mcmc.b01.txt`, `out.b01.txt`, and `log.b01.txt`
 (which logs the screen output). After all jobs are finished, you can use
 grep to extract the line with `BFbeta` from screen log (this command is
 at the bottom of the file commands).
-
+```
     grep BFbeta log.b*.txt
-
+```
 Then copy the ElnfX values into the excel file, and estimate the
 logarithm of the marginal likelihood by summing (`weights * ElnfX / 2`)
 over the 16 points. This gives the log marginal likelihood to be
@@ -4034,7 +4031,7 @@ Simulation Using BPP
 The simulation option of [bpp4]{.smallcaps} is the MCCOAL program in
 version 3.4 and earlier. This can be used to simulate gene trees and
 sequence alignments at multiple loci under the MSC ([Rannala and Yang 2003](https://doi.org/10.1093/genetics/164.4.1645) and
-MSci [Flouri et al 2020](https://doi.org/10.1093/molbev/msz296) models. While the inference program
+MSC-I [Flouri et al 2020](https://doi.org/10.1093/molbev/msz296) models. While the inference program
 BPP implements the JC model only, the simulation program
 allows GTR+G (and its special cases) and allows among-loci heterogeneity
 in the process of sequence evolution. The different loci can have
@@ -4050,14 +4047,15 @@ Look at the `README.txt` file for compiling the program. To run the
 program, type one of the following. The default control file name is
 `MCcoal.ctl`. Always look at the screen output to confirm that the
 program reads the control file correctly.
-
+```
     bpp --simulate MCcoal.ctl
     bpp --simulate MCcoalMigration.ctl
+```
 
 ### B1 Control-file options for simulating without migration
 
 Here is a sample control file.
-
+```
     seed = 12345
     seqfile = MySeq.txt 0 * comment out this line if you don't want seqs
     treefile = MyTree.tre  * comment out this line if you don't want trees
@@ -4081,7 +4079,7 @@ Here is a sample control file.
     Qrates = 0  10 5 5 5 5 10     * 1: fixed; 0: dirichlet, for TC TA TG CA CG AG
     basefreqs = 0  10  10  10  10   * 0: random, Dirichlet(aT,aC,aA,aG), for base frequencies
     alpha_siterate = 0  100  20  5  * G(a, b) for alpha for sites & K for discrete gamma
-
+```
 `seed` Use $-1$ to simulate different datasets every time the program is
 run. If you use a positive integer the data will stay exactly the same,
 which is a bad idea.
@@ -4175,10 +4173,10 @@ fixed at $\frac{1}{4}$ each), but it varies among loci.
 ($\pi_T, \pi_C, \pi_A, \pi_G$) can also be fixed or sampled from the
 Dirichlet distribution, like the `Qrates`. The two options are as
 follows.
-
+```
     basefreqs = 1 0.15 0.35 0.15 0.35  * 1: fixed; Base frequencies are for TCAG.
     basefreqs = 0  10  10 10  10       * 0: random, Dirichlet(aT, aC, aA, aG), for base frequencies
-
+```
 `alpha_siterate.` The gamma shape parameter ($\alpha$) for rate
 variation among sites of the same locus can be fixed or sampled from a
 gamma distribution. The possible options are as follows. When alpha is
@@ -4189,12 +4187,12 @@ with mean 1 [@Yang1993; @Yang1994]. The fourth option below will allow
 the program to sample $\alpha$ from $G(100, 20)$, with mean 5, for each
 locus and then use $G(\alpha, \alpha)$ to describe the among-site rate
 variation for the locus.
-
+```
     alpha_siterate = 1 0            * 1: alpha fixed at 0(inf), one rate for all sites at the locus
     alpha_siterate = 1  5.6 0       * 1: alpha fixed at 5.6, K = 0(inf) for continuous gamma
     alpha_siterate = 1  5.6 5       * 1: alpha fixed at 5.6, K = 5 categories for discrete gamma
     alpha_siterate = 0  100  20  5  * 0: alpha sampled from G(100, 20), with mean 5, K = 5 for discrete gamma
-
+```
 `locusrate.` The variables `locusrate` and `clock` are used to specify
 relaxed-clock models, with rate variation among branches and among loci.
 These are the same models as implemented in the inference program.
@@ -4203,12 +4201,12 @@ Please see notes in section ?? for details.
 `locusrate` specifies variable rates for different loci. The default is
 0, meaning that all loci have the same rate. To specify variable rates
 for loci, use the following format.
-
+```
     locusrate = 0 (default)
     locusrate = mu_bar a_mui prior
     locusrate = mu_bar a_mui
     locusrate = 1.0 5.0 dir
-
+```
 Here `mu_bar` is the mean rate across loci.
 
 If `prior = dir` (gamma-Dirichlet), the total rate ($L\bar\mu$) is
@@ -4218,15 +4216,15 @@ Large $\alpha$ (10 or 100, say) means that the rates are similar among
 loci, while small values (1 or 0.5, say) mean that rates are highly
 variable among loci. If `prior = iid` (conditional i.i.d.), the locus
 rates ($\mu_i$) are i.i.d. given the mean rate ($\bar\mu$):
-
+```
     mu_i ~ Gamma(a_mui, a_mui/mubar)
-
+```
 `clock.` This is used to specify strict-clock or relaxed-clock models.
 The default is `clock = 1` for strict clock, while `clock = 2` is the
 independents-rates model, and `clock = 3` is the correlated-rates model
 (which is implemented for the MSC model with no introgression and is
-unavailable for the MSci model).
-
+unavailable for the MSC-I model).
+```
     clock = 1 (default: strict clock)
     clock = 2 v_bar a_vi prior dist  * independent-rates model
     clock = 2 0.1 10 dir G    * gamma-dirichlet for loci & gamma for branches
@@ -4234,7 +4232,7 @@ unavailable for the MSci model).
     clock = 3 v_bar a_vi prior dist  * correlated-rates model
     clock = 3 0.1 10 iid G    * iid for loci & gamma for branches
     clock = 3 0.1 10 iid LN   * iid for loci & log-normal for branches
-
+```
 The specification (`clock = 2 0.1 10 dir G`) means the following. First
 the average variance parameter is = 0.1. Then the total $L\bar\mu$ is
 partitioned into $\mu_i$ (for $i = 1, 2, \cdots, L$) according to the
@@ -4291,7 +4289,7 @@ mutations/substitutions per site) is calculated by adding up those
 segments.
 
 ### B2 Simulating with migration (under the IM model)
-
+```
     migration = 7   * number of pops (order fixed by program)
 
     A     B     C     D    ABCD    AB   CD
@@ -4302,7 +4300,7 @@ segments.
     ABCD   0     0     0     0      0     0     0
     AB     0     0     0.7   0.8    0     0     1.9
     CD    -1    -1     0     0      0     0.9   0
-
+```
 The control file for simulating migration as well as coalescence
 includes a block as above (see the file `MCcoalMigration.ctl`). The line
 `migration = 7`, where 7 is the number of populations on the species
@@ -4337,7 +4335,7 @@ Features New To BPP 4.0
 
 -   i\. Multiple threads
 
--   ii\. Introgression model (MSci)
+-   ii\. Introgression model (MSC-I)
 
 -   iii\. Local-clock and locus-rates models (clock and locusrate)
 
