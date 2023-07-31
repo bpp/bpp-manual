@@ -509,7 +509,7 @@ follows:
     define ratites as NOT (chicken, ostrich);
     constraint = (chicken, (ostrich, ratites));
 ```
-Note that [bpp]{.smallcaps} interprets `outgroup` to mean that all
+Note that BPP interprets `outgroup` to mean that all
 species not on the list form a clade. In theory the `outgroup` keyword
 is unnecessary because you can always achieve the same thing by using
 `define` (especially with the `NOT` option) and `constraint`. However
@@ -525,7 +525,7 @@ whereas
 ```
 means (A,B) form a clade so that 3 rooted species trees are allowed.
 Finally if multiple compatible constraints are specified,
-[bpp]{.smallcaps} merges them into one so that
+BPP merges them into one so that
 ```
     constraint (E,F,G,H);
     constraint (F,G,H);
@@ -535,7 +535,7 @@ is equivalent to
 ```
     constraint (E,(F,(G,H)));
 ```
-If any two constraints are in conflict, [bpp]{.smallcaps} will abort
+If any two constraints are in conflict, BPP will abort
 with an error message. For example the following will cause an error.
 ```
     constraint = (E,F,G,H);
@@ -3439,7 +3439,7 @@ unguided species delimitation [@Yang2014a], is specified as follows.
     speciestree = 1    * NNI over species trees
     speciesmodelprior = 1  * 0: uniform LH; 1:uniform rooted trees; 2: uniformSLH; 3: uniformSRooted
 ```
-In this case, [bpp]{.smallcaps} will use the rjMCMC algorithm (either
+In this case, BPP will use the rjMCMC algorithm (either
 algorithm 0 or algorithm 1 of [@Yang2010] to change the species
 delimitation model and the NNI/SPR move to change the species tree
 topology.
@@ -3488,7 +3488,7 @@ the output format to be more consistent with the Newark format.
     (((H #0.000708: 0.004728, C #0.000740: 0.004728) #0.002814: 0.001190, G #0.000574: 0.005918) #0.004132: 0.007626, O #0.002036: 0.013544) #0.003835;
     (((H #0.000708: 0.004728, C #0.000740: 0.004728) #0.002814: 0.001190, G #0.000574: 0.005918) #0.003740: 0.007351, O #0.002786: 0.013268) #0.003506;
 ```
-The [bpp]{.smallcaps} summary of the sample will look like the
+The BPP summary of the sample will look like the
 following.
 ```
     Read tree sample, count trees & splits
@@ -3533,7 +3533,7 @@ We apply rjMCMC algorithm to the frogs data (A10:
 **The screen output** will look like the following. The species
 delimitation models that can be generated from the fixed guide tree are
 listed, together with their prior probabilities calculated by
-[bpp]{.smallcaps}. (As a check, if you use `usedata = 0`, the MCMC
+BPP. (As a check, if you use `usedata = 0`, the MCMC
 should be sampling from this prior distribution.) The species
 delimitation model is represented using four 0-1 flags for the four
 interior nodes 6, 7, 8, 9 in the guide tree, with 0 for 'collapsed' and
@@ -3750,7 +3750,7 @@ printed if $\theta$s are integrated out) and $\tau_0$ for the root age.
 These are followed by the log MSC gene-tree density and the average log
 likelihood.
 
-The summary of the sample by [bpp]{.smallcaps} has four sections, as
+The summary of the sample by BPP has four sections, as
 follows.
 ```
     Summarizing the species-tree sample in file mcmc.txt
