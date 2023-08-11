@@ -7,8 +7,6 @@ A test
 
 ## Overview
 
---------
-
 Bayesian Phylogenetics & Phylogeography (BPP) is a Bayesian Markov chain Monte Carlo (MCMC) program
 for analyzing DNA sequence alignments of multiple loci from multiple
 closely-related species under the multispecies coalescent (MSC) model
@@ -66,8 +64,7 @@ well as example control files, are provided in
 provides examples illustrating the four types of analyses
 ([Yang 2015](https://doi.org/10.1093/czoolo/61.5.854); [Flouri et al 2020](https://inria.hal.science/PGE/hal-02536475)).
 
-Model Parameters
-----------------
+### Model Parameters
 
 The basic parameters in the MSC model include the **species divergence times** 
 ( $\tau$ ) and mutation scaled **population sizes**
@@ -84,8 +81,10 @@ $\mu$, then the estimated divergence time in years is, $\tau'$, is
 
 $\tau' = \frac{\tau}{\mu}$ 
 
-and the diploid effective population size is 
-$$N = \frac{\theta}{4\mu}$$ 
+and the diploid effective population size is
+
+$N = \frac{\theta}{4\mu}$ 
+
 For a species tree with $s$ species,
 there are ($s – 1$) divergence times ($\tau$) and at most ($2s – 1$)
 population size parameters ($\theta$). Analysis A00 estimates those
@@ -100,8 +99,7 @@ The Isolation-with-migration (IM) model adds a matrix of
 **instantaneous migration rates** (**M**) (see [Isolation With Migration Models](#isolation-with-migration-models)) 
 For reviews of the MSC model, see [Yang 2014](https://global.oup.com/academic/product/molecular-evolution-9780199602605?lang=es&cc=gb) (Chapter 9), [Xu 2016](https://doi.org/10.1534/genetics.116.190173) and [Rannala et al 2020](https://inria.hal.science/PGE/hal-02535622).
 
-Model Assumptions
------------------
+### Model Assumptions
 
 The MSC model implemented in BPP makes two basic assumptions about the
 data: *no recombination between sites of the same locus*, and *free
@@ -173,8 +171,7 @@ estimates. Similarly, it is incorrect to filter loci based on bootstrap
 support values and use only those loci with a high "phylogenetic
 information" signal.
 
-How to Cite BPP
----------------
+### How to Cite BPP
 
 If you publish results obtained using BPP you should cite the version
 number of the BPP release you used as well as the canonical citation,
@@ -202,11 +199,7 @@ following (replace the specific values in bold with those you used):
 > by the uniform Dirichlet distribution (Yang and Rannala, 2010, eq. 2). Each analysis is run at least twice
 > to confirm consistency between runs.”
 
-
-
-
-Installing and Running BPP
-==========================
+## Installing and Running BPP
 
 This manual applies to BPP versions 4.1 and later. The
 program is written in C and executables are available for Windows, Mac
@@ -225,8 +218,7 @@ examples below that the `$` symbol represents the shell prompt, type
 the command listed *after* this prompt symbol (your prompt symbol may
 be different).
 
-Obtaining BPP
--------------
+### Obtaining BPP
 
 Executables and source code for the most recent BPP
 release are always available at:\
@@ -245,8 +237,7 @@ $ cd bpp-4.4.1-linux-x86_64/
 ```
 You are now ready to proceed to [BPP Trial Run](#bpp-trial-run)
 
-Using the Command Line
-----------------------
+### Using the Command Line
 
 BPP is a command-line program, so the preferred way of
 running it is to open a terminal application and execute the program
@@ -259,10 +250,9 @@ Windows:\
 Mac OSX:\
 <http://abacus.gene.ucl.ac.uk/software/CommandLine.MACosx.pdf>
 
-Compiling the BPP Program
--------------------------
+### Compiling the BPP Program
 
-### Requirements
+#### Requirements
 
 To compile the program you will need to have a C compiler and the Make
 program installed on your machine. To test whether this software is
@@ -293,7 +283,7 @@ then you (or your system) administrator will need to install the
 compiler software (using a package manager such as apt on Ubuntu, for
 example) before you can compile BPP.
 
-### Downloading and compiling the source code
+#### Downloading and compiling the source code
 
 If you have the necessary software for compiling you can download the C
 source code for the latest release from\
@@ -323,8 +313,7 @@ $ make
 ```
 You are now ready to proceed to [BPP Trial Run](#bpp-trial-run)
 
-BPP Trial Run
--------------
+### BPP Trial Run
 
 Run the program from the command line (rather than double-clicking the
 executable) so that you will see any potential error messages. Change
@@ -369,8 +358,7 @@ When posting on the forum, please specify the exact command you typed
 and the error message you received (preferably by copying and pasting
 this information from your terminal or attaching a screen shot).
 
-Input File Formats
-==================
+## Input File Formats
 
 Two input files are required for every BPP analysis, the sequence file
 and the control file. If more than one species is being analyzed an Imap
@@ -379,8 +367,7 @@ when specific options are specified in the control file. Here
 we describe the content and format specifications of the sequence, Imap
 and control files that will be needed for most BPP analyses.
 
-Sequence File
--------------
+### Sequence File
 
 The sequence alignments must be in the phylip/paml format, with one
 alignment following the other, all in one file. An alignment is called a
