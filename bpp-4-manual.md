@@ -3,10 +3,10 @@ Quick Start
 ===========
 A test
 
-BPP Explained
-=============
+# BPP Explained
 
-Overview
+## Overview
+
 --------
 
 Bayesian Phylogenetics & Phylogeography (BPP) is a Bayesian Markov chain Monte Carlo (MCMC) program
@@ -81,7 +81,9 @@ substitution rate per site per year is known. For example, if $\tau$ is
 an estimated divergence time in units of expected substitutions per site
 (from a BPP analysis) and the substitution rate per site per year is
 $\mu$, then the estimated divergence time in years is, $\tau'$, is
-$$\tau' = \frac{\tau}{\mu}$$ 
+
+$\tau' = \frac{\tau}{\mu}$ 
+
 and the diploid effective population size is 
 $$N = \frac{\theta}{4\mu}$$ 
 For a species tree with $s$ species,
