@@ -1,11 +1,8 @@
+# BPP Documentation
 
-Quick Start
-===========
-A test
+## BPP Explained
 
-# BPP Explained
-
-## Overview
+### Overview
 
 Bayesian Phylogenetics & Phylogeography (BPP) is a Bayesian Markov chain Monte Carlo (MCMC) program
 for analyzing DNA sequence alignments of multiple loci from multiple
@@ -664,19 +661,19 @@ italic (only needed if changing defaults) and then the solid background and regu
 ## BPP control file variables
 
 ### 1 seed
-----------------------
+----------------
 ```
 seed = (-d,+d)
 ```
-**DESCRIPTION**\
-Specifies the seed used for the random number generator.\
-**VALUES**\
+**DESCRIPTION**  
+Specifies the seed used for the random number generator.  
+**VALUES**  
 `-d`, use the wall clock (in Windows) or white noise (in Linux) to
-generate a seed (store seed in file `SeedUsed`).\
-`+d`, use +d as the seed.\
-**DEFAULT**\
-`-1`\
-**COMMENTS**\
+generate a seed (store seed in file `SeedUsed`).  
+`+d`, use +d as the seed.  
+**DEFAULT**  
+`-1`  
+**COMMENTS**  
 Using the same positive integer seed will produce identical results in
 different runs, which is useful for debugging, and using different
 positive integers in different runs produces different results. Using
@@ -687,7 +684,7 @@ runs be sure to use -d. The positive integer seed automatically
 generated when using option -d is stored in a file named SeedUsed and
 can be used explicitly to replicate a result. It is recommended that you
 run each analysis at least twice using different seeds to confirm that
-the results are stable across runs.\
+the results are stable across runs.  
 **EXAMPLES**
 ```
 seed = -1
