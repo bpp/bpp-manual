@@ -2874,7 +2874,12 @@ The input file `msci.txt` uses four commands: `tree`, `define`, `hybridization`,
 - `hybridization` defines a hybridization/introgression event by specifying the source and target branches (which represent the source and target populations involved).
 - `bidirection` defines a bidirectional introgression (BDI) event.
 
-One may think of the binary species tree as describing the history of species divergences and add introgression events onto it as new (horizontal) branches.  The introgression probability is assigned to the newly created introgression branch. A series of examples follow. The introgression graph is displayed in a figure followed by the `msci=create` encoding and the resulting extended Newick format.
+One may think of the binary species tree as describing the history of species divergences and add introgression events onto it as new (horizontal) branches.  The introgression probability is assigned to the newly created introgression branch. 
+
+#### Examples using --msci-create
+A series of examples follow. The introgression graph is displayed in a figure followed by the `msci=create` encoding and the resulting extended Newick format.
+![Fig-MSCI2](https://github.com/bpp/bpp-manual/blob/36012225be26f3b82593c9a35eaaa3e7217a5fd0/figures/msci_example2.png?raw=true)
+
 ```
 # Model A, version 1
 tree (A,(B,C));
