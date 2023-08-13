@@ -65,13 +65,16 @@ provides examples illustrating the four types of analyses
 
 The basic parameters in the MSC model include the **species divergence times** 
 ( $\tau$ ) and mutation scaled **population sizes**
-$$\theta = 4N\mu$$ where $N$ is the effective population size and $\mu$
+
+$\theta = 4N\mu$
+
+where $N$ is the effective population size and $\mu$
 is the mutation rate per site per generation. Note that $\theta$
 specifies the average proportion of sites that have different bases when
 comparing two sequences sampled at random from the population. Both
 $\tau$ and $\theta$ are measured in units of expected number of
 mutations per site ( $\tau$ can be converted to units of years if the
-substitution rate per site per year is known. For example, if $\tau$ is
+substitution rate per site per year is known). For example, if $\tau$ is
 an estimated divergence time in units of expected substitutions per site
 (from a BPP analysis) and the substitution rate per site per year is
 $\mu$, then the estimated divergence time in years is, $\tau'$, is
@@ -90,10 +93,9 @@ parameters when the species delimitation and species tree are fixed
 and model probabilities of the different MSC models. The
 multispecies-coalescent-with-introgression (MSC-I) model, first
 implemented in BPP version 4.1 and described in
-[Introgression and Migration Models](#introgression-and-migration-models), adds introgression nodes to the tree, each
+[The MSC-I Model](#the-msc-i-model), adds introgression nodes to the tree, each
 with a new parameter, the **introgression probability** ($\varphi$) see [Flouri et al 2020](https://doi.org/10.1093/molbev/msz296). 
-The Isolation-with-migration (IM) model adds a matrix of
-**instantaneous migration rates** (**M**) (see [Isolation With Migration Models](#isolation-with-migration-models)) 
+The multispecies-coalescent-with--migration (MSC-M) model, first implemented in BPP version 4.6 and described in [The MSC-M Model](#the-msc-m-model), adds a matrix of **instantaneous migration rates** (**M**). 
 For reviews of the MSC model, see [Yang 2014](https://global.oup.com/academic/product/molecular-evolution-9780199602605?lang=es&cc=gb) (Chapter 9), [Xu 2016](https://doi.org/10.1534/genetics.116.190173) and [Rannala et al 2020](https://inria.hal.science/PGE/hal-02535622).
 
 ### Model Assumptions
@@ -132,14 +134,15 @@ The program allows the option of either a constant rate (strict
 molecular clock) or variable rates of substitution (relaxed molecular
 clocks) among lineages. Different substitution models are available,
 with the most complex (parameter rich) being the General Time-Reversible
-(GTR) model and the simplest the JC69 mutation model [@Jukes1969]. All
-the models correct for multiple hits at individual sites. The use of the
-JC69 model and the strict molecular clock model should be limited to
+(GTR) model and the simplest the Jukes-Cantor (JC69) mutation model. All
+the models correct for multiple hits at individual sites (see [Substitution Models](#substitution-models)). 
+The use of the JC69 model and the strict molecular clock model should be limited to
 closely related species with sequence divergence not much higher than
 10%. Sequences from distantly related species should be analyzed using a
 GTR substitution model in combination with one of the relaxed clock
-models. Models allowing substitution rate variation among sites and
-among loci are also implemented in BPP (see [Substitution Models](#substitution-models))
+models (see [Among-species rate variation](#among-species-rate-variation). Models allowing substitution rate variation among sites 
+(see [Among-site rate variation](#among-site-rate-variation)) and
+among loci (see [Among-locus rate variation](#among-locus-rate-variation))are also implemented in BPP (see [Models of Substitution Rate Variation](#models-of-substitution-rate-variation)). 
 
 ### Mitochondrial data
 
@@ -875,7 +878,7 @@ iterations.
 If `finetune = 1` (automatic optimization) then `burnin` has to
 be $>200$.  
 **COMMENTS**  
-The total number of MCMC iterations is `burnin` + `nsample` $\times$ `sampfreq`.\
+The total number of MCMC iterations is `burnin` + `nsample` $\times$ `sampfreq`.  
 **EXAMPLES**
 ```
 burnin = 100
@@ -894,7 +897,7 @@ to the output file specified by `mcmcfile`.
 `+d`, a positive integer specifying the interval between samples
 from the MCMC.  
 **COMMENTS**  
-The total number of MCMC iterations is `burnin` + `nsample` $\times$ `sampfreq`.\
+The total number of MCMC iterations is `burnin` + `nsample` $\times$ `sampfreq`.  
 **EXAMPLES**
 ```
 sampfreq = 2
@@ -1061,9 +1064,8 @@ The variable `speciesmodelprior` must be defined if either (or both)
 options `speciesmodelprior = 0` or `speciesmodelprior = 1` may
 be used.  
 **COMMENTS**  
-The priors specified by options 2 and 3 are discussed by [@Yang2014a]
-and implemented by [@Yang2015]. The prior specified by option 3 may be
-suitable when there are many populations.  
+The priors specified by options 2 and 3 are described in [Yang and Rannala 2014](https://doi.org/10.1093/molbev/msu279).
+The prior specified by option 3 may be suitable when there are many populations.  
 **EXAMPLES**
 ```
 speciesmodelprior = 0
@@ -1214,7 +1216,7 @@ values.
 parameters in the GTR model.  
 `+f +f +f +f +f +f`, specify the exchangeability parameters in the
 order $a, b, c, d, e, f$ for TC, TA, TG, CA, CG, and AG, as described in
-@Yang1994a.  
+[Yang 2014](https://global.oup.com/academic/product/molecular-evolution-9780199602605?lang=es&cc=gb).  
 **DEFAULT**  
 `0 1 2 1 1 2 1`  
 **DEPENDENCIES**  
@@ -1564,8 +1566,8 @@ locus rates ($\mu_i$) given the mean rate ($\bar\mu$). The option prior
 can take two values dir (for Gamma-Dirichlet rates for loci), and iid
 (for conditional i.i.d. or hierarchical prior).
 `locusrate = 2 LocusRateFileName` specifies the fixed-rates model of
-locus-rate variation [@Burgess2008]. This is the strategy used by
-@Yang2002, with the relative rates estimated by the distance to an
+locus-rate variation ([Burgess and Yang 2008](https://doi.org/10.1093/molbev/msn148)). This is the strategy used by
+[Yang 2002](https://doi.org/10.1093/genetics/162.4.1811), with the relative rates estimated by the distance to an
 outgroup species. The relative locus rates are listed in the file: there
 should be as many numbers in the file, separately by spaces or line
 returns, as the number of loci (nloci). The program re-scales those
@@ -1593,14 +1595,14 @@ $i = 1, 2, \cdots, L$, where $L$ is the number of loci (`nloci`). If
 `prior = dir` (for Gamma-Dirichlet distribution of locus rates), the
 total rate $L\bar\mu$, given the mean rate ($\bar\mu$), is partitioned
 into locus rates ($\mu_i$), using the concentration parameter
-$\alpha_{\mu_i}$ The model and notation follow @Burgess2008 [eq. 4] and
-@dosReis2014 [eqs. 3-5]. If `prior = iid` (for conditional-i.i.d. or
+$\alpha_{\mu_i}$ The model and notation follow [Burgess and Yang 2008](https://doi.org/10.1093/molbev/msn148) [eq. 4] and
+[Dos Reis et al 2014](https://doi.org/10.1093/sysbio/syu020) [eqs. 3-5]. If `prior = iid` (for conditional-i.i.d. or
 hierarchical prior of locus rates), the locus rates ($\mu_i$) are
 i.i.d. given the mean rate ($\bar\mu$):
 
 $\mu_i \sim \mathrm{G}(\alpha_{\mu_i},\alpha_{\mu_i}/\bar{\mu})$. 
 
-This model is described in @Zhu2015 [eq. 8] and is also implemented in
+This model is described in [Zhu et al 2015](https://doi.org/10.1093/sysbio/syu109) [eq. 8] and is also implemented in
 [mcmctree]{.smallcaps}. In both the Gamma-Dirichlet and the conditional
 i.i.d. models, parameter $\alpha_{\mu_i}$ is inversely related to the
 extent of rate variation among loci, with a large $\alpha_{\mu_i}$
@@ -1609,7 +1611,7 @@ are probably similar, so $\alpha_{\mu_i} =$ 10 or 20 may be reasonable,
 while for coding loci or exons, $\alpha_{\mu_i} =$ 2 or 1 may be
 appropriate. The $\alpha_{\mu_i}$ parameter may affect the estimates of
 the population size parameter ($\theta$) for the root node on the
-species tree [@Burgess2008]. The $L$ locus rates ($\mu_i$) are
+species tree ([Burgess and Yang 2008](https://doi.org/10.1093/molbev/msn148)). The $L$ locus rates ($\mu_i$) are
 parameters in the model. If $\alpha_{\bar{\mu}} > 0$, the mean rate
 ($\bar\mu$) is a parameter as well.  
 **EXAMPLES**
@@ -1711,14 +1713,14 @@ product of the rate and the time duration for the segment).
 
 The option `clock = 3` is similar to clock 2 but specifies the
 autocorrelated-rates model. `clock = 3` with the log-normal distribution
-(LN) specifies the geometric Brownian motion model of @Rannala2007. This
+(LN) specifies the geometric Brownian motion model of [Rannala and Yang 2007](https://doi.org/10.1080/10635150701420643). This
 assigns a rate to each species-tree branch, that is, to the mid-point of
 the branch. Given the rate at the species-tree root ($\mu_i$ at locus
 $i$), the rates for the two branches around the root are specified. Then
 given the rate for each ancestral branch, the rates for its two daughter
 branches are specified, by integrating over the rate at the internal
 node that is ancestral to the daughter branches. See figure 1 and
-equations 3-8 in @Rannala2007. The rates for all species-tree branches
+equations 3-8 in [Rannala and Yang 2007](https://doi.org/10.1080/10635150701420643). The rates for all species-tree branches
 are thus assigned through a pre-order tree traversal, starting from the
 root moving to the tips, until all branches are visited. If `clock = 3`
 is specified with the gamma distribution (option `G`), the model works
@@ -1777,7 +1779,7 @@ vary among loci, which may be useful for analyses combining data from
 autosomal loci, loci on sex chromosomes, and/or mitochondrial loci. Such
 mixed data, may be expected to have proportional differences in
 effective population sizes among loci so that inheritance scalars
-[@Hey2004] should be applied. For example, in diploid sexual organisms
+[Hey and Nielsen 2004](https://doi.org/10.1534/genetics.103.024182) should be applied. For example, in diploid sexual organisms
 with strict maternal inheritance of mtDNA we expect the effective
 population size of a mitochondrial locus to be $1/4$ that of a nuclear
 locus. Other factors such as natural selection may also cause $\theta$
@@ -1787,8 +1789,11 @@ The first option (`heredity = 1`) specifies that locus-specific
 inheritance scalars $s_i$ be estimated, using a Gamma prior with
 parameters $\alpha$ and $\beta$ specified by the user. The prior mean
 and variance of $s_i$ are:
-$$ \textrm{Mean}(s_i) = \frac{\alpha}{\beta}, $$
-$$ \textrm{Var}(s_i) = \frac{\alpha}{\beta^2}.$$
+
+$\textrm{Mean}(s_i) = \frac{\alpha}{\beta}$,
+
+$\textrm{Var}(s_i) = \frac{\alpha}{\beta^2}$.
+
 For example, `(heredity = 1 4 4)` specifies a Gamma prior
 $\textrm{G}(4, 4)$, with mean $4/4 = 1$ and variance $1/4$, for the
 inheritance scalar at each locus. The MCMC then generates the posterior
@@ -1961,7 +1966,7 @@ purposes:
 It is good practice to make use of these conventions for comments in
 your own bpp control files.
 
-### Explanation of the control file variables
+### Control file variables explained
 
 Here we walk through the variables in the above control file example
 explaining the meaning of each and the valid values that can be
@@ -2116,7 +2121,7 @@ $\theta$ parameters in the MSC model (for both modern species and
 extinct ancestral species) are assigned the inverse-gamma prior with the
 same parameters.
 
-**Analytical integration of $\theta$ and the inverse gamma prior**\
+**Analytical integration of $\theta$ and the inverse gamma prior**  
 The inverse-gamma is a conjugate prior for $\theta$ ([Hey and Nielsen 2007](https://doi.org/10.1073/pnas.0611164104))
 which means that both the prior and the posterior of $\theta$ will be
 inverse-gamma. Use of the conjugate priors allows the $\theta$
@@ -2213,7 +2218,7 @@ using the R package or tracer. For other analyses (A01, A10, and A11),
 the dimension of the sample is changing and cannot be analysed using
 such traceplot programs.
 
-**Combining results from different runs**\
+**Combining results from different runs**  
 The variable setting `print = -1` specifies that BPP will
 not perform an MCMC analysis and will instead read an existing MCMC
 sample file and summarize the results. Thus, with setting `print = 1`,
@@ -2232,8 +2237,7 @@ The header lines of any files being concatenated should also be deleted.
 Do not combine the MCMC samples from different types of analyses (i.e.,
 using different data files and/or variable settings or priors).
 
-Substitution Models
-===================
+## Substitution Models
 
 BPP includes several models that allow more realistic representations of
 the processes underlying the evolution of DNA and amino acid sequences.
@@ -2275,10 +2279,9 @@ substitution rate variation, implemented in BPP, the parameters and
 priors associated with these models, and how to specify the different
 models in the BPP control file.
 
-DNA Substitution Models
------------------------
+### DNA Substitution Models
 
-### Jukes-Cantor model
+#### Jukes-Cantor model
 
 One of the earliest and simplest models of DNA substitution, the
 Jukes-Cantor model, assumes that all possible changes between the 4
@@ -2298,7 +2301,7 @@ model (other than the substitution rate) so no additional control file
 variables associated with the JC69 substitution model need to be
 specified.
 
-### GTR model
+#### GTR model
 
 The General Time-Reversible (GTR) model implemented in BPP allows
 different rates of substitution between different nucleotide pairs, with
@@ -2345,12 +2348,18 @@ determines the variance of the prior probability distribution on
 exchangeability parameters. The variance is inversely proportional to
 the absolute magnitude of the variables. The prior on the free
 parameters $a, b, c, d, e$ is a Dirichlet distribution with parameters
-$$\alpha_a = 10, \alpha_b = \alpha_c = \alpha_d = \alpha_e = 5, \texttt{and} \, \alpha_f = 10$$
+
+$\alpha_a = 10, \alpha_b = \alpha_c = \alpha_d = \alpha_e = 5, \texttt{and} \, \alpha_f = 10$
+
 The rates generated from the Dirichlet sum to 1 and are rescaled. If we
 define
-$$\alpha = \alpha_a + \alpha_b + \alpha_c + \alpha_d + \alpha_e + \alpha_f$$
+
+$\alpha = \alpha_a + \alpha_b + \alpha_c + \alpha_d + \alpha_e + \alpha_f$
+
 then the mean for $a$ is $\alpha_a/\alpha$ and the variance for $a$ is
-$$\textrm{Var}(a) = \frac{\frac{\alpha_a}{\alpha}\left(1-\frac{\alpha_a}{\alpha}\right)}{\alpha + 1}.$$
+
+$\textrm{Var}(a) = \frac{\frac{\alpha_a}{\alpha}\left(1-\frac{\alpha_a}{\alpha}\right)}{\alpha + 1}$.
+
 The means and variances of the other parameters are the same
 (substituting subscripts). Thus, in this example, the mean for $a$ is
 $\alpha_a/\alpha = 10/40 = 1/4$ and the variance is
@@ -2390,7 +2399,7 @@ model is chosen and `Qrates` and `basefreqs` are not specified in the
 control file default values of `Qrates = 0 1 2 1 1 2 1` and
 `basefreqs = 0 1 1 1 1` will be used.
 
-### Other DNA substitution models
+#### Other DNA substitution models
 
 A range of models are available that fall between the JC69 model and the
 GTR model in terms of complexity and number of parameters. The
@@ -2398,7 +2407,7 @@ additional models available include: K80, F81, HKY, T92, TN93, and F84.
 The priors on the parameters of these models are pre-specified by the
 program.
 
-### Amino acid substitution models
+#### Amino acid substitution models
 
 There are many amino acid substitution models available. These models
 completely specify the substitution matrix so there are no free
@@ -2459,9 +2468,12 @@ distribution is used to efficiently approximate the Gamma distribution
 and ncatG is the number of rate categories used in the approximation --
 more rate categories provide a better approximation but incur greater
 computational expense. A value for ncatG of 4 is recommended. The
-variance and mean of the prior on $\alpha$ are: $$\begin{aligned}
+variance and mean of the prior on $\alpha$ are: 
+
+$\begin{aligned}
   \textrm{Mean}(\alpha) & = & \frac{\alpha_p}{\beta_p}, \nonumber \\
-  \textrm{Var}(\alpha) & = & \frac{\alpha_p}{\beta_p^2} \nonumber\end{aligned}$$
+  \textrm{Var}(\alpha) & = & \frac{\alpha_p}{\beta_p^2} \nonumber\end{aligned}$
+  
 As an example, the setting `alphaprior = 1 1 4` specifies a prior on the
 shape parameter $\alpha$ (with 4 rate categories) that has a mean and
 variance of 1, thus the expected variance of $\alpha$ is also 1. This is
@@ -2480,12 +2492,17 @@ locus.
 #### Prior distribution of the mean rate among loci
 
 The mean rate across loci is
-$$\bar{\mu} = \frac{1}{L} \sum_{i=1}^L \mu_i.$$ The prior distribution
-for the mean rate across loci $\bar{\mu}$ is a Gamma distribution with
+
+$\bar{\mu} = \frac{1}{L} \sum_{i=1}^L \mu_i$.
+
+The prior distribution for the mean rate across loci $\bar{\mu}$ is a Gamma distribution with
 parameters $\alpha_{\bar{\mu}}$ and $\beta_{\bar{\mu}}$ and mean and
-variance, $$\begin{aligned}
+variance, 
+
+$\begin{aligned}
   \textrm{Mean}(\bar{\mu}) & = & \frac{\alpha_{\bar{\mu}}}{\beta_{\bar{\mu}}}, \nonumber \\
-  \textrm{Var}(\bar{\mu}) & = & \frac{\alpha_{\bar{\mu}}}{\beta_{\bar{\mu}}^2}. \nonumber\end{aligned}$$
+  \textrm{Var}(\bar{\mu}) & = & \frac{\alpha_{\bar{\mu}}}{\beta_{\bar{\mu}}^2}. \nonumber\end{aligned}$
+  
 If there are no fossil calibrations in the species tree, the rates
 should all be relative. In this case, to avoid overparameterization we
 suggest fixing the mean substitution rate across loci to be
@@ -2512,7 +2529,9 @@ and [Dos Reis et al 2014](https://doi.org/10.1093/sysbio/syu020) eqs.3-5.
 If `prior = iid` (Conditional-i.i.d. or hierarchical prior of locus rates), the locus
 rates, $\mu_i$, are independent and identically distributed i.i.d. given
 the mean rate $\bar\mu$, so the prior distribution of $\mu_i$ is:
-$$\mathtt{P}(\mu_i) = \textrm{Gamma}(\alpha_{\mu_i}, \alpha_{\mu_i/\bar{\mu}}).$$
+
+$\mathtt{P}(\mu_i) = \textrm{Gamma}(\alpha_{\mu_i}, \alpha_{\mu_i/\bar{\mu}})$.
+
 This model is described in [Zhu et al 2015](https://doi.org/10.1093/sysbio/syu109) eq.8 and implemented in
 [mcmctree]{.smallcaps}. In both the Gamma-Dirichlet and the Conditional
 i.i.d. models, the parameter $\alpha_{\mu_i}$ is inversely related to
@@ -2628,7 +2647,9 @@ substitution rates among species (branches of the species tree). To
 accomodate this, the variance of the substitution rate among species is
 allowed to vary among loci. The prior distribution of the average
 variance $\bar{\nu}$ for all loci is
-$$P(\bar{\nu}) = \textrm{Gamma}(\alpha_{\bar{\nu}},\beta_{\bar{\nu}}),$$
+
+$P(\bar{\nu}) = \textrm{Gamma}(\alpha_{\bar{\nu}},\beta_{\bar{\nu}})$,
+
 so that the expected average variance is
 $\alpha_{\bar{\nu}}/\beta_{\bar{\nu}}$. If this value is larger loci
 depart more from the molecular clock on average. Conditional on the
@@ -2661,8 +2682,10 @@ lineages may have different rates at the locus, and those rates are
 independent among loci. If distribution = G (for gamma), the rate for
 species-tree branch $j$ at locus $i$ has the following gamma
 distribution
-$$r_{ij} | \mu_i, \nu_i \sim G(\mu_i^2/\nu_i, \mu_i/\nu_i).$$ This has
-mean $\mu_i$ and variance $\nu_i$.
+
+$r_{ij} | \mu_i, \nu_i \sim G(\mu_i^2/\nu_i, \mu_i/\nu_i)$.
+
+This has mean $\mu_i$ and variance $\nu_i$.
 
 Alternatively if distribution = `LN` (for log-normal), the rate for
 species-tree branch $j$ at locus $i$ has the following the log-normal
@@ -2714,9 +2737,9 @@ rate and the time duration for the segment).
 
 The `clock` variable takes 6 arguments when using a relaxed clock as
 follows:
-
-    clock = clock_type a_vbar b_vbar a_vi prior dist
-
+```
+clock = clock_type a_vbar b_vbar a_vi prior dist
+```
 the argument `clock_type` takes on of three values: 1 (strict clock,
 default), 2 (relaxed clock with i.i.d rates) and 3 (relaxed clock with
 autocorrelated rates). In the case of the strict clock there are no
@@ -2733,14 +2756,14 @@ and among-branch variance $\nu_i$.
 
 Several example control file entries for the `clock` variables are
 provided below:
-
+```
     # (1: strict clock, default)
     clock = 1 
     # (2: independent-rates)
     clock = 2 10.0 100.0 5.0 iid G
     # (3: correlated-rates)
     clock = 3 10.0 100.0 5.0 iid G
-
+```
 The specification (`clock = 2 10.0 100.0 5.0 iid G`) means the
 following. First $\bar\nu$ is assigned a gamma distribution
 $G(10.0, 100.0)$, with mean 0.1. Given $\bar\nu$, the conditional
@@ -2754,7 +2777,7 @@ distribution (`prior = dir`) with concentration parameter $\alpha = 5.0$
 (`a_vi`). Again large $\alpha$ means the same extent of clock violation
 at different loci.
 
-**Choosing $\alpha_{\bar{\nu}}$ and $\beta_{\bar{\nu}}$**\
+**Choosing $\alpha_{\bar{\nu}}$ and $\beta_{\bar{\nu}}$**  
 A larger variance $\nu_i$ represents a greater violation of the
 molecular clock at locus $i$. Note that $\nu_i$ will be similar to
 $\bar\nu$, especially if $\alpha_{\bar{\nu}}$ (`a_vi`) is large, and
@@ -2763,8 +2786,7 @@ $\bar\nu$ has prior mean $\alpha_{\bar{\nu}}/\beta_{\bar{\nu}}$. If
 log-normal model $\nu = 0.5$ suggests a serious violation of the clock
 while $\nu < 0.1$ represents only a slight violation.
 
-Introgression and Migration Models
-====================
+## Introgression and Migration Models
 
 Another important factor influencing the results of species tree
 inference is introgression (gene flow) between species (or populations).
@@ -2781,8 +2803,7 @@ program will then estimate the parameters of the MSC-I (or MSC-M) models
 using MCMC. We hope to implement MCMC moves that change the MSC-I (or MSC-M)
 models and species tree topology in the future.
 
-The MSC-I Model
---------------------------------
+### The MSC-I Model
 
 The MSC-I model involves three types of parameters: the species
 divergence or hybridization times ($\tau$s), the population size
@@ -2791,7 +2812,7 @@ parameters ($\theta$s), and the introgression probabilities
 tree with one or more introgression events as well as a prior
 distribution for the introgression probability $\varphi$. The MSC-I model
 is specified in the `species&tree` block using the extended Newick
-notation [@Cardona2008]
+notation ([Cardona et al 2008](https://doi.org/10.1186/1471-2105-9-532))
 ```
     species&tree = 3  A  B  C
     10 10 10
@@ -2818,27 +2839,163 @@ A and B.
 
 ![MSCI-models](https://github.com/bpp/bpp-manual/blob/191d107413566b145360597fdfdfef3e68ce9173/figures/fig-msci-models.png?raw=true)
 
-**Four different types of MSC-I models implemented in BPP**
-The models are specified using the extended Newick format, as follows:\
-` (A): ((A, (C)H[&phi=0.5,&tau-parent=yes])S, (H[&tau-parent=yes], B) T)R; (B): ((A, (C)H[&phi=0.5,&tau-parent=no])S, (H[&tau-parent=yes], B) T)R; (C): ((A, (C)H[&phi=0.5,&tau-parent=no])S, (H[&tau-parent=no], B) T)R; (D): ((A, (B) Y[&phi=0.3])X, (X[&phi=0.1])Y)R; (D): ((A, (B)Y)X, (X)Y)R; (D): ((A, Y)X, (B, X)Y) R; (D): ((A, y)x, (B, x) y) r; `
-
+**Four different types of MSC-I models implemented in BPP**  
+The models are specified using the extended Newick format, as follows:
+```
+(A): ((A, (C)H[&phi=0.5,&tau-parent=yes])S, (H[&tau-parent=yes], B) T)R; 
+(B): ((A, (C)H[&phi=0.5,&tau-parent=no])S, (H[&tau-parent=yes], B) T)R; 
+(C): ((A, (C)H[&phi=0.5,&tau-parent=no])S, (H[&tau-parent=no], B) T)R; 
+(D): ((A, (B) Y[&phi=0.3])X, (X[&phi=0.1])Y)R; 
+(D): ((A, (B)Y)X, (X)Y)R; 
+(D): ((A, Y)X, (B, X)Y) R; 
+(D): ((A, y)x, (B, x) y) r;
+```
 The control file variable `phiprior` specifies the prior probability for
 the $\varphi$ parameter, which is a beta distribution with parameters
 $a$ and $b$. The syntax is
-
+```
     phiprior = a b
-
+```
 where $a$ and $b$ are positive numbers. For example, `phiprior = 1 1`
 specifies the beta prior beta($a, b$) with $a = 1$ and $b = 1$ for
 $\varphi$, the introgression probability under the MSC-I model.
 
-Odds and Ends
-=============
+#### Autogeneration of extended newick graphs
+Starting with BPP release 4.4.0, we have changed the definition of introgression probability ($\varphi$) so that it is assigned to the horizontal (introgression) branch.  This note illustrates the `msci-create` feature in bpp, which generates extended Newick notation for the MSC-I model from a data file which contains a binary species tree with introgression events specified using source and target branches on the tree.
+The `--msci-create` option has been available since [BPP 4.2.1](https://github.com/bpp/bpp/issues/114).  The user prepares a input file (named `msci.txt` in our example), which includes a binary species tree in Newick format and specifies the introgression events by identifying the source and target branches involved in the introgression.  Run bpp using the following command:
+```
+$ bpp --msci-create msci.txt
+```
+This generates extended Newick notation for the MSC-I model, which can be copied into a bpp control file. 
+The input file `msci.txt` uses four commands: `tree`, `define`, `hybridization`, and `bidirection`.
 
+- `tree` defines the binary species tree, in Newick format.
+- `define` defines an ancestral species or internal node label, as the most recent common ancestor of the tip species.  Alternatively you can label the internal nodes on the Newick tree.
+- `hybridization` defines a hybridization/introgression event by specifying the source and target branches (which represent the source and target populations involved).
+- `bidirection` defines a bidirectional introgression (BDI) event.
+
+One may think of the binary species tree as describing the history of species divergences and add introgression events onto it as new (horizontal) branches.  The introgression probability is assigned to the newly created introgression branch. A series of examples follow. The introgression graph is displayed in a figure followed by the `msci=create` encoding and the resulting extended Newick format.
+```
+# Model A, version 1
+tree (A,(B,C));
+define T as B,C
+define R as A,B
+hybridization R A, T C as S H tau=yes, yes phi=0.10
+
+# Model A, version 2
+tree (A,(B,C)T)R;
+hybridization R A, T C as S H tau=yes, yes phi=0.10
+
+# The generated Newick notation for model A is 
+# ((H[&phi=0.1,tau-parent=yes],A)S, (B,(C)H[&phi=0.9,tau-parent=yes])T)R;
+
+# Model B1
+tree (A,(B,C)T)R;
+hybridization R A, T C as S H tau=no, yes phi=0.10
+
+# The generated Newick notation for model B1 is 
+# ((H[&phi=0.1,tau-parent=no],A)S, (B,(C)H[&phi=0.9,tau-parent=yes])T)R;
+
+# Model B2
+tree ((A,C)S,B)R;
+hybridization R B, S C as T H tau=no, yes phi=0.10
+
+# The generated Newick notation for model B2 is 
+# ((A,(C)H[&phi=0.9,tau-parent=yes])S, (H[&phi=0.1,tau-parent=no],B)T)R;
+
+# Model C
+tree (A,(B,C)T)R;
+hybridization R A, T C as S H tau=no, no phi=0.40
+
+# The generated the Newick notation for model C is 
+# ((H[&phi=0.4,tau-parent=no],A)S, (B,(C)H[&phi=0.6,tau-parent=no])T)R;
+
+# Model D
+tree (A,B)R;
+bidirection  A R, B R as X Y phi=0.1,0.2
+```
+The above figure illustrates the specifications of models A, B, C, and D of [Flouri et al 2020](https://doi.org/10.1093/molbev/msz296).  In models A, B1, and C, the introgression event is from the source branch RA to the target branch TC, with a new introgression branch SH created.  The introgression probability ($\varphi = 0.1$) is assigned to the newly added introgression branch (SH) while $1 – \varphi$ is assigned to the other parent branch (TH).  Models A, B1, and C are distinguished by using the keyword `tau` (which means the same as `tau-parent` in the Newick notation of the MSci model). Model A assumes that the two parental species S and T of the hybridization node H have distinct ages from H, with $\tau_S > \tau_H$ and $\tau_T > \tau_H$.  Thus we have `hybridization R A, T C as S H tau=yes, yes phi=0.10`: the first `yes` means that parental node S on the source branch RA has a distinct tau from node H and that the second `yes` means that parental node T on the target branch TC has a distinct tau from node H.  Note that there are often multiple ways of specifying the same MSC-I model and here you can specify model A by starting with the binary tree `((A, C), B)` and adding branch TH as a introgression event.  Model A might appear to be nonsensical biologically since only contemporary species can exchange migrants.  Nevertheless, model A may be used to represent introgressions from a ghost species not sampled in the sequence dataset.  Suppose at time $\tau_S$ a speciation event generated two species SA and SH, and at $\tau_H$, species SH contributed migrants into species THC, but species SH has since become extinct or is otherwise not sampled in the data.  This scenario matches model A.
+Model B1 assumes $\tau_S = \tau_H$ and $\tau_T > \tau_H$ so there is no new tau for parent S of the hybridization node H, and there is a new tau for parent T.  Thus we have `tau=no, yes`.  Model B2 works similarly.  In model C, none of parents S and T has a distinct age from H, so we have `tau=no, no`.  One interpretation is that species C is a hybrid species. In model D for the bidirectional introgression (BDI) model, there is no distinction of source and target branches.  We specify two phi values, assigned to the introgression (horizontal) branches: $\varphi_X = 0.1$ for node X (or into node X) and $\varphi_Y = 0.2$ for node Y (see above figure).
+
+### The MSC-M Model
+The multispecies-coalescent-with-migration model (or isolation-with-migration or IM model) is activated in BPP using the keyword migration.
+A binary species tree is specified using an extended Newick format that includes labels for internal nodes; these are subsequently used in the control file to specify the source and target populations involved in migration.
+
+#### Control file specification of MSC-M
+The basic model is specified in the control file as follows, using a species tree for four species (A, B, C, D) as an example:
+```
+      ((A, B)S, (C, D)T)R;
+
+     migprior = 2 200 
+    migration = 2
+                A C
+                S C
+```
+Here S is the AB common ancestor, T is the CD common ancestor, while R is the ABCD ancestor.  Not all internal nodes need to be labeled but those involved in migration have to be.  The migration line specifies 2 migration connections: one connecting source population A to target population C, and another connecting source population S to target population C, with migration rates $M_{AC}$ and $M_{SC}$.  Note that the migration rate 
+
+$M_{AC} = m_{AC} N_C$
+
+is the expected number of immigrants in population C that are from population A per generation under the real-world view with time running forward, where $m_{AC}$ is the proportion of immigrants in population C that are from population A.  See Appendix A for definitions of migration rates used in different programs. 
+
+#### Prior on migration rates
+The control file variable `migprior = alpha beta` specifies a default gamma prior density with parameters `alpha` and `beta` for all migration rates.  In the example above, both $M_{AC}$ and $M_{SC}$ are assigned the gamma prior $G(2, 200)$, with prior mean $2/200 = 0.01$.
+A separate gamma prior can instead be defined for each migration rate (where the migration connection is specified using the source and target populations) and this specification takes precedence.  For example if we specify
+```
+     migprior = 2 200
+    migration = 2
+                A C  2 100
+                S C
+```
+the priors are $M_{AC} ~ G(2, 100)$ with the prior mean $0.02$ and $M_{SC} ~ G(2, 200)$ from the default prior specified by `migprior`.
+
+#### Variable migration rates among loci
+In this model, the migration rate $M_i$ at each locus *i* varies according to a gamma distribution $M_i \approx G(\alpha_M,\alpha_M/\overline{M})$, with shape parameter $\alpha_M$ while the mean rate $\overline{M}$ is assigned the gamma prior $\overline{M} \approx G(\alpha,\beta)$.  Here $\alpha_M$ is a parameter that characterizes the variation of $M_i$ among loci, with a small $\alpha_M$ (e.g., 0.5 or 1) indicating highly variable rates among loci and a large $\alpha_M$ indicating nearly constant migration rates among loci (when $\alpha_M = \infty$ all loci have the same rate).
+```
+     migprior = 2 200
+    migration = 2
+                A C  2 100 5
+                S C
+```
+In the above example, $M_{SC}$ is applied to all loci with the prior $G(2, 200)$, but $M_{AC}$ varies among loci according to the shape parameter 
+$\alpha_M = 5$, and the mean rate for all loci $\overline{M}_{AC}$ is assigned the gamma prior $G(2, 100)$.
+
+#### Priors and pseudo-priors
+When the gene flow involves ancestral species, migration may become impossible because of changes to the species divergence times in the MCMC.  In the example above, if $\tau_S < \tau_T$ migration from S to C is possible during the time period $(\tau_S, \tau_T)$, but if $\tau_S > \tau_T$ migration from S to C is impossible as the two populations were never contemporary.  Thus the MCMC proposal to change species divergence times $\tau_S$ or $\tau_T$ may cause the migration rate parameter $M_{SC}$ to disappear or reappear.  When $M_{SC}$ is absent from the model (that is, when $\tau_S > \tau_T$), the MCMC algorithm treats it as a pseudo-parameter (written as $M^*_{SC}$) and assigns it a pseudo-prior to facilitate the trans-dimensional move.  The choice of pseudo-priors affects the mixing efficiency of the MCMC, but not the correctness of the algorithm.  For good mixing, one should choose the pseudo-prior to be close to the posterior of the parameter $M_{SC}$ (which can be generated by running short chains).
+```
+     migprior = 2 200 
+    migration = 2
+                A C  2 100 
+                S C  2 200   100 250
+```
+In the example above, the prior $M_{SC} \approx G(2, 200)$ is applied when $\tau_S < \tau_T$, and the pseudo-prior $M^*_{SC} \approx G(100, 250)$ with mean 0.4, is applied when $\tau_S > \tau_T$.  Note that in this example the pseudo-prior is far more concentrated than the prior (with shape parameter 100 versus 2).
+In order to summarize the posterior from the MCMC samples, only those samples taken when the migration rate is defined should be used (that is, only samples collected when $\tau_S < \tau_T$ in our example).  Samples collected when the migration rate does not exist in the model (that is, when $\tau_S > \tau_T$ in our example) approximate the pseudo-prior.
+
+In the case of four species, the following awk commands may be used to split the samples into two files (this assumes that tau_S and tau_T are in column 10 and 11)
+```
+awk 'BEGIN {cnt=0} NR>1{if ($10 > $11) {cnt=cnt+1;}}} END {print cnt}' mcmc.txt
+# split sample file into ab.txt (samples where t_AB > t_CD) and cd.txt (t_CD > t_AB)
+head -n 1 mcmc.txt > cd.txt; awk 'NR>1 {if ($10<$11) print $0}' mcmc.txt >> cd.txt
+head -n 1 mcmc.txt > ab.txt; awk 'NR>1 {if ($10>$11) print $0}' mcmc.txt >> ab.txt
+```
+Use something like this if you understand the syntax. The running mean of the migration rate printed on the monitor during the MCMC run is the posterior mean after the filtering.
+Note that this problem of the migration rate appearing and disappearing during the MCMC may exist when a migration event involves ancestral populations, and is not limited to the balanced species tree for four species.  Later we should automate the summary of the MCMC sample.  
+Under the model of variable $M$ among loci, all migration rates for all loci may appear and disappear if the migration involves ancestral species.  The following five ways of specifying the model and priors and pseudo-priors are accepted (with $M_{SC}$ as an example)
+```
+(a)  S C
+(b)  S C a_M
+(c)  S C a b
+(d)  S C a b a_M
+(e)  S C a b pseudo_a pseudo_b
+(f)  S C a b a_M pseudo_a pseudo_b
+```
+In options (a) and (b), the default prior specified with migprior is assigned on $M_{SC}$.
+
+## Odds and Ends
+```
     heredity = 0       # (0: No variation)
     heredity = 1 4 4   # (1: estimate, & a_gamma b_gamma)
     heredity = 2 heredity.txt      # (2: from file)
-
+```
 `heredity = 0` is the default and means that $\theta$ is the same for
 all loci. `heredity = 1` or `2` specifies two models that allow $\theta$
 to vary among loci, which may be useful for combined analysis of data
@@ -2880,8 +3037,7 @@ multiplier is used to multiply all $\theta$ parameters for the locus but
 not the $\tau$s. Nevertheless, those parameters are quite likely to be
 strongly correlated, especially when the species tree is small.
 
-Methods of Analysis
-===================
+## Methods of Analysis
 
 Here we describe the specifics of the four different types of analyses
 that BPP can perform and illustrate them using several of the example
@@ -2929,8 +3085,7 @@ $\tau_0$ (the divergence time of the root), and these parameters (for
 different models) are assigned the same prior, specified by the
 `tauprior` control file variable.
 
-A00: Demography and Divergence Time Estimation 
--------------------------------------
+### A00: Demography and Divergence Time Estimation 
 
 Analysis A00`(speciesdelimitation = 0, speciestree = 0)`, requires a
 user-specified species tree topology, given by variable `species&tree`
@@ -2976,7 +3131,7 @@ $\theta_D$, $\theta_{CD}$ and $\tau_{CD}$ are not. Ii is impossible to
 estimate $\theta_D$ , $\theta_{CD}$ and $\tau_{CD}$ as no data are
 available from species C.
 
-### Input A00 (single population)
+#### Input A00 (single population)
 
 Our first example is a dataset of human sequence data generated by
 [Yu et al 2001](https://doi.org/10.1093/oxfordjournals.molbev.a003795). 
@@ -3049,7 +3204,7 @@ specifies a gamma distribution for the prior on $\theta$ with parameters
 $\alpha = 2$ and $\beta = 2000$ which has mean $0.001$ and variance
 $5 \times 10^{-7}$.
 
-### Output A00 (single population)
+#### Output A00 (single population)
 
 When BPP is run using the above control file a summary of the progress
 of the MCMC analysis is printed to screen. Here, we briefly explain what
@@ -3145,7 +3300,7 @@ density (HPD) set of values are in rows 8 and 9, respectively. In this
 case, the HPD credibility interval for $\theta$ is
 $(0.000145,0.000574)$.
 
-### Input A00 (multiple populations)
+#### Input A00 (multiple populations)
 
 Our second example is a dataset of frog sequence data generated by
 [Zhou et al 2012](https://doi.org/10.1111/j.1365-294X.2011.05411.x). 
@@ -3275,7 +3430,7 @@ the remaining $\tau$s have a uniform Dirichlet distribution conditional
 on the root age (the prior mean and variance of the root age are $0.001$
 and $0.000001$,respectively):
 
-### Output A00 (multiple populations)
+#### Output A00 (multiple populations)
 
 When BPP is run using the above control file a summary of the progress
 of the MCMC is again printed to screen as follows:
@@ -3348,7 +3503,7 @@ and placed in the file named FigTree.tre which is formatted for
 viewing/printing using the
 [Figtree](http://tree.bio.ed.ac.uk/software/figtree/) program
 
-### MCMC output file
+#### MCMC output file
 
 A file will be produced (with a name specified by the control file
 variable `mcmcfile`) that contains the mcmc samples from the run for all
@@ -3360,7 +3515,7 @@ trans-model analyses in which the number of parameters and or/the
 meaning of the parameters changes as the chain runs so it is not correct
 to examine the trace plot without conditioning on a particular model.
 
-### Adjusting step lengths for MCMC moves (finetune)
+#### Adjusting step lengths for MCMC moves (finetune)
 
 You can use the automatic adjustment of the finetune variable (MCMC step
 lengths), which appears to be reliable, but make sure that the
@@ -3484,9 +3639,11 @@ models (of species delimitation and species phylogeny) either uniformly
 Priors 2 and 3 are mentioned by [@Yang2014a] and implemented by
 [@Yang2015]. Prior 3 may be suitable when there are many populations.
 
-A01: Species Tree Estimation
-----------------------------
+### A01: Species Tree Estimation
 
+#### Input A01
+#### Output A01
+#### MCMC output file
 Suppose we use the control file bpp.4s.ctl to run analysis A01: species
 tree estimation with species delimitation and assignment fixed
 (speciesdelimitation = 0, speciestree = 1).
@@ -3549,7 +3706,12 @@ into account the location of the root, and may be different from the
 splits for unrooted trees. Section (C) prints the majority-rule
 consensus tree, with posterior probabilities for nodes.
 
-### A10: species delimitation using rjMCMC
+### A10: Species Delimitation
+
+
+#### Input A10
+#### Output A10
+#### MCMC output file
 
 We apply rjMCMC algorithm to the frogs data (A10:
 `speciesdelimitation = 1, speciestree = 0`).
@@ -3747,7 +3909,11 @@ A00.
     and $\tau$. See the note about the gamma distribution later in this
     document.
 
-### A11: joint species delimitation and species tree estimation
+### A11: Joint Species Delimitation and Species Tree Estimation
+
+#### Input A11
+#### Output A11
+#### MCMC output file
 
 Again, we use the frogs example (`A11.bpp.ctl`) to illustrate joint
 species delimitation and species tree estimation (A11: `speciesdelimitation = 1, speciestree = 1`).
@@ -3825,13 +3991,12 @@ probabilities, and section (D) lists the posterior probability for the
 number of species, together with the prior probabilities calculated by
 BPP.
 
-Advanced Features of BPP
-========================
+## Advanced Features of BPP
 
-Threading and Checkpointing
----------------------------
+### Threading and Checkpointing
 
-### Threads
+
+#### Threads
 
 BPP4 can use Single-Instruction-Multiple-Data (SIMD)
 instruction sets (also called vector instructions) available on modern
@@ -3894,7 +4059,7 @@ Make sure all threads for the same BPP job are on the same
 CPU. Use lscpu to see the machine configuration and htop to examine the
 load on the hardware threads.
 
-### Checkpointing
+#### Checkpointing
 
 This option instructs BPP to create a checkpoint file
 (save the progress) after a specified number of MCMC iterations. The
@@ -3922,8 +4087,7 @@ To resume from a checkpoint file, use the resume switch, i.e.
     bpp --resume checkpoint-file.chk
 ```
 
-Marginal Likelihood Calculations
---------------------------------
+### Marginal Likelihood Calculations
 
 The C program BFdriver generates control files and job subscription
 scripts for running MCMC (using BPP or MCMCtree) to calculate the
@@ -3943,7 +4107,7 @@ and a C compiler. If you don't have this job submission system, you can
 use BFdriver to generate the control files and run the MCMC jobs from
 the command line.
 
-### Compiling and running BFdriver
+#### Compiling and running BFdriver
 ```
     cc -o BFdriver -O3 BFdriver.c tools.c -lm
     BFdriver <controlfilename> <npoints> <scriptname.sh>
@@ -3961,7 +4125,7 @@ line is for submitting the jobs using `qsub`. Here the limits are set to
     fprintf(fcommand, "     qsub -S /bin/bash -l h_vmem=4G -l tmem=4G -l h_rt=360:0:0 -cwd %s\n", scriptf);
 ```
 
-### Running the program 
+#### Running the program 
 
 Create a folder inside `frogs/`, say `bf1`:
 ```
@@ -4026,7 +4190,7 @@ logarithm of the marginal likelihood by summing (`weights * ElnfX / 2`)
 over the 16 points. This gives the log marginal likelihood to be
 $-3185.93$.
 
-### Exercise and results
+#### Exercise and results
 
 Duplicate the calculation for the alternative species tree (tree2) in
 the folder /bf2. Change the species tree topology to (((L, H), C), K),
@@ -4045,15 +4209,14 @@ that with [bpp3]{.smallcaps} and the gamma priors on $\theta$ and
 $\tau$s, the posteriors are 0.16 and 0.13 with the ratio 1.2 [@Yang2015
 fig. 4].
 
-### Common errors and problems
+#### Common errors and problems
 
 Check the bpp control file by running bpp at the command line before
 submitting the jobs. Make sure that the bpp program is on your path or
 use a full path. You may have to edit the source file `BFdriver.c` and
 recompile.
 
-Simulation Using BPP
-====================
+### Simulation Using BPP
 
 The simulation option of [bpp4]{.smallcaps} is the MCCOAL program in
 version 3.4 and earlier. This can be used to simulate gene trees and
@@ -4079,7 +4242,7 @@ program reads the control file correctly.
     bpp --simulate MCcoalMigration.ctl
 ```
 
-### B1 Control-file options for simulating without migration
+#### B1 Control-file options for simulating without migration
 
 Here is a sample control file.
 ```
@@ -4315,7 +4478,7 @@ and the length of the branch (measured by the expected number of
 mutations/substitutions per site) is calculated by adding up those
 segments.
 
-### B2 Simulating with migration (under the IM model)
+#### B2 Simulating with migration (under the IM model)
 ```
     migration = 7   * number of pops (order fixed by program)
 
@@ -4357,8 +4520,7 @@ specified in the tree file even if only one sequence is sampled from
 that species but migrations into that species are allowed by the
 migration matrix.
 
-Features New To BPP 4.0
------------------------
+### Features New To BPP 4.0
 
 -   i\. Multiple threads
 
