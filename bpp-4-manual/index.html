@@ -1340,31 +1340,31 @@ provides examples illustrating the four types of analyses
 (<a href="https://doi.org/10.1093/czoolo/61.5.854">Yang 2015</a>; <a href="https://inria.hal.science/PGE/hal-02536475">Flouri et al 2020</a>).</p>
 <h3 id="model-parameters">Model Parameters</h3>
 <p>The basic parameters in the MSC model include the <strong>species divergence times</strong> 
-( $\tau$ ) and mutation scaled <strong>population sizes</strong></p>
-<p>$\theta = 4N\mu$</p>
-<p>where $N$ is the effective population size and $\mu$
-is the mutation rate per site per generation. Note that $\theta$
+( <span class="arithmatex">\(\tau\)</span> ) and mutation scaled <strong>population sizes</strong></p>
+<p><span class="arithmatex">\(\theta = 4N\mu\)</span></p>
+<p>where <span class="arithmatex">\(N\)</span> is the effective population size and <span class="arithmatex">\(\mu\)</span>
+is the mutation rate per site per generation. Note that <span class="arithmatex">\(\theta\)</span>
 specifies the average proportion of sites that have different bases when
 comparing two sequences sampled at random from the population. Both
-$\tau$ and $\theta$ are measured in units of expected number of
-mutations per site ( $\tau$ can be converted to units of years if the
-substitution rate per site per year is known). For example, if $\tau$ is
+<span class="arithmatex">\(\tau\)</span> and <span class="arithmatex">\(\theta\)</span> are measured in units of expected number of
+mutations per site ( <span class="arithmatex">\(\tau\)</span> can be converted to units of years if the
+substitution rate per site per year is known). For example, if <span class="arithmatex">\(\tau\)</span> is
 an estimated divergence time in units of expected substitutions per site
 (from a BPP analysis) and the substitution rate per site per year is
-$\mu$, then the estimated divergence time in years is, $\tau'$, is</p>
-<p>$\tau' = \frac{\tau}{\mu}$ </p>
+<span class="arithmatex">\(\mu\)</span>, then the estimated divergence time in years is, <span class="arithmatex">\(\tau'\)</span>, is</p>
+<p><span class="arithmatex">\(\tau' = \frac{\tau}{\mu}\)</span> </p>
 <p>and the diploid effective population size is</p>
-<p>$N = \frac{\theta}{4\mu}$ </p>
-<p>For a species tree with $s$ species,
-there are ($s – 1$) divergence times ($\tau$) and at most ($2s – 1$)
-population size parameters ($\theta$). Analysis A00 estimates those
+<p><span class="arithmatex">\(N = \frac{\theta}{4\mu}\)</span> </p>
+<p>For a species tree with <span class="arithmatex">\(s\)</span> species,
+there are (<span class="arithmatex">\(s – 1\)</span>) divergence times (<span class="arithmatex">\(\tau\)</span>) and at most (<span class="arithmatex">\(2s – 1\)</span>)
+population size parameters (<span class="arithmatex">\(\theta\)</span>). Analysis A00 estimates those
 parameters when the species delimitation and species tree are fixed
 (specified by the user). Analyses A01, A10, and A11 estimate parameters
 and model probabilities of the different MSC models. The
 multispecies-coalescent-with-introgression (MSC-I) model, first
 implemented in BPP version 4.1 and described in
 <a href="#the-msc-i-model">The MSC-I Model</a>, adds introgression nodes to the tree, each
-with a new parameter, the <strong>introgression probability</strong> ($\varphi$) see <a href="https://doi.org/10.1093/molbev/msz296">Flouri et al 2020</a>. 
+with a new parameter, the <strong>introgression probability</strong> (<span class="arithmatex">\(\varphi\)</span>) see <a href="https://doi.org/10.1093/molbev/msz296">Flouri et al 2020</a>. 
 The multispecies-coalescent-with--migration (MSC-M) model, first implemented in BPP version 4.6 and described in <a href="#the-msc-m-model">The MSC-M Model</a>, adds a matrix of <strong>instantaneous migration rates</strong> (<strong>M</strong>). 
 For reviews of the MSC model, see <a href="https://global.oup.com/academic/product/molecular-evolution-9780199602605?lang=es&amp;cc=gb">Yang 2014</a> (Chapter 9), <a href="https://doi.org/10.1534/genetics.116.190173">Xu 2016</a> and <a href="https://inria.hal.science/PGE/hal-02535622">Rannala et al 2020</a>.</p>
 <h3 id="model-assumptions">Model Assumptions</h3>
@@ -1451,8 +1451,8 @@ BPP (Flouri et al., 2018; Yang, 2015). The method uses the multispecies coalesce
 different models of species delimitation (Yang and Rannala, 2010; Rannala and Yang, 2013) and species
 phylogeny (Yang and Rannala, 2014; Rannala and Yang, 2017) in a Bayesian framework, accounting
 for incomplete lineage sorting due to ancestral polymorphism and gene tree-species tree discordance.
-The population size parameters ($\theta$s) are assigned the <strong>inverse-gamma prior IG(3, 0.002)</strong>, with mean
-<strong>0.002/(3–1) = 0.001</strong>. The divergence time at the root of the species tree ($\tau_0$) is assigned the 
+The population size parameters (<span class="arithmatex">\(\theta\)</span>s) are assigned the <strong>inverse-gamma prior IG(3, 0.002)</strong>, with mean
+<strong>0.002/(3–1) = 0.001</strong>. The divergence time at the root of the species tree (<span class="arithmatex">\(\tau_0\)</span>) is assigned the 
 <strong>inverse-gamma prior IG(3, 0.004)</strong>, with mean <strong>0.002</strong>, while the other divergence time parameters are specified
 by the uniform Dirichlet distribution (Yang and Rannala, 2010, eq. 2). Each analysis is run at least twice
 to confirm consistency between runs.”</p>
@@ -2112,7 +2112,7 @@ generate a seed (store seed in file <code>SeedUsed</code>).<br />
 Using the same positive integer seed will produce identical results in
 different runs, which is useful for debugging, and using different
 positive integers in different runs produces different results. Using
-$-d$, for example, $-1$, the computer's entropy generator is used as a
+<span class="arithmatex">\(-d\)</span>, for example, <span class="arithmatex">\(-1\)</span>, the computer's entropy generator is used as a
 source for the seed, and different runs will produce different results.
 When evaluating MCMC convergence by comparing results across different
 runs be sure to use -d. The positive integer seed automatically
@@ -2279,12 +2279,12 @@ Automatically optimize step lengths in MCMC proposals using specified
 initial step lengths.<br />
 <strong>DEFAULT</strong><br />
 <code>0</code><br />
-Manually fixes all step lengths to be $0.1$.<br />
+Manually fixes all step lengths to be <span class="arithmatex">\(0.1\)</span>.<br />
 <code>1</code><br />
-Fixes all initial proposal step lengths to $0.1$ prior to optimization.<br />
+Fixes all initial proposal step lengths to <span class="arithmatex">\(0.1\)</span> prior to optimization.<br />
 <strong>DEPENDENCIES</strong><br />
 If <code>b</code> is set to 1 (automatic optimization) then <code>burnin</code> has to
-be $&gt;200$.<br />
+be <span class="arithmatex">\(&gt;200\)</span>.<br />
 <strong>COMMENTS</strong><br />
 The first value, before the colon, is a switch, with 0 meaning no
 automatic adjustments by the program and 1 meaning automatic adjustments
@@ -2309,11 +2309,11 @@ MCMC.<br />
 There are 5 boolean (0,1) variables that specify whether particular
 variables are saved to file (1) or not saved (0). From left to right:
 variable 1 specifies MCMC samples; variable 2 specifies locus-specific
-rate parameters (rate $\mu_i$, variance parameter $\nu_i$ and
-species-tree branch rates for locus $r_{ij}$); variable 3 specifies
+rate parameters (rate <span class="arithmatex">\(\mu_i\)</span>, variance parameter <span class="arithmatex">\(\nu_i\)</span> and
+species-tree branch rates for locus <span class="arithmatex">\(r_{ij}\)</span>); variable 3 specifies
 locus-specific heredity scalars if those are estimated from the data;
 variable 4 specifies locus-specific gene trees; and variable 5 specifies
-locus-specific substitution-rate parameters (qmat for the $Q$ matrix,
+locus-specific substitution-rate parameters (qmat for the <span class="arithmatex">\(Q\)</span> matrix,
 freqs for base frequencies, and alpha for gamma rates for sites).<br />
 <strong>EXAMPLES</strong></p>
 <pre><code>print = 0 1 1 1 0
@@ -2331,9 +2331,9 @@ run before sampling begins.<br />
 iterations.<br />
 <strong>DEPENDENCIES</strong><br />
 If <code>finetune = 1</code> (automatic optimization) then <code>burnin</code> has to
-be $&gt;200$.<br />
+be <span class="arithmatex">\(&gt;200\)</span>.<br />
 <strong>COMMENTS</strong><br />
-The total number of MCMC iterations is <code>burnin</code> + <code>nsample</code> $\times$ <code>sampfreq</code>.<br />
+The total number of MCMC iterations is <code>burnin</code> + <code>nsample</code> <span class="arithmatex">\(\times\)</span> <code>sampfreq</code>.<br />
 <strong>EXAMPLES</strong></p>
 <pre><code>burnin = 100
 burnin = 10000
@@ -2349,7 +2349,7 @@ to the output file specified by <code>mcmcfile</code>.<br />
 <code>+d</code>, a positive integer specifying the interval between samples
 from the MCMC.<br />
 <strong>COMMENTS</strong><br />
-The total number of MCMC iterations is <code>burnin</code> + <code>nsample</code> $\times$ <code>sampfreq</code>.<br />
+The total number of MCMC iterations is <code>burnin</code> + <code>nsample</code> <span class="arithmatex">\(\times\)</span> <code>sampfreq</code>.<br />
 <strong>EXAMPLES</strong></p>
 <pre><code>sampfreq = 2
 sampfreq = 10
@@ -2364,7 +2364,7 @@ the output file specified by <code>mcmcfile</code>.<br />
 <strong>VALUES</strong><br />
 <code>+d</code>, a positive integer specifying the number of MCMC samples.<br />
 <strong>COMMENTS</strong><br />
-The total number of MCMC iterations is <code>burnin</code> + <code>nsample</code> $\times$ <code>sampfreq</code>.<br />
+The total number of MCMC iterations is <code>burnin</code> + <code>nsample</code> <span class="arithmatex">\(\times\)</span> <code>sampfreq</code>.<br />
 <strong>EXAMPLES</strong></p>
 <pre><code>nsample = 5000
 nsample = 25499
@@ -2435,11 +2435,11 @@ the parameters of the species delimitation rjMCMC proposal algorithm.<br />
 <strong>VALUES</strong><br />
 <code>0</code>, specifies no species delimitation.<br />
 <code>1 0 epsilon</code>, specifies species delimitation with rjMCMC algorithm
-0, with parameter $\epsilon$ as specified in equations 3 and 4 of
-<a href="https://doi.org/10.1073/pnas.0913022107">Yang and Rannala 2010</a>. Reasonable values for $\epsilon$ are 1, 2, 5, etc.<br />
+0, with parameter <span class="arithmatex">\(\epsilon\)</span> as specified in equations 3 and 4 of
+<a href="https://doi.org/10.1073/pnas.0913022107">Yang and Rannala 2010</a>. Reasonable values for <span class="arithmatex">\(\epsilon\)</span> are 1, 2, 5, etc.<br />
 <code>1 1 alpha m</code>, specifies rjMCMC algorithm 1, with parameters
-$\alpha$ and $m$ as specified in equations 6 and 7 of <a href="https://doi.org/10.1073/pnas.0913022107">Yang and Rannala 2010</a>.
-Reasonable values are $\alpha = 1, 1.5, 2$, etc. and $m = 0.5, 1, 2$.<br />
+<span class="arithmatex">\(\alpha\)</span> and <span class="arithmatex">\(m\)</span> as specified in equations 6 and 7 of <a href="https://doi.org/10.1073/pnas.0913022107">Yang and Rannala 2010</a>.
+Reasonable values are <span class="arithmatex">\(\alpha = 1, 1.5, 2\)</span>, etc. and <span class="arithmatex">\(m = 0.5, 1, 2\)</span>.<br />
 <strong>DEFAULT</strong><br />
 <code>0</code><br />
 <strong>DEPENDENCIES</strong><br />
@@ -2481,13 +2481,13 @@ delimitations.<br />
 <code>0</code>, specifies equal probabilities for the labeled histories (rooted
 trees with the internal nodes ordered by age).<br />
 <code>1</code>, specifies equal probabilities for the rooted species trees.<br />
-<code>2</code>, specifies equal probabilities for the numbers of species ($1/s$
-each for $1,2,\ldots,s$ species given $s$ populations) and divides the
+<code>2</code>, specifies equal probabilities for the numbers of species (<span class="arithmatex">\(1/s\)</span>
+each for <span class="arithmatex">\(1,2,\ldots,s\)</span> species given <span class="arithmatex">\(s\)</span> populations) and divides the
 probability for any specific number of species among the compatible
 models (of species delimitation and species phylogeny) in proportion to
 the number of labeled histories.<br />
-<code>3</code>, specifies equal probabilities for the numbers of species ($1/s$
-each for $1,2,\ldots,s$ species given $s$ populations) and divides the
+<code>3</code>, specifies equal probabilities for the numbers of species (<span class="arithmatex">\(1/s\)</span>
+each for <span class="arithmatex">\(1,2,\ldots,s\)</span> species given <span class="arithmatex">\(s\)</span> populations) and divides the
 probability for any specific number of species among the compatible
 models (of species delimitation and species phylogeny) uniformly.<br />
 <strong>DEPENDENCIES</strong><br />
@@ -2510,8 +2510,8 @@ speciesmodelprior = 3
 <p><strong>DESCRIPTION</strong><br />
 Specifies whether the sequence data for each species is phased.<br />
 <strong>VALUES</strong><br />
-<code>1</code>, in position $i$ of the list indicates that data is unphased for
-species $i$ in the list of species in variable <code>species&amp;tree</code>,
+<code>1</code>, in position <span class="arithmatex">\(i\)</span> of the list indicates that data is unphased for
+species <span class="arithmatex">\(i\)</span> in the list of species in variable <code>species&amp;tree</code>,
 otherwise <code>0</code> indicates it is phased.<br />
 <strong>DEFAULT</strong><br />
 <code>0</code><br />
@@ -2519,8 +2519,8 @@ otherwise <code>0</code> indicates it is phased.<br />
 The number of boolean (0,1) variables in the list must equal the number
 of species <code>d+</code> specified in the <code>species&amp;tree</code> variable.<br />
 <strong>COMMENTS</strong><br />
-If at position $i$ the <code>phase</code> variable is 1, each sequence from
-species $i$ is treated as an unphased diploid sequence, with
+If at position <span class="arithmatex">\(i\)</span> the <code>phase</code> variable is 1, each sequence from
+species <span class="arithmatex">\(i\)</span> is treated as an unphased diploid sequence, with
 heterozygous sites represented using the ambiguity characters <code>YRMKSW</code>.
 The missing data tokens <code>N-?</code> are allowed and are all treated as ?, but
 other ambiguity characters (<code>HBVD</code>) are not allowed.</p>
@@ -2636,7 +2636,7 @@ values.<br />
 <code>b</code>, specifies either fixed (1) or variable (0) exchangeability
 parameters in the GTR model.<br />
 <code>+f +f +f +f +f +f</code>, specify the exchangeability parameters in the
-order $a, b, c, d, e, f$ for TC, TA, TG, CA, CG, and AG, as described in
+order <span class="arithmatex">\(a, b, c, d, e, f\)</span> for TC, TA, TG, CA, CG, and AG, as described in
 <a href="https://global.oup.com/academic/product/molecular-evolution-9780199602605?lang=es&amp;cc=gb">Yang 2014</a>.<br />
 <strong>DEFAULT</strong><br />
 <code>0 1 2 1 1 2 1</code><br />
@@ -2647,26 +2647,26 @@ Two example cases are discussed here with either fixed, or variable
 rates. The following specifies fixed rates:</p>
 <pre><code>Qrates = 1  2 1 1 1 1 2
 </code></pre>
-<p>This specifies fixed rates at $a = 2, b = c = d = e = 1$ and $f = 2$, so
+<p>This specifies fixed rates at <span class="arithmatex">\(a = 2, b = c = d = e = 1\)</span> and <span class="arithmatex">\(f = 2\)</span>, so
 that the transition rate is twice as high as the transversion rate, and
 the model corresponds to K80 or HKY. Note that only the relative rates
-matter, because the rate matrix ($Q$) is scaled so that the average rate
+matter, because the rate matrix (<span class="arithmatex">\(Q\)</span>) is scaled so that the average rate
 (over the base frequencies) is 1 and branch lengths are measured in the
 expected number of mutations/substitutions per site. Nevertheless the
 program expects six rate parameters.</p>
 <pre><code>Qrates = 0  10 5 5 5 5 10 
 </code></pre>
-<p>This specifies variable rates with a prior on $a, b, c, d, e$ that is a
+<p>This specifies variable rates with a prior on <span class="arithmatex">\(a, b, c, d, e\)</span> that is a
 Dirichlet distribution for every locus. The above specifies Dir(10, 5,
 5, 5, 5, 10), with parameters
-$\alpha_a = 10, \alpha_b = \alpha_c = \alpha_d = \alpha_e = 10$, and
-$\alpha_f = 10$. The rates generated from the Dirichlet sum to 1, and
+<span class="arithmatex">\(\alpha_a = 10, \alpha_b = \alpha_c = \alpha_d = \alpha_e = 10\)</span>, and
+<span class="arithmatex">\(\alpha_f = 10\)</span>. The rates generated from the Dirichlet sum to 1, and
 they are rescaled. Note that larger values for those parameters mean
-less variance, while the mean for $a$, say, is given by
-$\alpha_a/\alpha$ with
-$\alpha = \alpha_a + \alpha_b + \alpha_c + \alpha_d + \alpha_e +
-\alpha_f$. This specifies an average transition/transversion rate ratio
-of 2 (if base frequencies are all fixed at $\frac{1}{4}$).<br />
+less variance, while the mean for <span class="arithmatex">\(a\)</span>, say, is given by
+<span class="arithmatex">\(\alpha_a/\alpha\)</span> with
+<span class="arithmatex">\(\alpha = \alpha_a + \alpha_b + \alpha_c + \alpha_d + \alpha_e +
+\alpha_f\)</span>. This specifies an average transition/transversion rate ratio
+of 2 (if base frequencies are all fixed at <span class="arithmatex">\(\frac{1}{4}\)</span>).<br />
 <strong>EXAMPLES</strong></p>
 <pre><code>Qrates = 1 2 1 1 1 1 2
 Qrates = 0 1 1 1 1 1 1
@@ -2688,9 +2688,9 @@ TCAG.<br />
 <strong>DEPENDENCIES</strong><br />
 The variable <code>basefreqs</code> is defined only if <code>model = GTR</code>.<br />
 <strong>COMMENTS</strong><br />
-The parameters $\pi_T, \pi_C, \pi_A, \pi_G$ can be either fixed or
+The parameters <span class="arithmatex">\(\pi_T, \pi_C, \pi_A, \pi_G\)</span> can be either fixed or
 variable with a prior specified by the Dirichlet distribution with
-$\alpha$ parameters specifying the relative mean frequencies.<br />
+<span class="arithmatex">\(\alpha\)</span> parameters specifying the relative mean frequencies.<br />
 <strong>EXAMPLES</strong></p>
 <pre><code>basefreqs = 1 0.15 0.35 0.15 0.35
 basefreqs = 0 10 10 10 10
@@ -2703,24 +2703,24 @@ basefreqs = 0 10 10 10 10
 Specifies the prior probability density for the shape parameter
 controlling the pattern of among-site rate variation.<br />
 <strong>VALUES</strong><br />
-<code>f f +d</code>, specify the $\alpha_p$ and $\beta_p$ parameters of the
+<code>f f +d</code>, specify the <span class="arithmatex">\(\alpha_p\)</span> and <span class="arithmatex">\(\beta_p\)</span> parameters of the
 prior on the Gamma shape parameter and the number of rate categories
 ncatG, respectively.<br />
 <strong>DEFAULT</strong><br />
-$\alpha=\infty$ (no rate variation among sites)<br />
+<span class="arithmatex">\(\alpha=\infty\)</span> (no rate variation among sites)<br />
 <strong>COMMENTS</strong><br />
 Among-site rate variation is assumed to follow a Gamma distribution with
-a mean of 1 and shape parameter $\alpha$. The variance of rates among
-sites is $1/\alpha$ and therefore a smaller $\alpha$ specifies more rate
+a mean of 1 and shape parameter <span class="arithmatex">\(\alpha\)</span>. The variance of rates among
+sites is <span class="arithmatex">\(1/\alpha\)</span> and therefore a smaller <span class="arithmatex">\(\alpha\)</span> specifies more rate
 variation. A discrete distribution is used to efficiently approximate
 the Gamma distribution and ncatG is the number of rate categories used
 in the approximation -- more rate categories provide a better
 approximation but incur greater computational expense. A value for ncatG
-of 4 is recommended. The prior on $\alpha$ is also a Gamma distribution
-with parameters $\alpha_p$ and $\beta_p$. The variance and mean of the
-prior on $\alpha$ are: </p>
-<p>$\textrm{Mean}(\alpha) = \frac{\alpha_p}{\beta_p}$,</p>
-<p>$\textrm{Var}(\alpha) = \frac{\alpha_p}{\beta_p^2}$</p>
+of 4 is recommended. The prior on <span class="arithmatex">\(\alpha\)</span> is also a Gamma distribution
+with parameters <span class="arithmatex">\(\alpha_p\)</span> and <span class="arithmatex">\(\beta_p\)</span>. The variance and mean of the
+prior on <span class="arithmatex">\(\alpha\)</span> are: </p>
+<p><span class="arithmatex">\(\textrm{Mean}(\alpha) = \frac{\alpha_p}{\beta_p}\)</span>,</p>
+<p><span class="arithmatex">\(\textrm{Var}(\alpha) = \frac{\alpha_p}{\beta_p^2}\)</span></p>
 <p><strong>EXAMPLES</strong></p>
 <pre><code>alphaprior = 1 1 4
 </code></pre>
@@ -2751,7 +2751,7 @@ cleandata = 0
 <p><strong>DESCRIPTION</strong><br />
 Specifies the distribution model and parameters of the prior
 distribution on the contemporary and ancestral population parameters
-$\theta$ and whether the MCMC integrates over the parameters or the
+<span class="arithmatex">\(\theta\)</span> and whether the MCMC integrates over the parameters or the
 integration is instead performed analytically.<br />
 <strong>VALUES</strong><br />
 <code>s</code>, specifies the form of the prior distribution on theta and
@@ -2764,58 +2764,58 @@ distributions and parameters are:</p>
 <pre><code>    invgamma a b
     invgamma a b e
 </code></pre>
-<p>which specifies an inverse gamma prior with $\alpha$ and $\beta$
+<p>which specifies an inverse gamma prior with <span class="arithmatex">\(\alpha\)</span> and <span class="arithmatex">\(\beta\)</span>
 parameters a and b, respectively. The first entry specifies that
-$\theta$s are integrated over analytically and the second entry (with
-trailing e) specifies that $\theta$s are estimated.</p>
+<span class="arithmatex">\(\theta\)</span>s are integrated over analytically and the second entry (with
+trailing e) specifies that <span class="arithmatex">\(\theta\)</span>s are estimated.</p>
 <pre><code>    gamma a b
 </code></pre>
-<p>which specifies a gamma prior with $\alpha$ and $\beta$ parameters a and
+<p>which specifies a gamma prior with <span class="arithmatex">\(\alpha\)</span> and <span class="arithmatex">\(\beta\)</span> parameters a and
 b, respectively.</p>
 <pre><code>    beta p q l u
 </code></pre>
-<p>which specifies a beta prior constrained to the interval $(l,u)$ with
+<p>which specifies a beta prior constrained to the interval <span class="arithmatex">\((l,u)\)</span> with
 parameters p and q, respectively. All the distributions above, except
 the inverse Gamma distribution (without the e argument) integrate over
-the $\theta$ parameters numerically as part of the MCMC, estimating the
-posterior distribution of $\theta$ for each population.<br />
+the <span class="arithmatex">\(\theta\)</span> parameters numerically as part of the MCMC, estimating the
+posterior distribution of <span class="arithmatex">\(\theta\)</span> for each population.<br />
 <strong>COMMENTS</strong><br />
 The inverse-gamma prior <code>invgamma a b</code>, where a and b are the parameters
-$\alpha$ and $\beta$, has mean and variance: </p>
-<p>$\textrm{Mean}(\theta) = \frac{\beta}{\alpha - 1}$,</p>
-<p>$\textrm{Var}(\theta) = \frac{\beta^2}{(\alpha - 1)^2 (\alpha - 2)}$.</p>
-<p>For example, if $\alpha=3$ and $\beta=0.002$ the mean is
-$0.002/(3 – 1) = 0.001$ (one variable site per kb on average). Note that
-all $\theta$ parameters in the MSC model (for both modern species and
+<span class="arithmatex">\(\alpha\)</span> and <span class="arithmatex">\(\beta\)</span>, has mean and variance: </p>
+<p><span class="arithmatex">\(\textrm{Mean}(\theta) = \frac{\beta}{\alpha - 1}\)</span>,</p>
+<p><span class="arithmatex">\(\textrm{Var}(\theta) = \frac{\beta^2}{(\alpha - 1)^2 (\alpha - 2)}\)</span>.</p>
+<p>For example, if <span class="arithmatex">\(\alpha=3\)</span> and <span class="arithmatex">\(\beta=0.002\)</span> the mean is
+<span class="arithmatex">\(0.002/(3 – 1) = 0.001\)</span> (one variable site per kb on average). Note that
+all <span class="arithmatex">\(\theta\)</span> parameters in the MSC model (for both modern species and
 extinct ancestral species) are assigned the same specified prior
 distribution with identical parameters. The inverse-gamma is a conjugate
-prior for $\theta$ (Hey and Nielsen, 2007), which means that both the
-prior and the posterior of $\theta$ will be inverse-gamma. Use of the
-conjugate prior allows the $\theta$ parameters to be integrated out
+prior for <span class="arithmatex">\(\theta\)</span> (Hey and Nielsen, 2007), which means that both the
+prior and the posterior of <span class="arithmatex">\(\theta\)</span> will be inverse-gamma. Use of the
+conjugate prior allows the <span class="arithmatex">\(\theta\)</span> parameters to be integrated out
 analytically, and thus the dimension of the parameter space is reduced.
 This typically leads to improved mixing of the MCMC. However, with this
-option, the posterior of the $\theta$ parameters will not be produced.
-To estimate the $\theta$ parameters when using an inverse gamma prior,
+option, the posterior of the <span class="arithmatex">\(\theta\)</span> parameters will not be produced.
+To estimate the <span class="arithmatex">\(\theta\)</span> parameters when using an inverse gamma prior,
 add the letter e (or E) on the line, as follows</p>
 <pre><code>    thetaprior = 3 0.002 e
 </code></pre>
-<p>Whether $\theta$s are integrated out or estimated, other results (such
+<p>Whether <span class="arithmatex">\(\theta\)</span>s are integrated out or estimated, other results (such
 as the posterior probability of species trees or species-delimitation
 models) should be identical if the same prior is used. The analytical
-integration of $\theta$ is only possible with an inverse gamma prior
-distribution, if any other prior is used the $\theta$s are automatically
+integration of <span class="arithmatex">\(\theta\)</span> is only possible with an inverse gamma prior
+distribution, if any other prior is used the <span class="arithmatex">\(\theta\)</span>s are automatically
 estimated and the E flag is not needed and should not be used. The gamma
-prior <code>gamma a b</code>, where a and b are the parameters $\alpha$ and
-$\beta$, has mean and variance: </p>
-<p>$\textrm{Mean}(\theta) = \frac{\alpha}{\beta}$,</p>
-<p>$\textrm{Var}(\theta) = \frac{\alpha}{\beta^2}$.</p>
-<p>For example, if $\alpha=0.001$ and $\beta=1$ the mean is
-$0.001/1 = 0.001$ (one variable site per kb on average). The beta prior
+prior <code>gamma a b</code>, where a and b are the parameters <span class="arithmatex">\(\alpha\)</span> and
+<span class="arithmatex">\(\beta\)</span>, has mean and variance: </p>
+<p><span class="arithmatex">\(\textrm{Mean}(\theta) = \frac{\alpha}{\beta}\)</span>,</p>
+<p><span class="arithmatex">\(\textrm{Var}(\theta) = \frac{\alpha}{\beta^2}\)</span>.</p>
+<p>For example, if <span class="arithmatex">\(\alpha=0.001\)</span> and <span class="arithmatex">\(\beta=1\)</span> the mean is
+<span class="arithmatex">\(0.001/1 = 0.001\)</span> (one variable site per kb on average). The beta prior
 <code>beta p q l u</code> has mean and variance: </p>
-<p>$\textrm{Mean}(\theta) = \frac{p u + q l}{p + q}$,</p>
-<p>$\textrm{Var}(\theta) = \frac{p q (u - l)^2}{(p + q)^2 (p + q + 1)}$.</p>
+<p><span class="arithmatex">\(\textrm{Mean}(\theta) = \frac{p u + q l}{p + q}\)</span>,</p>
+<p><span class="arithmatex">\(\textrm{Var}(\theta) = \frac{p q (u - l)^2}{(p + q)^2 (p + q + 1)}\)</span>.</p>
 <p>For example, with <code>beta 2 18 1e-6 0.1</code> the mean is: </p>
-<p>$\frac{2(0.1)+18(10^{-6})}{2+18} = 0.0100009$ </p>
+<p><span class="arithmatex">\(\frac{2(0.1)+18(10^{-6})}{2+18} = 0.0100009\)</span> </p>
 <p>which is 10 variable sites per kb on average.<br />
 <strong>EXAMPLES</strong></p>
 <pre><code>thetaprior = invgamma 3 0.002
@@ -2834,31 +2834,31 @@ Specifies the prior probability distribution of the divergence time
 parameter for the root in the species tree.
 <strong>VALUES</strong>\
 <code>s f f</code>, specifies either the gamma or inverse gamma prior
-distribution and the $\alpha$ and $\beta$ parameters, respectively for
-$\tau_0$, the divergence time parameter for the root in the species
+distribution and the <span class="arithmatex">\(\alpha\)</span> and <span class="arithmatex">\(\beta\)</span> parameters, respectively for
+<span class="arithmatex">\(\tau_0\)</span>, the divergence time parameter for the root in the species
 tree.</p>
 <pre><code>    gamma a b
     invgamma a b
 </code></pre>
 <p>specifies a gamma distribution, or an inverse gamma distribution,
-respectively with a and b to be the parameters $\alpha$ and $\beta$,
+respectively with a and b to be the parameters <span class="arithmatex">\(\alpha\)</span> and <span class="arithmatex">\(\beta\)</span>,
 respectively.<br />
 <strong>COMMENTS</strong><br />
-If the specified prior on $\tau_0$, the age of the root of the tree is
-an inverse-gamma distribution IG($\alpha, \beta$) with $\alpha &gt; 2$ the
+If the specified prior on <span class="arithmatex">\(\tau_0\)</span>, the age of the root of the tree is
+an inverse-gamma distribution IG(<span class="arithmatex">\(\alpha, \beta\)</span>) with <span class="arithmatex">\(\alpha &gt; 2\)</span> the
 mean and variance are: </p>
-<p>$\textrm{Mean}(\tau_0) = \frac{\beta}{\alpha - 1}$,</p>
-<p>$\textrm{Var}(\tau_0) = \frac{\beta^2}{(\alpha - 1)^2 (\alpha - 2)}$.</p>
+<p><span class="arithmatex">\(\textrm{Mean}(\tau_0) = \frac{\beta}{\alpha - 1}\)</span>,</p>
+<p><span class="arithmatex">\(\textrm{Var}(\tau_0) = \frac{\beta^2}{(\alpha - 1)^2 (\alpha - 2)}\)</span>.</p>
 <p>If the prior is a gamma distribution the mean and variance are:</p>
-<p>$\textrm{Mean}(\tau_0) = \frac{\alpha}{\beta}$,</p>
-<p>$\textrm{Var}(\tau_0) = \frac{\alpha}{\beta^2}$.</p>
+<p><span class="arithmatex">\(\textrm{Mean}(\tau_0) = \frac{\alpha}{\beta}\)</span>,</p>
+<p><span class="arithmatex">\(\textrm{Var}(\tau_0) = \frac{\alpha}{\beta^2}\)</span>.</p>
 <p>The remaining species divergence times are generated from the uniform
 Dirichlet distribution [@Yang2010 eq. 2]. As an example, suppose that
-<code>tauprior = 3 0.03</code> specifies the prior for $\tau_0$, the divergence
-time parameter for the root in the species tree. The mean of $\tau_0$ is
-then $0.03/(3 – 1) = 0.015$ (which means 1.5% of sequence divergence
+<code>tauprior = 3 0.03</code> specifies the prior for <span class="arithmatex">\(\tau_0\)</span>, the divergence
+time parameter for the root in the species tree. The mean of <span class="arithmatex">\(\tau_0\)</span> is
+then <span class="arithmatex">\(0.03/(3 – 1) = 0.015\)</span> (which means 1.5% of sequence divergence
 between the root of the species tree and the present time). If the
-mutation rate is $10^{–9}$ mutations/site/year, this distance will
+mutation rate is <span class="arithmatex">\(10^{–9}\)</span> mutations/site/year, this distance will
 translate to an absolute prior mean divergence time of 15 MY.<br />
 <strong>EXAMPLES</strong></p>
 <pre><code>tauprior = invgamma 3 0.03
@@ -2869,22 +2869,22 @@ tauprior = gamma 0.01 1
 <pre><code>phiprior = f f
 </code></pre>
 <p><strong>DESCRIPTION</strong><br />
-Specifies the parameters of the prior distribution on $\varphi$, the
+Specifies the parameters of the prior distribution on <span class="arithmatex">\(\varphi\)</span>, the
 introgression probability under the MSC-I model.<br />
 <strong>VALUES</strong><br />
-<code>f f</code>, specify the parameters $\alpha$ and $\beta$, respectively, of
-the beta distribution prior $\textrm{B}(\alpha,\beta)$ for $\varphi$.<br />
+<code>f f</code>, specify the parameters <span class="arithmatex">\(\alpha\)</span> and <span class="arithmatex">\(\beta\)</span>, respectively, of
+the beta distribution prior <span class="arithmatex">\(\textrm{B}(\alpha,\beta)\)</span> for <span class="arithmatex">\(\varphi\)</span>.<br />
 <strong>DEPENDENCIES</strong><br />
 If the <code>species&amp;tree</code> variable <code>t</code> specifies a tree with
 introgression nodes then <code>phiprior</code> must be defined.<br />
 <strong>COMMENTS</strong><br />
-The introgression probability $\varphi$ takes values on the interval
-$(0,1)$ and the prior distribution for $\varphi$ is assumed to be beta
-$\textrm{B}(\alpha, \beta)$ which has mean and variance:</p>
-<p>$\textrm{Mean}(\varphi) = \frac{\alpha}{\alpha+\beta}$,</p>
-<p>$\textrm{Var}(\varphi) = \frac{\alpha \beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)}$.</p>
+The introgression probability <span class="arithmatex">\(\varphi\)</span> takes values on the interval
+<span class="arithmatex">\((0,1)\)</span> and the prior distribution for <span class="arithmatex">\(\varphi\)</span> is assumed to be beta
+<span class="arithmatex">\(\textrm{B}(\alpha, \beta)\)</span> which has mean and variance:</p>
+<p><span class="arithmatex">\(\textrm{Mean}(\varphi) = \frac{\alpha}{\alpha+\beta}\)</span>,</p>
+<p><span class="arithmatex">\(\textrm{Var}(\varphi) = \frac{\alpha \beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)}\)</span>.</p>
 <p>For example, <code>phiprior = 1 1</code> specifies the beta prior
-$\textrm{B}(\alpha,\beta)$ with $\alpha = 1$ and $\beta = 1$ for $\varphi$, which has a mean of $1/2$ and a variance of $1/12$.<br />
+<span class="arithmatex">\(\textrm{B}(\alpha,\beta)\)</span> with <span class="arithmatex">\(\alpha = 1\)</span> and <span class="arithmatex">\(\beta = 1\)</span> for <span class="arithmatex">\(\varphi\)</span>, which has a mean of <span class="arithmatex">\(1/2\)</span> and a variance of <span class="arithmatex">\(1/12\)</span>.<br />
 <strong>EXAMPLES</strong></p>
 <pre><code>phiprior = 1 1
 phiprior = 1.5 1.5
@@ -2921,7 +2921,7 @@ variables depending on d+. The permissible combinations are:</p>
 </tr>
 <tr>
 <td></td>
-<td>$\alpha_{\bar{\mu}} \,\, \beta_{\bar{\mu}} \,\, \alpha_{\mu_i}$ prior</td>
+<td><span class="arithmatex">\(\alpha_{\bar{\mu}} \,\, \beta_{\bar{\mu}} \,\, \alpha_{\mu_i}\)</span> prior</td>
 <td></td>
 </tr>
 <tr>
@@ -2936,11 +2936,11 @@ variables depending on d+. The permissible combinations are:</p>
 </tr>
 </tbody>
 </table>
-<p>where $\alpha_{\bar{\mu}}$ and $\beta_{\bar{\mu}}$ are the parameters of
-the Gamma distribution prior on the average rate among loci $\bar{\mu}$
-and $\alpha_{\mu_i}$ is the parameter of the prior on the rate at the
-$i$th locus given $\bar{\mu}$. The prior variable must be either <code>iid</code>
-for a conditional iid (hierarchical) prior on $\mu_i$ or <code>dir</code> for a
+<p>where <span class="arithmatex">\(\alpha_{\bar{\mu}}\)</span> and <span class="arithmatex">\(\beta_{\bar{\mu}}\)</span> are the parameters of
+the Gamma distribution prior on the average rate among loci <span class="arithmatex">\(\bar{\mu}\)</span>
+and <span class="arithmatex">\(\alpha_{\mu_i}\)</span> is the parameter of the prior on the rate at the
+<span class="arithmatex">\(i\)</span>th locus given <span class="arithmatex">\(\bar{\mu}\)</span>. The prior variable must be either <code>iid</code>
+for a conditional iid (hierarchical) prior on <span class="arithmatex">\(\mu_i\)</span> or <code>dir</code> for a
 Gamma-Dirichlet prior. The prior variable is optional, if it is not
 specified <code>iid</code> is used.<br />
 <strong>DEFAULT</strong><br />
@@ -2955,10 +2955,10 @@ mutation rate. Setting <code>locusrate = 1 f f f s</code> specifies a model with
 rate variation among loci in which rates are estimated from the sequence
 data. Including the first integer (1) which species the model there are
 5 arguments, the last one (prior) being optional. Parameters
-$\alpha_{\bar{\mu}}$ and $\beta_{\bar{\mu}}$ specify the shape and rate
+<span class="arithmatex">\(\alpha_{\bar{\mu}}\)</span> and <span class="arithmatex">\(\beta_{\bar{\mu}}\)</span> specify the shape and rate
 parameters of the gamma distribution for the mean rate across loci
-($\bar\mu$), while $\alpha_{\mu_i}$ and prior are used to specify the
-locus rates ($\mu_i$) given the mean rate ($\bar\mu$). The option prior
+(<span class="arithmatex">\(\bar\mu\)</span>), while <span class="arithmatex">\(\alpha_{\mu_i}\)</span> and prior are used to specify the
+locus rates (<span class="arithmatex">\(\mu_i\)</span>) given the mean rate (<span class="arithmatex">\(\bar\mu\)</span>). The option prior
 can take two values dir (for Gamma-Dirichlet rates for loci), and iid
 (for conditional i.i.d. or hierarchical prior).
 <code>locusrate = 2 LocusRateFileName</code> specifies the fixed-rates model of
@@ -2969,40 +2969,40 @@ should be as many numbers in the file, separately by spaces or line
 returns, as the number of loci (nloci). The program re-scales those
 rates so that the average across all loci is 1 and then use those
 relative rates as fixed constants. Specifically the mean rate across
-loci ($\bar{\mu}$) is assigned a gamma prior:</p>
-<p>$\bar{\mu} = \mathrm{G}(\alpha_{\bar{\mu}},\beta_{\bar{\mu}}),$</p>
+loci (<span class="arithmatex">\(\bar{\mu}\)</span>) is assigned a gamma prior:</p>
+<p><span class="arithmatex">\(\bar{\mu} = \mathrm{G}(\alpha_{\bar{\mu}},\beta_{\bar{\mu}}),\)</span></p>
 <p>with mean and variance:</p>
-<p>$\textrm{Mean}(\bar{\mu}) = \frac{\alpha_{\bar{\mu}}}{\beta_{\bar{\mu}}}$,</p>
-<p>$\textrm{Var}(\bar{\mu}) = \frac{\alpha_{\bar{\mu}}}{\beta_{\bar{\mu}}^2}$.</p>
+<p><span class="arithmatex">\(\textrm{Mean}(\bar{\mu}) = \frac{\alpha_{\bar{\mu}}}{\beta_{\bar{\mu}}}\)</span>,</p>
+<p><span class="arithmatex">\(\textrm{Var}(\bar{\mu}) = \frac{\alpha_{\bar{\mu}}}{\beta_{\bar{\mu}}^2}\)</span>.</p>
 <p>When there are no fossil calibrations in the species tree, the rates
 should all be relative. In this case we suggest fixing
-$\alpha_{\bar{\mu}}=\beta_{\bar{\mu}}=0$ (with 0 causing the program to
-fix both parameters at $\infty$), and the program will fix the mean rate
-across loci at $\bar\mu = 1$. Otherwise one can use equal and large
-values such as $\alpha_{\bar{\mu}}=100$ and $\beta_{\bar{\mu}}=100$, so
-that $\bar\mu$ is nearly fixed at 1. Given the mean rate $\bar\mu$, two
-priors are available to specify the locus rates $\mu_i$, with
-$i = 1, 2, \cdots, L$, where $L$ is the number of loci (<code>nloci</code>). If
+<span class="arithmatex">\(\alpha_{\bar{\mu}}=\beta_{\bar{\mu}}=0\)</span> (with 0 causing the program to
+fix both parameters at <span class="arithmatex">\(\infty\)</span>), and the program will fix the mean rate
+across loci at <span class="arithmatex">\(\bar\mu = 1\)</span>. Otherwise one can use equal and large
+values such as <span class="arithmatex">\(\alpha_{\bar{\mu}}=100\)</span> and <span class="arithmatex">\(\beta_{\bar{\mu}}=100\)</span>, so
+that <span class="arithmatex">\(\bar\mu\)</span> is nearly fixed at 1. Given the mean rate <span class="arithmatex">\(\bar\mu\)</span>, two
+priors are available to specify the locus rates <span class="arithmatex">\(\mu_i\)</span>, with
+<span class="arithmatex">\(i = 1, 2, \cdots, L\)</span>, where <span class="arithmatex">\(L\)</span> is the number of loci (<code>nloci</code>). If
 <code>prior = dir</code> (for Gamma-Dirichlet distribution of locus rates), the
-total rate $L\bar\mu$, given the mean rate ($\bar\mu$), is partitioned
-into locus rates ($\mu_i$), using the concentration parameter
-$\alpha_{\mu_i}$ The model and notation follow <a href="https://doi.org/10.1093/molbev/msn148">Burgess and Yang 2008</a> [eq. 4] and
+total rate <span class="arithmatex">\(L\bar\mu\)</span>, given the mean rate (<span class="arithmatex">\(\bar\mu\)</span>), is partitioned
+into locus rates (<span class="arithmatex">\(\mu_i\)</span>), using the concentration parameter
+<span class="arithmatex">\(\alpha_{\mu_i}\)</span> The model and notation follow <a href="https://doi.org/10.1093/molbev/msn148">Burgess and Yang 2008</a> [eq. 4] and
 <a href="https://doi.org/10.1093/sysbio/syu020">Dos Reis et al 2014</a> [eqs. 3-5]. If <code>prior = iid</code> (for conditional-i.i.d. or
-hierarchical prior of locus rates), the locus rates ($\mu_i$) are
-i.i.d. given the mean rate ($\bar\mu$):</p>
-<p>$\mu_i \sim \mathrm{G}(\alpha_{\mu_i},\alpha_{\mu_i}/\bar{\mu})$. </p>
+hierarchical prior of locus rates), the locus rates (<span class="arithmatex">\(\mu_i\)</span>) are
+i.i.d. given the mean rate (<span class="arithmatex">\(\bar\mu\)</span>):</p>
+<p><span class="arithmatex">\(\mu_i \sim \mathrm{G}(\alpha_{\mu_i},\alpha_{\mu_i}/\bar{\mu})\)</span>. </p>
 <p>This model is described in <a href="https://doi.org/10.1093/sysbio/syu109">Zhu et al 2015</a> [eq. 8] and is also implemented in
 [mcmctree]{.smallcaps}. In both the Gamma-Dirichlet and the conditional
-i.i.d. models, parameter $\alpha_{\mu_i}$ is inversely related to the
-extent of rate variation among loci, with a large $\alpha_{\mu_i}$
+i.i.d. models, parameter <span class="arithmatex">\(\alpha_{\mu_i}\)</span> is inversely related to the
+extent of rate variation among loci, with a large <span class="arithmatex">\(\alpha_{\mu_i}\)</span>
 meaning similar rates among loci. If all loci are noncoding, the rates
-are probably similar, so $\alpha_{\mu_i} =$ 10 or 20 may be reasonable,
-while for coding loci or exons, $\alpha_{\mu_i} =$ 2 or 1 may be
-appropriate. The $\alpha_{\mu_i}$ parameter may affect the estimates of
-the population size parameter ($\theta$) for the root node on the
-species tree (<a href="https://doi.org/10.1093/molbev/msn148">Burgess and Yang 2008</a>). The $L$ locus rates ($\mu_i$) are
-parameters in the model. If $\alpha_{\bar{\mu}} &gt; 0$, the mean rate
-($\bar\mu$) is a parameter as well.<br />
+are probably similar, so <span class="arithmatex">\(\alpha_{\mu_i} =\)</span> 10 or 20 may be reasonable,
+while for coding loci or exons, <span class="arithmatex">\(\alpha_{\mu_i} =\)</span> 2 or 1 may be
+appropriate. The <span class="arithmatex">\(\alpha_{\mu_i}\)</span> parameter may affect the estimates of
+the population size parameter (<span class="arithmatex">\(\theta\)</span>) for the root node on the
+species tree (<a href="https://doi.org/10.1093/molbev/msn148">Burgess and Yang 2008</a>). The <span class="arithmatex">\(L\)</span> locus rates (<span class="arithmatex">\(\mu_i\)</span>) are
+parameters in the model. If <span class="arithmatex">\(\alpha_{\bar{\mu}} &gt; 0\)</span>, the mean rate
+(<span class="arithmatex">\(\bar\mu\)</span>) is a parameter as well.<br />
 <strong>EXAMPLES</strong></p>
 <pre><code>locusrate = 0
 locusrate = 2 rates.txt
@@ -3025,18 +3025,18 @@ clock model are also specified.<br />
 independent rates among branches (2), or a variable clock with
 autocorrelated rates between ancestral and descendent branches (3).<br />
 <code>f f f s s</code>, are required when <code>clock =</code> 2 or 3 and specify
-respectively the parameters $\alpha_{\bar{\nu}}$, $\beta_{\bar{\nu}}$
-and $\alpha_{\nu_i}$, the prior distribution for the locus rate
-($\mu_i$) which is either <code>dir</code> for Dirichlet or <code>iid</code> for conditional
+respectively the parameters <span class="arithmatex">\(\alpha_{\bar{\nu}}\)</span>, <span class="arithmatex">\(\beta_{\bar{\nu}}\)</span>
+and <span class="arithmatex">\(\alpha_{\nu_i}\)</span>, the prior distribution for the locus rate
+(<span class="arithmatex">\(\mu_i\)</span>) which is either <code>dir</code> for Dirichlet or <code>iid</code> for conditional
 i.i.d (hierarchical) prior, and the distribution for the branch rates
-($r_{ij}$) given the locus rate ($\mu_i$) which is either <code>G</code> for Gamma
-or <code>LN</code> for log-normal. Parameters $\alpha_{\bar{\nu}}$ and
-$\beta_{\bar{\nu}}$ are the parameters of the gamma distribution for the
-average of variances across loci ($\bar\nu$), while $\alpha_{\nu_i}$ and
-<code>prior</code> are used to specify the variance ($\nu_i$) for locus $i$ given
-the average ($\bar\nu$). The specification of the distribution of
-$\nu_i$ given $\bar\nu$ follows the same procedure as the specification
-of the distribution of $\mu_i$ given the mean rate $\bar\mu$ when
+(<span class="arithmatex">\(r_{ij}\)</span>) given the locus rate (<span class="arithmatex">\(\mu_i\)</span>) which is either <code>G</code> for Gamma
+or <code>LN</code> for log-normal. Parameters <span class="arithmatex">\(\alpha_{\bar{\nu}}\)</span> and
+<span class="arithmatex">\(\beta_{\bar{\nu}}\)</span> are the parameters of the gamma distribution for the
+average of variances across loci (<span class="arithmatex">\(\bar\nu\)</span>), while <span class="arithmatex">\(\alpha_{\nu_i}\)</span> and
+<code>prior</code> are used to specify the variance (<span class="arithmatex">\(\nu_i\)</span>) for locus <span class="arithmatex">\(i\)</span> given
+the average (<span class="arithmatex">\(\bar\nu\)</span>). The specification of the distribution of
+<span class="arithmatex">\(\nu_i\)</span> given <span class="arithmatex">\(\bar\nu\)</span> follows the same procedure as the specification
+of the distribution of <span class="arithmatex">\(\mu_i\)</span> given the mean rate <span class="arithmatex">\(\bar\mu\)</span> when
 modeling among-locus rate variation; see notes above about the
 <code>locusrate</code> variable.<br />
 <strong>DEFAULT</strong><br />
@@ -3049,35 +3049,35 @@ value.<br />
 As an example, the specification (<code>clock = 2 10.0 100.0 5.0 iid G</code>)
 specifies a local-clock model in which the mutation rate drifts over
 branches, independently among loci. A detailed explanation is as
-follows. First $\bar\nu$ is assigned a gamma distribution
-$G(10.0, 100.0)$, with mean 0.1. Given $\bar\nu$, the conditional
+follows. First <span class="arithmatex">\(\bar\nu\)</span> is assigned a gamma distribution
+<span class="arithmatex">\(G(10.0, 100.0)\)</span>, with mean 0.1. Given <span class="arithmatex">\(\bar\nu\)</span>, the conditional
 i.i.d. prior means that
-$\nu_i \sim G(\alpha_{\nu_i}, \alpha_{\nu_i}/\bar\nu)$ with shape
-parameter $\alpha_{\nu_i} = 5.0$ and mean $\bar\nu$, for
-$i = 1, 2, \cdots, L$. Note that $\alpha_{\nu_i}$ is inversely related
-to the variance of $\nu_i$: use small values of $\alpha_{\nu_i}$ (2, 1,
-or 0.5) if you believe that $\nu_i$ varies among loci (meaning that the
+<span class="arithmatex">\(\nu_i \sim G(\alpha_{\nu_i}, \alpha_{\nu_i}/\bar\nu)\)</span> with shape
+parameter <span class="arithmatex">\(\alpha_{\nu_i} = 5.0\)</span> and mean <span class="arithmatex">\(\bar\nu\)</span>, for
+<span class="arithmatex">\(i = 1, 2, \cdots, L\)</span>. Note that <span class="arithmatex">\(\alpha_{\nu_i}\)</span> is inversely related
+to the variance of <span class="arithmatex">\(\nu_i\)</span>: use small values of <span class="arithmatex">\(\alpha_{\nu_i}\)</span> (2, 1,
+or 0.5) if you believe that <span class="arithmatex">\(\nu_i\)</span> varies among loci (meaning that the
 clock nearly holds at some loci but is seriously violated at others).</p>
 <p>As another example, the specification
-(<code>clock = 2 10.0 100.0 5.0 dir LN</code>) means that $\bar\nu$ is assigned a
-gamma prior $G(10.0, 100.0)$, and then the sum $L\bar\nu$ is partitioned
-into $\nu_i$ (for $i = 1, 2, \cdots, L$) according to the Dirichlet
+(<code>clock = 2 10.0 100.0 5.0 dir LN</code>) means that <span class="arithmatex">\(\bar\nu\)</span> is assigned a
+gamma prior <span class="arithmatex">\(G(10.0, 100.0)\)</span>, and then the sum <span class="arithmatex">\(L\bar\nu\)</span> is partitioned
+into <span class="arithmatex">\(\nu_i\)</span> (for <span class="arithmatex">\(i = 1, 2, \cdots, L\)</span>) according to the Dirichlet
 distribution (<code>prior = dir</code>) with concentration parameter
-$\alpha_{\nu_i} = 5.0$. Again large $\alpha_{\nu_i}$ means the same
+<span class="arithmatex">\(\alpha_{\nu_i} = 5.0\)</span>. Again large <span class="arithmatex">\(\alpha_{\nu_i}\)</span> means the same
 extent of clock violation at different loci.</p>
-<p>Given the locus rate $\mu_i$ (specified using the <code>locusrate</code> variable)
-and the variance $\nu_i$ (specified using the <code>clock</code> variable) for
-locus $i$, the different lineages may have different rates at the locus,
+<p>Given the locus rate <span class="arithmatex">\(\mu_i\)</span> (specified using the <code>locusrate</code> variable)
+and the variance <span class="arithmatex">\(\nu_i\)</span> (specified using the <code>clock</code> variable) for
+locus <span class="arithmatex">\(i\)</span>, the different lineages may have different rates at the locus,
 and those rates are independent among loci. If distribution specified is
-<code>G</code> (for gamma), the rate for species-tree branch $j$ at locus $i$ has
+<code>G</code> (for gamma), the rate for species-tree branch <span class="arithmatex">\(j\)</span> at locus <span class="arithmatex">\(i\)</span> has
 the following gamma distribution</p>
-<p>$r_{ij} | \mu_i, \nu_i \sim \mathrm{G}(\mu_i^2/\nu_i, \mu_i/\nu_i)$.</p>
-<p>This has mean $\mu_i$ and variance $\nu_i$. Alternatively if
+<p><span class="arithmatex">\(r_{ij} | \mu_i, \nu_i \sim \mathrm{G}(\mu_i^2/\nu_i, \mu_i/\nu_i)\)</span>.</p>
+<p>This has mean <span class="arithmatex">\(\mu_i\)</span> and variance <span class="arithmatex">\(\nu_i\)</span>. Alternatively if
 distribution = <code>LN</code> (for log-normal), the rate for species-tree branch
-$j$ at locus $i$ has the following the log-normal distribution</p>
-<p>$r_{ij} | \mu_i, \nu_i \sim \mathrm{LN}(\mu_i, \nu_i)$,</p>
-<p>where $\mu_i$
-is the mean of the LN distribution and $\nu_i$ is the variance parameter
+<span class="arithmatex">\(j\)</span> at locus <span class="arithmatex">\(i\)</span> has the following the log-normal distribution</p>
+<p><span class="arithmatex">\(r_{ij} | \mu_i, \nu_i \sim \mathrm{LN}(\mu_i, \nu_i)\)</span>,</p>
+<p>where <span class="arithmatex">\(\mu_i\)</span>
+is the mean of the LN distribution and <span class="arithmatex">\(\nu_i\)</span> is the variance parameter
 of the lognormal. Note that the rate-drift model specifies rates for
 branches on the species tree (rather than on the gene tree) for each
 locus, and gene-tree branches residing in the same population or species
@@ -3094,8 +3094,8 @@ product of the rate and the time duration for the segment).</p>
 autocorrelated-rates model. <code>clock = 3</code> with the log-normal distribution
 (LN) specifies the geometric Brownian motion model of <a href="https://doi.org/10.1080/10635150701420643">Rannala and Yang 2007</a>. This
 assigns a rate to each species-tree branch, that is, to the mid-point of
-the branch. Given the rate at the species-tree root ($\mu_i$ at locus
-$i$), the rates for the two branches around the root are specified. Then
+the branch. Given the rate at the species-tree root (<span class="arithmatex">\(\mu_i\)</span> at locus
+<span class="arithmatex">\(i\)</span>), the rates for the two branches around the root are specified. Then
 given the rate for each ancestral branch, the rates for its two daughter
 branches are specified, by integrating over the rate at the internal
 node that is ancestral to the daughter branches. See figure 1 and
@@ -3105,19 +3105,19 @@ root moving to the tips, until all branches are visited. If <code>clock = 3</cod
 is specified with the gamma distribution (option <code>G</code>), the model works
 as follows, using a similar pre-order tree traversal. First the two
 branches at the species-tree root have the gamma distribution with mean
-$\mu_i$ and variance $\nu_i$. Then given the rate for each ancestral
+<span class="arithmatex">\(\mu_i\)</span> and variance <span class="arithmatex">\(\nu_i\)</span>. Then given the rate for each ancestral
 branch, the rates for its two daughter branches are specified as
 independent gamma variables with the mean to be the rate of the parental
-branch and with the variance to be $\nu_i$. Clock 3 is currently
+branch and with the variance to be <span class="arithmatex">\(\nu_i\)</span>. Clock 3 is currently
 implemented for the MSC model only and is unavailable under the MSC-I
 model.</p>
-<p>Note that a larger variance $\nu_i$ implies a more serious violation of
-the molecular clock at locus $i$. Also note that $\nu_i$ will be similar
-to $\bar\nu$, especially if $\alpha_{\nu_i}$ is large, and $\bar\nu$ has
-prior mean $\alpha_{\bar{\nu}} / \beta_{\bar{\nu}}$. If
-$\alpha_{\bar{\nu}} = 10$ and $\beta_{\bar{\nu}} = 100$, the prior mean
-will be 0.1. Thus, for the log-normal model $\nu = 0.5$ represents a
-serious violation of the clock while $\nu &lt; 0.1$ represents only a
+<p>Note that a larger variance <span class="arithmatex">\(\nu_i\)</span> implies a more serious violation of
+the molecular clock at locus <span class="arithmatex">\(i\)</span>. Also note that <span class="arithmatex">\(\nu_i\)</span> will be similar
+to <span class="arithmatex">\(\bar\nu\)</span>, especially if <span class="arithmatex">\(\alpha_{\nu_i}\)</span> is large, and <span class="arithmatex">\(\bar\nu\)</span> has
+prior mean <span class="arithmatex">\(\alpha_{\bar{\nu}} / \beta_{\bar{\nu}}\)</span>. If
+<span class="arithmatex">\(\alpha_{\bar{\nu}} = 10\)</span> and <span class="arithmatex">\(\beta_{\bar{\nu}} = 100\)</span>, the prior mean
+will be 0.1. Thus, for the log-normal model <span class="arithmatex">\(\nu = 0.5\)</span> represents a
+serious violation of the clock while <span class="arithmatex">\(\nu &lt; 0.1\)</span> represents only a
 slight violation.<br />
 <strong>EXAMPLES</strong></p>
 <pre><code>clock = 1
@@ -3129,48 +3129,48 @@ clock = 3 10.0 50.0 3.0 dir G
 <pre><code>heredity = +d [(f f, s, )]
 </code></pre>
 <p><strong>DESCRIPTION</strong><br />
-Specifies whether proportional differences exist between all $\theta$
+Specifies whether proportional differences exist between all <span class="arithmatex">\(\theta\)</span>
 values for different loci, and if so whether the proportionality
 multipliers (called inheritance scalars) are estimated from the data, or
 set to specified fixed values. If inheritance scalars are estimated, the
 parameters of the prior also must be specified.<br />
 <strong>VALUES</strong><br />
-<code>+d</code>, specifies whether no differences in $\theta$ exist among loci
+<code>+d</code>, specifies whether no differences in <span class="arithmatex">\(\theta\)</span> exist among loci
 (0), proportional differences exist and inheritance scalars are
 estimated (1), or proportional differences exist and inheritance scalars
 are fixed to specified values (2).<br />
-<code>f f</code>, is only specified when <code>+d</code> is 1 and specifies the $\alpha$
-and $\beta$ parameters, respectively, of the Gamma prior on the scalar
-$s_i$ for locus $i$.<br />
+<code>f f</code>, is only specified when <code>+d</code> is 1 and specifies the <span class="arithmatex">\(\alpha\)</span>
+and <span class="arithmatex">\(\beta\)</span> parameters, respectively, of the Gamma prior on the scalar
+<span class="arithmatex">\(s_i\)</span> for locus <span class="arithmatex">\(i\)</span>.<br />
 <code>s</code>, is only specified when <code>+d</code> is 2 and specifies the name of a
-file containing $L$ (number of loci) heredity scalars (which must be
+file containing <span class="arithmatex">\(L\)</span> (number of loci) heredity scalars (which must be
 positive numbers) separated by spaces or linebreaks.<br />
 <strong>DEFAULT</strong><br />
 <code>0</code><br />
 <strong>COMMENTS</strong><br />
-<code>heredity = 0</code> is the default and constrains $\theta$ to be equal across
-loci. <code>heredity = 1</code> or <code>2</code> specifies two models that allow $\theta$ to
+<code>heredity = 0</code> is the default and constrains <span class="arithmatex">\(\theta\)</span> to be equal across
+loci. <code>heredity = 1</code> or <code>2</code> specifies two models that allow <span class="arithmatex">\(\theta\)</span> to
 vary among loci, which may be useful for analyses combining data from
 autosomal loci, loci on sex chromosomes, and/or mitochondrial loci. Such
 mixed data, may be expected to have proportional differences in
 effective population sizes among loci so that inheritance scalars
 <a href="https://doi.org/10.1534/genetics.103.024182">Hey and Nielsen 2004</a> should be applied. For example, in diploid sexual organisms
 with strict maternal inheritance of mtDNA we expect the effective
-population size of a mitochondrial locus to be $1/4$ that of a nuclear
-locus. Other factors such as natural selection may also cause $\theta$
+population size of a mitochondrial locus to be <span class="arithmatex">\(1/4\)</span> that of a nuclear
+locus. Other factors such as natural selection may also cause <span class="arithmatex">\(\theta\)</span>
 to deviate from the neutral expectation even among autosomal loci.
 BPP implements two options for allowing such variations.
 The first option (<code>heredity = 1</code>) specifies that locus-specific
-inheritance scalars $s_i$ be estimated, using a Gamma prior with
-parameters $\alpha$ and $\beta$ specified by the user. The prior mean
-and variance of $s_i$ are:</p>
-<p>$\textrm{Mean}(s_i) = \frac{\alpha}{\beta}$,</p>
-<p>$\textrm{Var}(s_i) = \frac{\alpha}{\beta^2}$.</p>
+inheritance scalars <span class="arithmatex">\(s_i\)</span> be estimated, using a Gamma prior with
+parameters <span class="arithmatex">\(\alpha\)</span> and <span class="arithmatex">\(\beta\)</span> specified by the user. The prior mean
+and variance of <span class="arithmatex">\(s_i\)</span> are:</p>
+<p><span class="arithmatex">\(\textrm{Mean}(s_i) = \frac{\alpha}{\beta}\)</span>,</p>
+<p><span class="arithmatex">\(\textrm{Var}(s_i) = \frac{\alpha}{\beta^2}\)</span>.</p>
 <p>For example, <code>(heredity = 1 4 4)</code> specifies a Gamma prior
-$\textrm{G}(4, 4)$, with mean $4/4 = 1$ and variance $1/4$, for the
+<span class="arithmatex">\(\textrm{G}(4, 4)\)</span>, with mean <span class="arithmatex">\(4/4 = 1\)</span> and variance <span class="arithmatex">\(1/4\)</span>, for the
 inheritance scalar at each locus. The MCMC then generates the posterior
-distribution of $s_i$ for each locus. The second option (<code>heredity = 2</code>)
-allows the user to specify the $s_i$ in a file so they remain fixed
+distribution of <span class="arithmatex">\(s_i\)</span> for each locus. The second option (<code>heredity = 2</code>)
+allows the user to specify the <span class="arithmatex">\(s_i\)</span> in a file so they remain fixed
 constants during the MCMC run.<br />
 <strong>EXAMPLES</strong></p>
 <pre><code>heredity = 0
@@ -3384,18 +3384,18 @@ the maximum number of sequences at any locus for each species/population
 (in the same order as the species listing on the previous line). This
 example specifies a maximum of 9 sequences for K, 7 for C, 14 for L and
 2 for H. The program interprets these numbers as follows. First, if the
-number of sequences for a species is 2 or greater, $\theta$ for that
+number of sequences for a species is 2 or greater, <span class="arithmatex">\(\theta\)</span> for that
 species will be a parameter estimated by the program. Second, the sum of
 the numbers of sequences over all species specifies the maximum number
 of sequences at a locus. However, specifying 2 sequences for a species
 when there are actually 10 sequences for that species at some loci in
-the data file has no harmful effects. Note that if there are $s$ species
+the data file has no harmful effects. Note that if there are <span class="arithmatex">\(s\)</span> species
 in the species tree, the model will minimally contain the following
-parameters: $s – 1$ species divergence times ($\tau$s) and $s – 1$
-ancestral species $\theta$s. A $\theta$ parameter will also exist for
+parameters: <span class="arithmatex">\(s – 1\)</span> species divergence times (<span class="arithmatex">\(\tau\)</span>s) and <span class="arithmatex">\(s – 1\)</span>
+ancestral species <span class="arithmatex">\(\theta\)</span>s. A <span class="arithmatex">\(\theta\)</span> parameter will also exist for
 each contemporary species with at least two sequences present at some
 locus. If the data are for a single species/population, the model will
-contain one parameter only, $\theta$ for that species.</p>
+contain one parameter only, <span class="arithmatex">\(\theta\)</span> for that species.</p>
 <p>The line <code>(((K, C), L), H);</code> specifies the (fixed) species tree in
 Newick format ending with a semicolon (;). This example specifies a tree
 with no introgression (the MSC model). Specification of the MSC-I model
@@ -3462,58 +3462,58 @@ such data are removed prior to analysis.</p>
     thetaprior = invgamma 3 0.004 E  
 </code></pre>
 <p>The line <code>thetaprior = 3 0.004 E</code> specifies the inverse-gamma prior
-IG($\alpha, \beta$) for the $\theta$ parameters, with the mean to be
-$\beta/(\alpha-1)$. In the example, the mean is $0.004/(3 – 1) = 0.002$
+IG(<span class="arithmatex">\(\alpha, \beta\)</span>) for the <span class="arithmatex">\(\theta\)</span> parameters, with the mean to be
+<span class="arithmatex">\(\beta/(\alpha-1)\)</span>. In the example, the mean is <span class="arithmatex">\(0.004/(3 – 1) = 0.002\)</span>
 (two substitutions per kb on average) and the option E specifies that
-the program analytically integrates over $\theta$s. Note that all
-$\theta$ parameters in the MSC model (for both modern species and
+the program analytically integrates over <span class="arithmatex">\(\theta\)</span>s. Note that all
+<span class="arithmatex">\(\theta\)</span> parameters in the MSC model (for both modern species and
 extinct ancestral species) are assigned the inverse-gamma prior with the
 same parameters.</p>
-<p><strong>Analytical integration of $\theta$ and the inverse gamma prior</strong><br />
-The inverse-gamma is a conjugate prior for $\theta$ (<a href="https://doi.org/10.1073/pnas.0611164104">Hey and Nielsen 2007</a>)
-which means that both the prior and the posterior of $\theta$ will be
-inverse-gamma. Use of the conjugate priors allows the $\theta$
+<p><strong>Analytical integration of <span class="arithmatex">\(\theta\)</span> and the inverse gamma prior</strong><br />
+The inverse-gamma is a conjugate prior for <span class="arithmatex">\(\theta\)</span> (<a href="https://doi.org/10.1073/pnas.0611164104">Hey and Nielsen 2007</a>)
+which means that both the prior and the posterior of <span class="arithmatex">\(\theta\)</span> will be
+inverse-gamma. Use of the conjugate priors allows the <span class="arithmatex">\(\theta\)</span>
 parameters to be integrated out analytically, and thus the dimension of
 the parameter space is reduced. This typically leads to improved mixing
-of the MCMC. However, with this option, the posterior of the $\theta$
-parameters will not be produced. To estimate the $\theta$ parameters,
+of the MCMC. However, with this option, the posterior of the <span class="arithmatex">\(\theta\)</span>
+parameters will not be produced. To estimate the <span class="arithmatex">\(\theta\)</span> parameters,
 add the letter e (or E) on the line, as follows</p>
 <pre><code>    thetaprior = invgamma 3 0.002 e
 </code></pre>
-<p>Whether $\theta$s are integrated out or estimated, other results (such
-as the posterior of the $\theta$ parameters or the posterior probability
+<p>Whether <span class="arithmatex">\(\theta\)</span>s are integrated out or estimated, other results (such
+as the posterior of the <span class="arithmatex">\(\theta\)</span> parameters or the posterior probability
 of species trees or species-delimitation models) should be identical. A
 useful strategy may be to run the A01, A10, and A11 analyses without
-estimating the $\theta$ parameters, and after the MAP model (the best
+estimating the <span class="arithmatex">\(\theta\)</span> parameters, and after the MAP model (the best
 species tree or the best species delimitation model) is identified, run
 the A00 analysis with the model fixed to estimate all parameters.</p>
 <p>Some notes about the inverse-gamma distribution. Since
-BPP3.4, both the $\theta$ and $\tau$ parameters are
+BPP3.4, both the <span class="arithmatex">\(\theta\)</span> and <span class="arithmatex">\(\tau\)</span> parameters are
 assigned the inverse gamma priors rather than the gamma priors in
 version 3.3 or earlier. One difference is that the gamma is light-tailed
 while the inverse-gamma is heavy-tailed, so that the inverse-gamma may
 be less influential than the gamma if your prior mean is much too small.
-The inverse-gamma distribution IG($\alpha, \beta$) has mean
-$m = \alpha/(\beta-1)$ if $\alpha &gt; 1$ and variance
-$s^2 = \beta^2/[(\alpha-1)^2(\alpha-2)]$ if $\alpha &gt; 2$, while the
-coefficient of variation is $s/m = \sqrt{1/(\alpha-2)}$. If little
-information is available about the parameters, you can use $\alpha = 3$
-for a diffuse prior and then adjust the $\beta$ so that the mean looks
+The inverse-gamma distribution IG(<span class="arithmatex">\(\alpha, \beta\)</span>) has mean
+<span class="arithmatex">\(m = \alpha/(\beta-1)\)</span> if <span class="arithmatex">\(\alpha &gt; 1\)</span> and variance
+<span class="arithmatex">\(s^2 = \beta^2/[(\alpha-1)^2(\alpha-2)]\)</span> if <span class="arithmatex">\(\alpha &gt; 2\)</span>, while the
+coefficient of variation is <span class="arithmatex">\(s/m = \sqrt{1/(\alpha-2)}\)</span>. If little
+information is available about the parameters, you can use <span class="arithmatex">\(\alpha = 3\)</span>
+for a diffuse prior and then adjust the <span class="arithmatex">\(\beta\)</span> so that the mean looks
 reasonable. For example, for the human species,
-$\theta_H \approx 0.0006$, which means that two random sequences from
+<span class="arithmatex">\(\theta_H \approx 0.0006\)</span>, which means that two random sequences from
 the human population are different at  0.06% of sites, less than 1
 difference per kb. A sensible diffuse prior is then
-<code>thetaprior = 3 0.002</code>, with mean $0.002/(3 – 1) = 0.001$.</p>
+<code>thetaprior = 3 0.002</code>, with mean <span class="arithmatex">\(0.002/(3 – 1) = 0.001\)</span>.</p>
 <pre><code>    # invgamma(a, b) for root tau &amp; Dirichlet(a) for other tau's
     tauprior = invgamma 3 0.002    
 </code></pre>
 <p>The line <code>tauprior = 3 0.002</code> specifies the inverse-gamma prior
-IG($\alpha, \beta$) for $\tau_0$, the divergence time parameter for the
+IG(<span class="arithmatex">\(\alpha, \beta\)</span>) for <span class="arithmatex">\(\tau_0\)</span>, the divergence time parameter for the
 root in the species tree. Other divergence times are generated from the
 uniform Dirichlet distribution (<a href="https://doi.org/10.1073/pnas.0913022107">Yang and Rannala 2010, eq.2</a>). In the example, the
-mean is $0.002/(3 – 1) = 0.001$ (which means 0.1% average sequence
+mean is <span class="arithmatex">\(0.002/(3 – 1) = 0.001\)</span> (which means 0.1% average sequence
 divergence between the root of the species tree and the present time).
-If the mutation rate is $10^{–9}$ mutations/site/year, this distance
+If the mutation rate is <span class="arithmatex">\(10^{–9}\)</span> mutations/site/year, this distance
 will translate to a divergence time of 1 MY.</p>
 <pre><code>    # finetune for GBtj, GBspr, theta, tau, mix, locusrate, seqerr
     finetune =  1: 5 0.001 0.001  0.001 0.3 0.33 1.0  
@@ -3545,16 +3545,16 @@ during the MCMC run. It has several boolean variables (0 for off and 1
 for on) that control the printouts during the MCMC. The first variable
 specifies whether the MCMC samples are written into the main sample file
 (mcmc.txt). The second flag is for locus-specific rate parameters (rate
-$\mu_i$, variance parameter $\nu_i$ and species-tree branch rates for
-locus $r_{ij}$). The third flag is for locus-specific heredity scalars
+<span class="arithmatex">\(\mu_i\)</span>, variance parameter <span class="arithmatex">\(\nu_i\)</span> and species-tree branch rates for
+locus <span class="arithmatex">\(r_{ij}\)</span>). The third flag is for locus-specific heredity scalars
 if those are estimated from the data. The fourth flag is for printing
 locus-specific gene trees. The fifth flag is for printing locus-specific
-substitution-rate parameters (qmat for the $Q$ matrix, freqs for base
+substitution-rate parameters (qmat for the <span class="arithmatex">\(Q\)</span> matrix, freqs for base
 frequencies, and alpha for gamma rates for sites).</p>
 <p>MCMC samples are taken after the burnin (8000 iterations), and in this
 example, are taken every 2 iterations, with a total of 100,000 samples
 taken. The total number of MCMC iterations is <code>burnin</code> + <code>sampfreq</code>
-$\times$ <code>nsample</code>. The resulting file can be large. For analysis A00
+<span class="arithmatex">\(\times\)</span> <code>nsample</code>. The resulting file can be large. For analysis A00
 (<code>speciesdelimitation = 0, speciestree = 0</code>), this file can be analysed
 using the R package or tracer. For other analyses (A01, A10, and A11),
 the dimension of the sample is changing and cannot be analysed using
@@ -3620,7 +3620,7 @@ models in the BPP control file.</p>
 <p>One of the earliest and simplest models of DNA substitution, the
 Jukes-Cantor model, assumes that all possible changes between the 4
 nucleotides have equal rates and thus the stationary frequencies of
-bases are $1/4$ each. This model is the default in BPP and will be used
+bases are <span class="arithmatex">\(1/4\)</span> each. This model is the default in BPP and will be used
 if no model is specified in the control file. The control file variable
 <code>model</code> specifies the substitution model and the explicit specification
 of the JC69 model is:</p>
@@ -3662,7 +3662,7 @@ rates if x is any positive number a b c d e f and xa xb xc xd xe xf are
 equivalent specifications. An example with fixed rates is as follows:</p>
 <pre><code>    Qrates = 1  2 1 1 1 1 2
 </code></pre>
-<p>which specifies $a=2,b=c=d=e=1,f=2$ so that the transition rate is twice
+<p>which specifies <span class="arithmatex">\(a=2,b=c=d=e=1,f=2\)</span> so that the transition rate is twice
 as high as the transversion rate, corresponding to a K80 or HKY model.
 In most cases, users will want to use the GTR model with exchangeability
 parameters variable. Using this specification, the posterior
@@ -3674,17 +3674,17 @@ example with variable rates is as follows:</p>
 determines the variance of the prior probability distribution on
 exchangeability parameters. The variance is inversely proportional to
 the absolute magnitude of the variables. The prior on the free
-parameters $a, b, c, d, e$ is a Dirichlet distribution with parameters</p>
-<p>$\alpha_a = 10, \alpha_b = \alpha_c = \alpha_d = \alpha_e = 5, \texttt{and} \, \alpha_f = 10$</p>
+parameters <span class="arithmatex">\(a, b, c, d, e\)</span> is a Dirichlet distribution with parameters</p>
+<p><span class="arithmatex">\(\alpha_a = 10, \alpha_b = \alpha_c = \alpha_d = \alpha_e = 5, \texttt{and} \, \alpha_f = 10\)</span></p>
 <p>The rates generated from the Dirichlet sum to 1 and are rescaled. If we
 define</p>
-<p>$\alpha = \alpha_a + \alpha_b + \alpha_c + \alpha_d + \alpha_e + \alpha_f$</p>
-<p>then the mean for $a$ is $\alpha_a/\alpha$ and the variance for $a$ is</p>
-<p>$\textrm{Var}(a) = \frac{\frac{\alpha_a}{\alpha}\left(1-\frac{\alpha_a}{\alpha}\right)}{\alpha + 1}$.</p>
+<p><span class="arithmatex">\(\alpha = \alpha_a + \alpha_b + \alpha_c + \alpha_d + \alpha_e + \alpha_f\)</span></p>
+<p>then the mean for <span class="arithmatex">\(a\)</span> is <span class="arithmatex">\(\alpha_a/\alpha\)</span> and the variance for <span class="arithmatex">\(a\)</span> is</p>
+<p><span class="arithmatex">\(\textrm{Var}(a) = \frac{\frac{\alpha_a}{\alpha}\left(1-\frac{\alpha_a}{\alpha}\right)}{\alpha + 1}\)</span>.</p>
 <p>The means and variances of the other parameters are the same
-(substituting subscripts). Thus, in this example, the mean for $a$ is
-$\alpha_a/\alpha = 10/40 = 1/4$ and the variance is
-$(1/4)(3/4)/41 = 4.6 \times 10^{-3}$. The prior specified above has an
+(substituting subscripts). Thus, in this example, the mean for <span class="arithmatex">\(a\)</span> is
+<span class="arithmatex">\(\alpha_a/\alpha = 10/40 = 1/4\)</span> and the variance is
+<span class="arithmatex">\((1/4)(3/4)/41 = 4.6 \times 10^{-3}\)</span>. The prior specified above has an
 average transition-transversion rate ratio of 2 (if base frequencies are
 all fixed at 1/4).</p>
 <p>The other control file variable that must be specified when using the
@@ -3708,8 +3708,8 @@ frequencies is as follows:</p>
 </code></pre>
 <p>Here the 4 variables T C A G specify the alpha parameters of a Dirichlet
 prior distribution on the nucleotide frequencies. So, the prior mean
-frequency of base A in this example is $10/40 = 1/4$ and the variance is
-$(1/4)(3/4)/41 = 4.6 \times 10^{-3}$. As noted above when discussing the
+frequency of base A in this example is <span class="arithmatex">\(10/40 = 1/4\)</span> and the variance is
+<span class="arithmatex">\((1/4)(3/4)/41 = 4.6 \times 10^{-3}\)</span>. As noted above when discussing the
 Dirichlet prior for exchangeability parameters the absolute magnitude of
 the variables determines the variance of the Dirichlet prior. If a GTR
 model is chosen and <code>Qrates</code> and <code>basefreqs</code> are not specified in the
@@ -3755,85 +3755,85 @@ variation model (<a href="https://doi.org/10.1007/BF00178256">see Yang 1994</a>)
 sites is constrained to be 1 so that the expected number of
 substitutions on a branch is proportional to its length (in units of
 expected substitutions). If the mean of the Gamma distribution is fixed,
-the only free parameter is the shape parameter $\alpha$. The variance of
-rates among sites is $1/\alpha$ and therefore a smaller $\alpha$
+the only free parameter is the shape parameter <span class="arithmatex">\(\alpha\)</span>. The variance of
+rates among sites is <span class="arithmatex">\(1/\alpha\)</span> and therefore a smaller <span class="arithmatex">\(\alpha\)</span>
 specifies more rate variation. Gamma distributed rate variation is
 specified using the control file variable <code>alphaprior</code>. If this variable
-is not set the default is $\alpha = \infty$ so that the variance is zero
-(rates are constant among sites). The prior on $\alpha$ is also a Gamma
-distribution with parameters $\alpha_p$ and $\beta_p$. The control file
+is not set the default is <span class="arithmatex">\(\alpha = \infty\)</span> so that the variance is zero
+(rates are constant among sites). The prior on <span class="arithmatex">\(\alpha\)</span> is also a Gamma
+distribution with parameters <span class="arithmatex">\(\alpha_p\)</span> and <span class="arithmatex">\(\beta_p\)</span>. The control file
 specification is as follows:</p>
 <pre><code>alphaprior = a b ncatG
 </code></pre>
-<p>where $a = \alpha_p$ and $b = \beta_p$ are the parameters of the Gamma
-distributed prior on the parameter $\alpha$ and <code>ncatG</code> is the number of
+<p>where <span class="arithmatex">\(a = \alpha_p\)</span> and <span class="arithmatex">\(b = \beta_p\)</span> are the parameters of the Gamma
+distributed prior on the parameter <span class="arithmatex">\(\alpha\)</span> and <code>ncatG</code> is the number of
 rate categories used to approximate the Gamma distribution. A discrete
 distribution is used to efficiently approximate the Gamma distribution
 and ncatG is the number of rate categories used in the approximation --
 more rate categories provide a better approximation but incur greater
 computational expense. A value for ncatG of 4 is recommended. The
-variance and mean of the prior on $\alpha$ are: </p>
-<p>$\begin{aligned}
-  \textrm{Mean}(\alpha) &amp; = &amp; \frac{\alpha_p}{\beta_p}, \nonumber \
-  \textrm{Var}(\alpha) &amp; = &amp; \frac{\alpha_p}{\beta_p^2} \nonumber\end{aligned}$</p>
+variance and mean of the prior on <span class="arithmatex">\(\alpha\)</span> are: </p>
+<p><span class="arithmatex">\(\begin{aligned}
+  \textrm{Mean}(\alpha) &amp; = &amp; \frac{\alpha_p}{\beta_p}, \nonumber \\
+  \textrm{Var}(\alpha) &amp; = &amp; \frac{\alpha_p}{\beta_p^2} \nonumber\end{aligned}\)</span></p>
 <p>As an example, the setting <code>alphaprior = 1 1 4</code> specifies a prior on the
-shape parameter $\alpha$ (with 4 rate categories) that has a mean and
-variance of 1, thus the expected variance of $\alpha$ is also 1. This is
+shape parameter <span class="arithmatex">\(\alpha\)</span> (with 4 rate categories) that has a mean and
+variance of 1, thus the expected variance of <span class="arithmatex">\(\alpha\)</span> is also 1. This is
 a fairly diffuse (uninformative) prior.</p>
 <h3 id="among-locus-rate-variation">Among-locus rate variation</h3>
 <p>Empirical evidence suggests that substitution rates can vary
 substantially among loci, probably reflecting the influences of
 selection. BPP incorporates a hierarchical prior to model rate variation
 among loci. The models implemented in BPP allow each locus to have a
-different substitution rate. For $L$ loci (alignments), there are $L$
-substitution rate parameters, where $\mu_i$ is the rate at the $i$th
+different substitution rate. For <span class="arithmatex">\(L\)</span> loci (alignments), there are <span class="arithmatex">\(L\)</span>
+substitution rate parameters, where <span class="arithmatex">\(\mu_i\)</span> is the rate at the <span class="arithmatex">\(i\)</span>th
 locus.</p>
 <h4 id="prior-distribution-of-the-mean-rate-among-loci">Prior distribution of the mean rate among loci</h4>
 <p>The mean rate across loci is</p>
-<p>$\bar{\mu} = \frac{1}{L} \sum_{i=1}^L \mu_i$.</p>
-<p>The prior distribution for the mean rate across loci $\bar{\mu}$ is a Gamma distribution with
-parameters $\alpha_{\bar{\mu}}$ and $\beta_{\bar{\mu}}$ and mean and
+<p><span class="arithmatex">\(\bar{\mu} = \frac{1}{L} \sum_{i=1}^L \mu_i\)</span>.</p>
+<p>The prior distribution for the mean rate across loci <span class="arithmatex">\(\bar{\mu}\)</span> is a Gamma distribution with
+parameters <span class="arithmatex">\(\alpha_{\bar{\mu}}\)</span> and <span class="arithmatex">\(\beta_{\bar{\mu}}\)</span> and mean and
 variance, </p>
-<p>$\begin{aligned}
-  \textrm{Mean}(\bar{\mu}) &amp; = &amp; \frac{\alpha_{\bar{\mu}}}{\beta_{\bar{\mu}}}, \nonumber \
-  \textrm{Var}(\bar{\mu}) &amp; = &amp; \frac{\alpha_{\bar{\mu}}}{\beta_{\bar{\mu}}^2}. \nonumber\end{aligned}$</p>
+<p><span class="arithmatex">\(\begin{aligned}
+  \textrm{Mean}(\bar{\mu}) &amp; = &amp; \frac{\alpha_{\bar{\mu}}}{\beta_{\bar{\mu}}}, \nonumber \\
+  \textrm{Var}(\bar{\mu}) &amp; = &amp; \frac{\alpha_{\bar{\mu}}}{\beta_{\bar{\mu}}^2}. \nonumber\end{aligned}\)</span></p>
 <p>If there are no fossil calibrations in the species tree, the rates
 should all be relative. In this case, to avoid overparameterization we
 suggest fixing the mean substitution rate across loci to be
-$\bar\mu = 1$. This is done by setting
-$\alpha_{\bar{\mu}} = \beta_{\bar{\mu}} = \infty$ (see discussion of
+<span class="arithmatex">\(\bar\mu = 1\)</span>. This is done by setting
+<span class="arithmatex">\(\alpha_{\bar{\mu}} = \beta_{\bar{\mu}} = \infty\)</span> (see discussion of
 control file settings below), or setting both these parameters to large
-values such as $\alpha_{\bar{\mu}} = \beta_{\bar{\mu}} = 100$, in which
-case $\bar{\mu}$ is nearly fixed.</p>
+values such as <span class="arithmatex">\(\alpha_{\bar{\mu}} = \beta_{\bar{\mu}} = 100\)</span>, in which
+case <span class="arithmatex">\(\bar{\mu}\)</span> is nearly fixed.</p>
 <h4 id="prior-distribution-for-locus-specific-rates-given-mean-rate-among-loci">Prior distribution for locus-specific rates given mean rate among loci</h4>
-<p>Conditioning on the mean rate $\bar\mu$, two priors are available to
-specify the probability distribution of locus-specific rates, $\mu_i$.
+<p>Conditioning on the mean rate <span class="arithmatex">\(\bar\mu\)</span>, two priors are available to
+specify the probability distribution of locus-specific rates, <span class="arithmatex">\(\mu_i\)</span>.
 The control file variable argument <code>prior</code> (see discussion of control
 file settings below) can take two values <code>dir</code> (for Gamma-Dirichlet
 rates for loci), and <code>iid</code> (for conditional i.i.d. or hierarchical
 prior). If <code>prior = dir</code> (Gamma-Dirichlet distribution of locus rates),
-the total rate $L\bar\mu$, given the mean rate ($\bar\mu$), is
-partitioned into locus rate variables , $\mu_i$, that are constrained to
-sum to $L\bar\mu$ and have a Dirichlet distribution with concentration
-parameter $\alpha_\mu$. The model and notation follow 
+the total rate <span class="arithmatex">\(L\bar\mu\)</span>, given the mean rate (<span class="arithmatex">\(\bar\mu\)</span>), is
+partitioned into locus rate variables , <span class="arithmatex">\(\mu_i\)</span>, that are constrained to
+sum to <span class="arithmatex">\(L\bar\mu\)</span> and have a Dirichlet distribution with concentration
+parameter <span class="arithmatex">\(\alpha_\mu\)</span>. The model and notation follow 
 <a href="https://doi.org/10.1093/molbev/msn148">Burgess and Yang 2008</a> eq.4
 and <a href="https://doi.org/10.1093/sysbio/syu020">Dos Reis et al 2014</a> eqs.3-5. 
 If <code>prior = iid</code> (Conditional-i.i.d. or hierarchical prior of locus rates), the locus
-rates, $\mu_i$, are independent and identically distributed i.i.d. given
-the mean rate $\bar\mu$, so the prior distribution of $\mu_i$ is:</p>
-<p>$\mathtt{P}(\mu_i) = \textrm{Gamma}(\alpha_{\mu_i}, \alpha_{\mu_i/\bar{\mu}})$.</p>
+rates, <span class="arithmatex">\(\mu_i\)</span>, are independent and identically distributed i.i.d. given
+the mean rate <span class="arithmatex">\(\bar\mu\)</span>, so the prior distribution of <span class="arithmatex">\(\mu_i\)</span> is:</p>
+<p><span class="arithmatex">\(\mathtt{P}(\mu_i) = \textrm{Gamma}(\alpha_{\mu_i}, \alpha_{\mu_i/\bar{\mu}})\)</span>.</p>
 <p>This model is described in <a href="https://doi.org/10.1093/sysbio/syu109">Zhu et al 2015</a> eq.8 and implemented in
 [mcmctree]{.smallcaps}. In both the Gamma-Dirichlet and the Conditional
-i.i.d. models, the parameter $\alpha_{\mu_i}$ is inversely related to
-the extent of rate variation among loci, with a large $\alpha_{\mu_i}$
+i.i.d. models, the parameter <span class="arithmatex">\(\alpha_{\mu_i}\)</span> is inversely related to
+the extent of rate variation among loci, with a large <span class="arithmatex">\(\alpha_{\mu_i}\)</span>
 meaning similar rates among loci (less rate variation). If all loci are
-noncoding, the rates are probably similar, so $\alpha_{\mu_I} =$ 10 or
+noncoding, the rates are probably similar, so <span class="arithmatex">\(\alpha_{\mu_I} =\)</span> 10 or
 20 may be reasonable, while for coding loci or exons,
-$\alpha_{\mu_i} = 2$ or 1 may be appropriate. The $\alpha_{\mu_i}$
+<span class="arithmatex">\(\alpha_{\mu_i} = 2\)</span> or 1 may be appropriate. The <span class="arithmatex">\(\alpha_{\mu_i}\)</span>
 parameter may affect the estimates of the population size parameter
-($\theta$) for the root node on the species tree (<a href="https://doi.org/10.1093/molbev/msn148">Burgess and Yang 2008</a>). The $L$
-locus rates ($\mu_i$) are parameters in the model. If
-$\alpha_{\bar{\mu}} &gt; 0$, the mean rate, $\bar\mu$, is a parameter as
+(<span class="arithmatex">\(\theta\)</span>) for the root node on the species tree (<a href="https://doi.org/10.1093/molbev/msn148">Burgess and Yang 2008</a>). The <span class="arithmatex">\(L\)</span>
+locus rates (<span class="arithmatex">\(\mu_i\)</span>) are parameters in the model. If
+<span class="arithmatex">\(\alpha_{\bar{\mu}} &gt; 0\)</span>, the mean rate, <span class="arithmatex">\(\bar\mu\)</span>, is a parameter as
 well.</p>
 <h4 id="control-file-settings-for-locusrate">Control file settings for locusrate</h4>
 <p>The <code>locusrate</code> variable takes from 1 and 5 arguments. In the case of 5
@@ -3845,14 +3845,14 @@ optional.</p>
 default), 1 (rate variation with rates inferred) or 2 (rate variation
 with fixed user-specified rates). If rate_variation = 0 no other
 variables are specified, if rate_variation = 2 then a second argument
-specifies the name of a file containing $L$ specified fixed rates, one
+specifies the name of a file containing <span class="arithmatex">\(L\)</span> specified fixed rates, one
 for each locus. If rate_variation = 1 the additonal variables <code>a_mubar</code>
 and <code>b_mubar</code> specify the shape and rate parameters
-($\alpha_{\bar{\mu}}$ and $\beta_{\bar{\mu}}$) of the gamma distribution
-that is the prior for the mean rate across loci (<code>mubar</code> or $\bar\mu$),
-and variable <code>a_mui</code> ($\alpha_{\mu_i}$) and <code>prior</code> are used to specify
-parameter of the prior on the locus rates ($\mu_i$) given the mean rate
-($\bar\mu$) and the form of that prior (<code>dir</code> or <code>iid</code>). Some example
+(<span class="arithmatex">\(\alpha_{\bar{\mu}}\)</span> and <span class="arithmatex">\(\beta_{\bar{\mu}}\)</span>) of the gamma distribution
+that is the prior for the mean rate across loci (<code>mubar</code> or <span class="arithmatex">\(\bar\mu\)</span>),
+and variable <code>a_mui</code> (<span class="arithmatex">\(\alpha_{\mu_i}\)</span>) and <code>prior</code> are used to specify
+parameter of the prior on the locus rates (<span class="arithmatex">\(\mu_i\)</span>) given the mean rate
+(<span class="arithmatex">\(\bar\mu\)</span>) and the form of that prior (<code>dir</code> or <code>iid</code>). Some example
 configuration file settings are:</p>
 <pre><code>#  (0: No rate variation among loci.  This is default)
 locusrate = 0
@@ -3871,7 +3871,7 @@ should be as many numbers in the file, separately by spaces or line
 returns, as the number of loci (<code>nloci</code>). The program re-scales those
 rates so that the average across all loci is 1 and then use those
 relative rates as fixed constants. The following example nearly fixes
-(first line), or fixes (second line) the mean rate $\bar{\mu}$. This is
+(first line), or fixes (second line) the mean rate <span class="arithmatex">\(\bar{\mu}\)</span>. This is
 the recommended practice when no fossil calibrations are available:</p>
 <pre><code># locusrate = 1 a_mubar b_mubar a_mui &lt;prior&gt;
 # (1: estimate locus rates mui)
@@ -3879,9 +3879,9 @@ locusrate = 1 10 10 5 iid
 # (1: estimate locus rates mui, mubar=1 fixed)
 locusrate = 1  0  0 5 iid
 </code></pre>
-<p>Note that <code>a_mubar = 0</code> and <code>b_mubar = 0</code> (with 0 meaning $\infty$)
-cause the program to fix $\bar{\mu}$, while equal and large values such
-as <code>a_mubar = 100</code> and <code>b_mubar = 100</code> cause cause $\bar\mu$ to be
+<p>Note that <code>a_mubar = 0</code> and <code>b_mubar = 0</code> (with 0 meaning <span class="arithmatex">\(\infty\)</span>)
+cause the program to fix <span class="arithmatex">\(\bar{\mu}\)</span>, while equal and large values such
+as <code>a_mubar = 100</code> and <code>b_mubar = 100</code> cause cause <span class="arithmatex">\(\bar\mu\)</span> to be
 nearly fixed at 1.</p>
 <p><strong>The locus-rate prior in IMa.</strong> The model of variable rates among loci
 implemented here has some differences from a similar model implemented
@@ -3925,44 +3925,44 @@ clock-like while other loci may have much greater variation in
 substitution rates among species (branches of the species tree). To
 accomodate this, the variance of the substitution rate among species is
 allowed to vary among loci. The prior distribution of the average
-variance $\bar{\nu}$ for all loci is</p>
-<p>$P(\bar{\nu}) = \textrm{Gamma}(\alpha_{\bar{\nu}},\beta_{\bar{\nu}})$,</p>
+variance <span class="arithmatex">\(\bar{\nu}\)</span> for all loci is</p>
+<p><span class="arithmatex">\(P(\bar{\nu}) = \textrm{Gamma}(\alpha_{\bar{\nu}},\beta_{\bar{\nu}})\)</span>,</p>
 <p>so that the expected average variance is
-$\alpha_{\bar{\nu}}/\beta_{\bar{\nu}}$. If this value is larger loci
+<span class="arithmatex">\(\alpha_{\bar{\nu}}/\beta_{\bar{\nu}}\)</span>. If this value is larger loci
 depart more from the molecular clock on average. Conditional on the
-average variance parameter $\bar{\nu}$ the prior for the variance
-$\nu_i$ at locus $i$ can be either a Gamma-Dirichlet distribution or a
+average variance parameter <span class="arithmatex">\(\bar{\nu}\)</span> the prior for the variance
+<span class="arithmatex">\(\nu_i\)</span> at locus <span class="arithmatex">\(i\)</span> can be either a Gamma-Dirichlet distribution or a
 Conditional i.i.d distribution (controlfile variables <code>dir</code> and <code>iid</code>,
-respectively). Both distributions have a parameter $\alpha_{\nu_i}$ that
+respectively). Both distributions have a parameter <span class="arithmatex">\(\alpha_{\nu_i}\)</span> that
 determines the variance of the variance in rates across loci. The
-specification of the distribution of $\nu_i$ given the mean $\bar\nu$
+specification of the distribution of <span class="arithmatex">\(\nu_i\)</span> given the mean <span class="arithmatex">\(\bar\nu\)</span>
 follows the same procedure as the specification of the distribution of
-the locus-specific substitution rate $\mu_i$ given the mean rate
-$\bar\mu$ in the previous section; see notes above about the locusrate
-variable. Note that $\alpha$ (control file variable <code>a_vi</code>) is inversely
-related to the variance in $\nu_i$: use small values of $\alpha$ (2, 1,
-or 0.5) if you believe that $\nu_i$ varies among loci (meaning that the
+the locus-specific substitution rate <span class="arithmatex">\(\mu_i\)</span> given the mean rate
+<span class="arithmatex">\(\bar\mu\)</span> in the previous section; see notes above about the locusrate
+variable. Note that <span class="arithmatex">\(\alpha\)</span> (control file variable <code>a_vi</code>) is inversely
+related to the variance in <span class="arithmatex">\(\nu_i\)</span>: use small values of <span class="arithmatex">\(\alpha\)</span> (2, 1,
+or 0.5) if you believe that <span class="arithmatex">\(\nu_i\)</span> varies among loci (meaning that the
 clock nearly holds at some loci but is seriously violated at others).</p>
 <h4 id="relaxed-clock-with-iid-rates-among-branches">Relaxed clock with i.i.d rates among branches</h4>
 <p>The independent rates model of the relaxed molecular clock assumes that
-for locus $i$ each branch has a rate that is independent and identically
-distributed (i.i.d). The distribution has mean $\mu_i$ specified by the
-<code>locusrate</code> model and variance $\nu_i$ specified by the prior
+for locus <span class="arithmatex">\(i\)</span> each branch has a rate that is independent and identically
+distributed (i.i.d). The distribution has mean <span class="arithmatex">\(\mu_i\)</span> specified by the
+<code>locusrate</code> model and variance <span class="arithmatex">\(\nu_i\)</span> specified by the prior
 distribution for rates among loci discussed above. Two distributions are
 available: a Gamma distribution or a log-normal distribution (control
-file variables <code>LN</code> and <code>G</code>, respectively). Given the locus rate $\mu_i$
-(specified using the <code>locusrate</code> variable) and the variance $\nu_i$
-(specified using the <code>clock</code> variable) for locus $i$, the different
+file variables <code>LN</code> and <code>G</code>, respectively). Given the locus rate <span class="arithmatex">\(\mu_i\)</span>
+(specified using the <code>locusrate</code> variable) and the variance <span class="arithmatex">\(\nu_i\)</span>
+(specified using the <code>clock</code> variable) for locus <span class="arithmatex">\(i\)</span>, the different
 lineages may have different rates at the locus, and those rates are
 independent among loci. If distribution = G (for gamma), the rate for
-species-tree branch $j$ at locus $i$ has the following gamma
+species-tree branch <span class="arithmatex">\(j\)</span> at locus <span class="arithmatex">\(i\)</span> has the following gamma
 distribution</p>
-<p>$r_{ij} | \mu_i, \nu_i \sim G(\mu_i^2/\nu_i, \mu_i/\nu_i)$.</p>
-<p>This has mean $\mu_i$ and variance $\nu_i$.</p>
+<p><span class="arithmatex">\(r_{ij} | \mu_i, \nu_i \sim G(\mu_i^2/\nu_i, \mu_i/\nu_i)\)</span>.</p>
+<p>This has mean <span class="arithmatex">\(\mu_i\)</span> and variance <span class="arithmatex">\(\nu_i\)</span>.</p>
 <p>Alternatively if distribution = <code>LN</code> (for log-normal), the rate for
-species-tree branch $j$ at locus $i$ has the following the log-normal
-distribution $$r_{ij} | \mu_i, \nu_i \sim \mathrm{LN}(\mu_i, \nu_i),$$
-where $\mu_i$ is the mean of the LN distribution and $\nu_i$ is the
+species-tree branch <span class="arithmatex">\(j\)</span> at locus <span class="arithmatex">\(i\)</span> has the following the log-normal
+distribution <span class="arithmatex">\(<span class="arithmatex">\(r_{ij} | \mu_i, \nu_i \sim \mathrm{LN}(\mu_i, \nu_i),\)</span>\)</span>
+where <span class="arithmatex">\(\mu_i\)</span> is the mean of the LN distribution and <span class="arithmatex">\(\nu_i\)</span> is the
 variance parameter of the lognormal.</p>
 <h4 id="relaxed-clock-with-autocorrelated-rates-among-branches">Relaxed clock with autocorrelated rates among branches</h4>
 <p>The autocorrelated-rates model (control file option <code>clock = 3</code>) with
@@ -3970,7 +3970,7 @@ the log-normal distribution (LN) specifies the geometric Brownian motion
 model of <a href="https://doi.org/10.1080/10635150701420643">Rannala and Yang 2007</a>. 
 This assigns a rate to each species-tree branch,
 that is, to the mid-point of the branch. Given the rate at the
-species-tree root ($\mu_i$ at locus $i$), the rates for the two branches
+species-tree root (<span class="arithmatex">\(\mu_i\)</span> at locus <span class="arithmatex">\(i\)</span>), the rates for the two branches
 around the root are specified. Then given the rate for each ancestral
 branch, the rates for its two daughter branches are specified, by
 integrating over the rate at the internal node that is ancestral to the
@@ -3981,10 +3981,10 @@ until all branches are visited.</p>
 <p>If the gamma distribution (G) is instead used the model works as
 follows, using a similar pre-order tree traversal. First the two
 branches at the species-tree root have the gamma distribution with mean
-$\mu_i$ (<code>mu_i</code>) and variance $\nu_i$ (<code>nu_i</code>). Then given the rate for
+<span class="arithmatex">\(\mu_i\)</span> (<code>mu_i</code>) and variance <span class="arithmatex">\(\nu_i\)</span> (<code>nu_i</code>). Then given the rate for
 each ancestral branch, the rates for its two daughter branches are
 specified as independent gamma variables with the mean to be the rate of
-the parental branch and with the variance to be $\nu_i$. The
+the parental branch and with the variance to be <span class="arithmatex">\(\nu_i\)</span>. The
 autocorrelated relaxed clock model is only implemented for the MSC model
 and is not available when using the MSC-I model.</p>
 <p><strong>Rates vary among species tree branches</strong>\
@@ -4009,15 +4009,15 @@ follows:</p>
 default), 2 (relaxed clock with i.i.d rates) and 3 (relaxed clock with
 autocorrelated rates). In the case of the strict clock there are no
 additional arguments. The next two variables <code>a_vbar</code> and <code>b_vbar</code>
-specify the parameters ($\alpha_{\bar{\nu}}$ and $\beta_{\bar{\nu}}$) of
+specify the parameters (<span class="arithmatex">\(\alpha_{\bar{\nu}}\)</span> and <span class="arithmatex">\(\beta_{\bar{\nu}}\)</span>) of
 the Gamma prior specifying the average rate variance across loci (see
 above). The variable <code>a_vi</code> specifies the variance parameter of the
-prior on the locus specific variance, $\alpha_{\nu_i}$ (see above). The
+prior on the locus specific variance, <span class="arithmatex">\(\alpha_{\nu_i}\)</span> (see above). The
 variable <code>prior</code> is either <code>iid</code> or <code>dir</code> and specifies the prior on
-$\nu_i$ given $\bar{\nu}$ (see above). The variable <code>dist</code> is either
+<span class="arithmatex">\(\nu_i\)</span> given <span class="arithmatex">\(\bar{\nu}\)</span> (see above). The variable <code>dist</code> is either
 <code>LN</code> or <code>G</code> specifying either a Gamma distribution of a log-normal
-distribution for the branch rates conditional on the locus rate $\mu_i$
-and among-branch variance $\nu_i$.</p>
+distribution for the branch rates conditional on the locus rate <span class="arithmatex">\(\mu_i\)</span>
+and among-branch variance <span class="arithmatex">\(\nu_i\)</span>.</p>
 <p>Several example control file entries for the <code>clock</code> variables are
 provided below:</p>
 <pre><code>    # (1: strict clock, default)
@@ -4028,25 +4028,25 @@ provided below:</p>
     clock = 3 10.0 100.0 5.0 iid G
 </code></pre>
 <p>The specification (<code>clock = 2 10.0 100.0 5.0 iid G</code>) means the
-following. First $\bar\nu$ is assigned a gamma distribution
-$G(10.0, 100.0)$, with mean 0.1. Given $\bar\nu$, the conditional
-i.i.d. prior means that $\nu_i \sim G(\alpha, \alpha/\bar\nu)$ with
-shape parameter $\alpha = 5.0$ (<code>a_vi</code>) and mean $\bar\nu$, for
-$i = 1, 2, \cdots, L$. As another example, the specification
-(<code>clock = 2 10.0 100.0 5.0 dir LN</code>) means that $\bar\nu$ is assigned a
-gamma prior $G(10.0, 100.0)$, and then the sum $L\bar\nu$ is partitioned
-into $\nu_i$ (for $i = 1, 2, \cdots, L$) according to the Dirichlet
-distribution (<code>prior = dir</code>) with concentration parameter $\alpha = 5.0$
-(<code>a_vi</code>). Again large $\alpha$ means the same extent of clock violation
+following. First <span class="arithmatex">\(\bar\nu\)</span> is assigned a gamma distribution
+<span class="arithmatex">\(G(10.0, 100.0)\)</span>, with mean 0.1. Given <span class="arithmatex">\(\bar\nu\)</span>, the conditional
+i.i.d. prior means that <span class="arithmatex">\(\nu_i \sim G(\alpha, \alpha/\bar\nu)\)</span> with
+shape parameter <span class="arithmatex">\(\alpha = 5.0\)</span> (<code>a_vi</code>) and mean <span class="arithmatex">\(\bar\nu\)</span>, for
+<span class="arithmatex">\(i = 1, 2, \cdots, L\)</span>. As another example, the specification
+(<code>clock = 2 10.0 100.0 5.0 dir LN</code>) means that <span class="arithmatex">\(\bar\nu\)</span> is assigned a
+gamma prior <span class="arithmatex">\(G(10.0, 100.0)\)</span>, and then the sum <span class="arithmatex">\(L\bar\nu\)</span> is partitioned
+into <span class="arithmatex">\(\nu_i\)</span> (for <span class="arithmatex">\(i = 1, 2, \cdots, L\)</span>) according to the Dirichlet
+distribution (<code>prior = dir</code>) with concentration parameter <span class="arithmatex">\(\alpha = 5.0\)</span>
+(<code>a_vi</code>). Again large <span class="arithmatex">\(\alpha\)</span> means the same extent of clock violation
 at different loci.</p>
-<p><strong>Choosing $\alpha_{\bar{\nu}}$ and $\beta_{\bar{\nu}}$</strong><br />
-A larger variance $\nu_i$ represents a greater violation of the
-molecular clock at locus $i$. Note that $\nu_i$ will be similar to
-$\bar\nu$, especially if $\alpha_{\bar{\nu}}$ (<code>a_vi</code>) is large, and
-$\bar\nu$ has prior mean $\alpha_{\bar{\nu}}/\beta_{\bar{\nu}}$. If
+<p><strong>Choosing <span class="arithmatex">\(\alpha_{\bar{\nu}}\)</span> and <span class="arithmatex">\(\beta_{\bar{\nu}}\)</span></strong><br />
+A larger variance <span class="arithmatex">\(\nu_i\)</span> represents a greater violation of the
+molecular clock at locus <span class="arithmatex">\(i\)</span>. Note that <span class="arithmatex">\(\nu_i\)</span> will be similar to
+<span class="arithmatex">\(\bar\nu\)</span>, especially if <span class="arithmatex">\(\alpha_{\bar{\nu}}\)</span> (<code>a_vi</code>) is large, and
+<span class="arithmatex">\(\bar\nu\)</span> has prior mean <span class="arithmatex">\(\alpha_{\bar{\nu}}/\beta_{\bar{\nu}}\)</span>. If
 (<code>a_vbar = 10 b_vbar = 100</code>), the prior mean will be 0.1. For the
-log-normal model $\nu = 0.5$ suggests a serious violation of the clock
-while $\nu &lt; 0.1$ represents only a slight violation.</p>
+log-normal model <span class="arithmatex">\(\nu = 0.5\)</span> suggests a serious violation of the clock
+while <span class="arithmatex">\(\nu &lt; 0.1\)</span> represents only a slight violation.</p>
 <h2 id="introgression-and-migration-models">Introgression and Migration Models</h2>
 <p>Another important factor influencing the results of species tree
 inference is introgression (gene flow) between species (or populations).
@@ -4064,11 +4064,11 @@ using MCMC. We hope to implement MCMC moves that change the MSC-I (or MSC-M)
 models and species tree topology in the future.</p>
 <h3 id="the-msc-i-model">The MSC-I Model</h3>
 <p>The MSC-I model involves three types of parameters: the species
-divergence or hybridization times ($\tau$s), the population size
-parameters ($\theta$s), and the introgression probabilities
-($\varphi$s). The control file must specify an extended Newick format
+divergence or hybridization times (<span class="arithmatex">\(\tau\)</span>s), the population size
+parameters (<span class="arithmatex">\(\theta\)</span>s), and the introgression probabilities
+(<span class="arithmatex">\(\varphi\)</span>s). The control file must specify an extended Newick format
 tree with one or more introgression events as well as a prior
-distribution for the introgression probability $\varphi$. The MSC-I model
+distribution for the introgression probability <span class="arithmatex">\(\varphi\)</span>. The MSC-I model
 is specified in the <code>species&amp;tree</code> block using the extended Newick
 notation (<a href="https://doi.org/10.1186/1471-2105-9-532">Cardona et al 2008</a>)</p>
 <pre><code>    species&amp;tree = 3  A  B  C
@@ -4083,12 +4083,12 @@ speciation nodes may and may not be labeled, but hybridization nodes
 must be labeled. The extended Newick notation is not unique.</p>
 <p>Each hybrid node has two parental species. Models A-C are distinguished
 using a meta-data variable <code>tau-parent</code>. The value yes means that the
-parental population exists and has a separate age parameter $\tau$, with
-an associated $\varphi$ parameter, while the value no means that such
-parameters do not exist. For example, in model (A), $\tau_S$, $\tau_T$,
-$\theta_{Hl}$ (for H-left), and $\theta_{Hr}$ (for H-right) are all
-parameters; in model (B), $\tau_S$ and $\theta_{Hl}$ are not parameters
-in the model while $\tau_T$ and $\theta_{Hr}$ are parameters; and
+parental population exists and has a separate age parameter <span class="arithmatex">\(\tau\)</span>, with
+an associated <span class="arithmatex">\(\varphi\)</span> parameter, while the value no means that such
+parameters do not exist. For example, in model (A), <span class="arithmatex">\(\tau_S\)</span>, <span class="arithmatex">\(\tau_T\)</span>,
+<span class="arithmatex">\(\theta_{Hl}\)</span> (for H-left), and <span class="arithmatex">\(\theta_{Hr}\)</span> (for H-right) are all
+parameters; in model (B), <span class="arithmatex">\(\tau_S\)</span> and <span class="arithmatex">\(\theta_{Hl}\)</span> are not parameters
+in the model while <span class="arithmatex">\(\tau_T\)</span> and <span class="arithmatex">\(\theta_{Hr}\)</span> are parameters; and
 finally in model (C), none of those four parameters exists in the model.
 Model (D) specifies a bidirectional introgression event between species
 A and B.</p>
@@ -4104,15 +4104,15 @@ The models are specified using the extended Newick format, as follows:</p>
 (D): ((A, y)x, (B, x) y) r;
 </code></pre>
 <p>The control file variable <code>phiprior</code> specifies the prior probability for
-the $\varphi$ parameter, which is a beta distribution with parameters
-$a$ and $b$. The syntax is</p>
+the <span class="arithmatex">\(\varphi\)</span> parameter, which is a beta distribution with parameters
+<span class="arithmatex">\(a\)</span> and <span class="arithmatex">\(b\)</span>. The syntax is</p>
 <pre><code>    phiprior = a b
 </code></pre>
-<p>where $a$ and $b$ are positive numbers. For example, <code>phiprior = 1 1</code>
-specifies the beta prior beta($a, b$) with $a = 1$ and $b = 1$ for
-$\varphi$, the introgression probability under the MSC-I model.</p>
+<p>where <span class="arithmatex">\(a\)</span> and <span class="arithmatex">\(b\)</span> are positive numbers. For example, <code>phiprior = 1 1</code>
+specifies the beta prior beta(<span class="arithmatex">\(a, b\)</span>) with <span class="arithmatex">\(a = 1\)</span> and <span class="arithmatex">\(b = 1\)</span> for
+<span class="arithmatex">\(\varphi\)</span>, the introgression probability under the MSC-I model.</p>
 <h4 id="autogeneration-of-extended-newick-graphs">Autogeneration of extended newick graphs</h4>
-<p>Starting with BPP release 4.4.0, we have changed the definition of introgression probability ($\varphi$) so that it is assigned to the horizontal (introgression) branch.  This note illustrates the <code>msci-create</code> feature in bpp, which generates extended Newick notation for the MSC-I model from a data file which contains a binary species tree with introgression events specified using source and target branches on the tree.
+<p>Starting with BPP release 4.4.0, we have changed the definition of introgression probability (<span class="arithmatex">\(\varphi\)</span>) so that it is assigned to the horizontal (introgression) branch.  This note illustrates the <code>msci-create</code> feature in bpp, which generates extended Newick notation for the MSC-I model from a data file which contains a binary species tree with introgression events specified using source and target branches on the tree.
 The <code>--msci-create</code> option has been available since <a href="https://github.com/bpp/bpp/issues/114">BPP 4.2.1</a>.  The user prepares a input file (named <code>msci.txt</code> in our example), which includes a binary species tree in Newick format and specifies the introgression events by identifying the source and target branches involved in the introgression.  Run bpp using the following command:</p>
 <pre><code>$ bpp --msci-create msci.txt
 </code></pre>
@@ -4166,8 +4166,8 @@ hybridization R A, T C as S H tau=no, no phi=0.40
 tree (A,B)R;
 bidirection  A R, B R as X Y phi=0.1,0.2
 </code></pre>
-<p>The above figure illustrates the specifications of models A, B, C, and D of <a href="https://doi.org/10.1093/molbev/msz296">Flouri et al 2020</a>.  In models A, B1, and C, the introgression event is from the source branch RA to the target branch TC, with a new introgression branch SH created.  The introgression probability ($\varphi = 0.1$) is assigned to the newly added introgression branch (SH) while $1 – \varphi$ is assigned to the other parent branch (TH).  Models A, B1, and C are distinguished by using the keyword <code>tau</code> (which means the same as <code>tau-parent</code> in the Newick notation of the MSci model). Model A assumes that the two parental species S and T of the hybridization node H have distinct ages from H, with $\tau_S &gt; \tau_H$ and $\tau_T &gt; \tau_H$.  Thus we have <code>hybridization R A, T C as S H tau=yes, yes phi=0.10</code>: the first <code>yes</code> means that parental node S on the source branch RA has a distinct tau from node H and that the second <code>yes</code> means that parental node T on the target branch TC has a distinct tau from node H.  Note that there are often multiple ways of specifying the same MSC-I model and here you can specify model A by starting with the binary tree <code>((A, C), B)</code> and adding branch TH as a introgression event.  Model A might appear to be nonsensical biologically since only contemporary species can exchange migrants.  Nevertheless, model A may be used to represent introgressions from a ghost species not sampled in the sequence dataset.  Suppose at time $\tau_S$ a speciation event generated two species SA and SH, and at $\tau_H$, species SH contributed migrants into species THC, but species SH has since become extinct or is otherwise not sampled in the data.  This scenario matches model A.
-Model B1 assumes $\tau_S = \tau_H$ and $\tau_T &gt; \tau_H$ so there is no new tau for parent S of the hybridization node H, and there is a new tau for parent T.  Thus we have <code>tau=no, yes</code>.  Model B2 works similarly.  In model C, none of parents S and T has a distinct age from H, so we have <code>tau=no, no</code>.  One interpretation is that species C is a hybrid species. In model D for the bidirectional introgression (BDI) model, there is no distinction of source and target branches.  We specify two phi values, assigned to the introgression (horizontal) branches: $\varphi_X = 0.1$ for node X (or into node X) and $\varphi_Y = 0.2$ for node Y (see above figure).</p>
+<p>The above figure illustrates the specifications of models A, B, C, and D of <a href="https://doi.org/10.1093/molbev/msz296">Flouri et al 2020</a>.  In models A, B1, and C, the introgression event is from the source branch RA to the target branch TC, with a new introgression branch SH created.  The introgression probability (<span class="arithmatex">\(\varphi = 0.1\)</span>) is assigned to the newly added introgression branch (SH) while <span class="arithmatex">\(1 – \varphi\)</span> is assigned to the other parent branch (TH).  Models A, B1, and C are distinguished by using the keyword <code>tau</code> (which means the same as <code>tau-parent</code> in the Newick notation of the MSci model). Model A assumes that the two parental species S and T of the hybridization node H have distinct ages from H, with <span class="arithmatex">\(\tau_S &gt; \tau_H\)</span> and <span class="arithmatex">\(\tau_T &gt; \tau_H\)</span>.  Thus we have <code>hybridization R A, T C as S H tau=yes, yes phi=0.10</code>: the first <code>yes</code> means that parental node S on the source branch RA has a distinct tau from node H and that the second <code>yes</code> means that parental node T on the target branch TC has a distinct tau from node H.  Note that there are often multiple ways of specifying the same MSC-I model and here you can specify model A by starting with the binary tree <code>((A, C), B)</code> and adding branch TH as a introgression event.  Model A might appear to be nonsensical biologically since only contemporary species can exchange migrants.  Nevertheless, model A may be used to represent introgressions from a ghost species not sampled in the sequence dataset.  Suppose at time <span class="arithmatex">\(\tau_S\)</span> a speciation event generated two species SA and SH, and at <span class="arithmatex">\(\tau_H\)</span>, species SH contributed migrants into species THC, but species SH has since become extinct or is otherwise not sampled in the data.  This scenario matches model A.
+Model B1 assumes <span class="arithmatex">\(\tau_S = \tau_H\)</span> and <span class="arithmatex">\(\tau_T &gt; \tau_H\)</span> so there is no new tau for parent S of the hybridization node H, and there is a new tau for parent T.  Thus we have <code>tau=no, yes</code>.  Model B2 works similarly.  In model C, none of parents S and T has a distinct age from H, so we have <code>tau=no, no</code>.  One interpretation is that species C is a hybrid species. In model D for the bidirectional introgression (BDI) model, there is no distinction of source and target branches.  We specify two phi values, assigned to the introgression (horizontal) branches: <span class="arithmatex">\(\varphi_X = 0.1\)</span> for node X (or into node X) and <span class="arithmatex">\(\varphi_Y = 0.2\)</span> for node Y (see above figure).</p>
 <h3 id="the-msc-m-model">The MSC-M Model</h3>
 <p>The multispecies-coalescent-with-migration model (or isolation-with-migration or IM model) is activated in BPP using the keyword migration.
 A binary species tree is specified using an extended Newick format that includes labels for internal nodes; these are subsequently used in the control file to specify the source and target populations involved in migration.</p>
@@ -4180,36 +4180,36 @@ A binary species tree is specified using an extended Newick format that includes
                 A C
                 S C
 </code></pre>
-<p>Here S is the AB common ancestor, T is the CD common ancestor, while R is the ABCD ancestor.  Not all internal nodes need to be labeled but those involved in migration have to be.  The migration line specifies 2 migration connections: one connecting source population A to target population C, and another connecting source population S to target population C, with migration rates $M_{AC}$ and $M_{SC}$.  Note that the migration rate </p>
-<p>$M_{AC} = m_{AC} N_C$</p>
-<p>is the expected number of immigrants in population C that are from population A per generation under the real-world view with time running forward, where $m_{AC}$ is the proportion of immigrants in population C that are from population A.  See Appendix A for definitions of migration rates used in different programs. </p>
+<p>Here S is the AB common ancestor, T is the CD common ancestor, while R is the ABCD ancestor.  Not all internal nodes need to be labeled but those involved in migration have to be.  The migration line specifies 2 migration connections: one connecting source population A to target population C, and another connecting source population S to target population C, with migration rates <span class="arithmatex">\(M_{AC}\)</span> and <span class="arithmatex">\(M_{SC}\)</span>.  Note that the migration rate </p>
+<p><span class="arithmatex">\(M_{AC} = m_{AC} N_C\)</span></p>
+<p>is the expected number of immigrants in population C that are from population A per generation under the real-world view with time running forward, where <span class="arithmatex">\(m_{AC}\)</span> is the proportion of immigrants in population C that are from population A.  See Appendix A for definitions of migration rates used in different programs. </p>
 <h4 id="prior-on-migration-rates">Prior on migration rates</h4>
-<p>The control file variable <code>migprior = alpha beta</code> specifies a default gamma prior density with parameters <code>alpha</code> and <code>beta</code> for all migration rates.  In the example above, both $M_{AC}$ and $M_{SC}$ are assigned the gamma prior $G(2, 200)$, with prior mean $2/200 = 0.01$.
+<p>The control file variable <code>migprior = alpha beta</code> specifies a default gamma prior density with parameters <code>alpha</code> and <code>beta</code> for all migration rates.  In the example above, both <span class="arithmatex">\(M_{AC}\)</span> and <span class="arithmatex">\(M_{SC}\)</span> are assigned the gamma prior <span class="arithmatex">\(G(2, 200)\)</span>, with prior mean <span class="arithmatex">\(2/200 = 0.01\)</span>.
 A separate gamma prior can instead be defined for each migration rate (where the migration connection is specified using the source and target populations) and this specification takes precedence.  For example if we specify</p>
 <pre><code>     migprior = 2 200
     migration = 2
                 A C  2 100
                 S C
 </code></pre>
-<p>the priors are $M_{AC} ~ G(2, 100)$ with the prior mean $0.02$ and $M_{SC} ~ G(2, 200)$ from the default prior specified by <code>migprior</code>.</p>
+<p>the priors are <span class="arithmatex">\(M_{AC} ~ G(2, 100)\)</span> with the prior mean <span class="arithmatex">\(0.02\)</span> and <span class="arithmatex">\(M_{SC} ~ G(2, 200)\)</span> from the default prior specified by <code>migprior</code>.</p>
 <h4 id="variable-migration-rates-among-loci">Variable migration rates among loci</h4>
-<p>In this model, the migration rate $M_i$ at each locus <em>i</em> varies according to a gamma distribution $M_i \approx G(\alpha_M,\alpha_M/\overline{M})$, with shape parameter $\alpha_M$ while the mean rate $\overline{M}$ is assigned the gamma prior $\overline{M} \approx G(\alpha,\beta)$.  Here $\alpha_M$ is a parameter that characterizes the variation of $M_i$ among loci, with a small $\alpha_M$ (e.g., 0.5 or 1) indicating highly variable rates among loci and a large $\alpha_M$ indicating nearly constant migration rates among loci (when $\alpha_M = \infty$ all loci have the same rate).</p>
+<p>In this model, the migration rate <span class="arithmatex">\(M_i\)</span> at each locus <em>i</em> varies according to a gamma distribution <span class="arithmatex">\(M_i \approx G(\alpha_M,\alpha_M/\overline{M})\)</span>, with shape parameter <span class="arithmatex">\(\alpha_M\)</span> while the mean rate <span class="arithmatex">\(\overline{M}\)</span> is assigned the gamma prior <span class="arithmatex">\(\overline{M} \approx G(\alpha,\beta)\)</span>.  Here <span class="arithmatex">\(\alpha_M\)</span> is a parameter that characterizes the variation of <span class="arithmatex">\(M_i\)</span> among loci, with a small <span class="arithmatex">\(\alpha_M\)</span> (e.g., 0.5 or 1) indicating highly variable rates among loci and a large <span class="arithmatex">\(\alpha_M\)</span> indicating nearly constant migration rates among loci (when <span class="arithmatex">\(\alpha_M = \infty\)</span> all loci have the same rate).</p>
 <pre><code>     migprior = 2 200
     migration = 2
                 A C  2 100 5
                 S C
 </code></pre>
-<p>In the above example, $M_{SC}$ is applied to all loci with the prior $G(2, 200)$, but $M_{AC}$ varies among loci according to the shape parameter 
-$\alpha_M = 5$, and the mean rate for all loci $\overline{M}_{AC}$ is assigned the gamma prior $G(2, 100)$.</p>
+<p>In the above example, <span class="arithmatex">\(M_{SC}\)</span> is applied to all loci with the prior <span class="arithmatex">\(G(2, 200)\)</span>, but <span class="arithmatex">\(M_{AC}\)</span> varies among loci according to the shape parameter 
+<span class="arithmatex">\(\alpha_M = 5\)</span>, and the mean rate for all loci <span class="arithmatex">\(\overline{M}_{AC}\)</span> is assigned the gamma prior <span class="arithmatex">\(G(2, 100)\)</span>.</p>
 <h4 id="priors-and-pseudo-priors">Priors and pseudo-priors</h4>
-<p>When the gene flow involves ancestral species, migration may become impossible because of changes to the species divergence times in the MCMC.  In the example above, if $\tau_S &lt; \tau_T$ migration from S to C is possible during the time period $(\tau_S, \tau_T)$, but if $\tau_S &gt; \tau_T$ migration from S to C is impossible as the two populations were never contemporary.  Thus the MCMC proposal to change species divergence times $\tau_S$ or $\tau_T$ may cause the migration rate parameter $M_{SC}$ to disappear or reappear.  When $M_{SC}$ is absent from the model (that is, when $\tau_S &gt; \tau_T$), the MCMC algorithm treats it as a pseudo-parameter (written as $M^*<em>{SC}$) and assigns it a pseudo-prior to facilitate the trans-dimensional move.  The choice of pseudo-priors affects the mixing efficiency of the MCMC, but not the correctness of the algorithm.  For good mixing, one should choose the pseudo-prior to be close to the posterior of the parameter $M</em>{SC}$ (which can be generated by running short chains).</p>
+<p>When the gene flow involves ancestral species, migration may become impossible because of changes to the species divergence times in the MCMC.  In the example above, if <span class="arithmatex">\(\tau_S &lt; \tau_T\)</span> migration from S to C is possible during the time period <span class="arithmatex">\((\tau_S, \tau_T)\)</span>, but if <span class="arithmatex">\(\tau_S &gt; \tau_T\)</span> migration from S to C is impossible as the two populations were never contemporary.  Thus the MCMC proposal to change species divergence times <span class="arithmatex">\(\tau_S\)</span> or <span class="arithmatex">\(\tau_T\)</span> may cause the migration rate parameter <span class="arithmatex">\(M_{SC}\)</span> to disappear or reappear.  When <span class="arithmatex">\(M_{SC}\)</span> is absent from the model (that is, when <span class="arithmatex">\(\tau_S &gt; \tau_T\)</span>), the MCMC algorithm treats it as a pseudo-parameter (written as <span class="arithmatex">\(M^*_{SC}\)</span>) and assigns it a pseudo-prior to facilitate the trans-dimensional move.  The choice of pseudo-priors affects the mixing efficiency of the MCMC, but not the correctness of the algorithm.  For good mixing, one should choose the pseudo-prior to be close to the posterior of the parameter <span class="arithmatex">\(M_{SC}\)</span> (which can be generated by running short chains).</p>
 <pre><code>     migprior = 2 200 
     migration = 2
                 A C  2 100 
                 S C  2 200   100 250
 </code></pre>
-<p>In the example above, the prior $M_{SC} \approx G(2, 200)$ is applied when $\tau_S &lt; \tau_T$, and the pseudo-prior $M^*_{SC} \approx G(100, 250)$ with mean 0.4, is applied when $\tau_S &gt; \tau_T$.  Note that in this example the pseudo-prior is far more concentrated than the prior (with shape parameter 100 versus 2).
-In order to summarize the posterior from the MCMC samples, only those samples taken when the migration rate is defined should be used (that is, only samples collected when $\tau_S &lt; \tau_T$ in our example).  Samples collected when the migration rate does not exist in the model (that is, when $\tau_S &gt; \tau_T$ in our example) approximate the pseudo-prior.</p>
+<p>In the example above, the prior <span class="arithmatex">\(M_{SC} \approx G(2, 200)\)</span> is applied when <span class="arithmatex">\(\tau_S &lt; \tau_T\)</span>, and the pseudo-prior <span class="arithmatex">\(M^*_{SC} \approx G(100, 250)\)</span> with mean 0.4, is applied when <span class="arithmatex">\(\tau_S &gt; \tau_T\)</span>.  Note that in this example the pseudo-prior is far more concentrated than the prior (with shape parameter 100 versus 2).
+In order to summarize the posterior from the MCMC samples, only those samples taken when the migration rate is defined should be used (that is, only samples collected when <span class="arithmatex">\(\tau_S &lt; \tau_T\)</span> in our example).  Samples collected when the migration rate does not exist in the model (that is, when <span class="arithmatex">\(\tau_S &gt; \tau_T\)</span> in our example) approximate the pseudo-prior.</p>
 <p>In the case of four species, the following awk commands may be used to split the samples into two files (this assumes that tau_S and tau_T are in column 10 and 11)</p>
 <pre><code>awk 'BEGIN {cnt=0} NR&gt;1{if ($10 &gt; $11) {cnt=cnt+1;}}} END {print cnt}' mcmc.txt
 # split sample file into ab.txt (samples where t_AB &gt; t_CD) and cd.txt (t_CD &gt; t_AB)
@@ -4218,7 +4218,7 @@ head -n 1 mcmc.txt &gt; ab.txt; awk 'NR&gt;1 {if ($10&gt;$11) print $0}' mcmc.tx
 </code></pre>
 <p>Use something like this if you understand the syntax. The running mean of the migration rate printed on the monitor during the MCMC run is the posterior mean after the filtering.
 Note that this problem of the migration rate appearing and disappearing during the MCMC may exist when a migration event involves ancestral populations, and is not limited to the balanced species tree for four species.  Later we should automate the summary of the MCMC sample.<br />
-Under the model of variable $M$ among loci, all migration rates for all loci may appear and disappear if the migration involves ancestral species.  The following five ways of specifying the model and priors and pseudo-priors are accepted (with $M_{SC}$ as an example)</p>
+Under the model of variable <span class="arithmatex">\(M\)</span> among loci, all migration rates for all loci may appear and disappear if the migration involves ancestral species.  The following five ways of specifying the model and priors and pseudo-priors are accepted (with <span class="arithmatex">\(M_{SC}\)</span> as an example)</p>
 <pre><code>(a)  S C
 (b)  S C a_M
 (c)  S C a b
@@ -4226,24 +4226,24 @@ Under the model of variable $M$ among loci, all migration rates for all loci may
 (e)  S C a b pseudo_a pseudo_b
 (f)  S C a b a_M pseudo_a pseudo_b
 </code></pre>
-<p>In options (a) and (b), the default prior specified with migprior is assigned on $M_{SC}$.</p>
+<p>In options (a) and (b), the default prior specified with migprior is assigned on <span class="arithmatex">\(M_{SC}\)</span>.</p>
 <h2 id="odds-and-ends">Odds and Ends</h2>
 <pre><code>    heredity = 0       # (0: No variation)
     heredity = 1 4 4   # (1: estimate, &amp; a_gamma b_gamma)
     heredity = 2 heredity.txt      # (2: from file)
 </code></pre>
-<p><code>heredity = 0</code> is the default and means that $\theta$ is the same for
-all loci. <code>heredity = 1</code> or <code>2</code> specifies two models that allow $\theta$
+<p><code>heredity = 0</code> is the default and means that <span class="arithmatex">\(\theta\)</span> is the same for
+all loci. <code>heredity = 1</code> or <code>2</code> specifies two models that allow <span class="arithmatex">\(\theta\)</span>
 to vary among loci, which may be useful for combined analysis of data
 from autosomal, mitochondrial, X and Y loci. With such mixed data, the
 effective population sizes are different among loci, so that a heredity
 multiplier [inheritance scalars @Hey2004] should be applied. Other
-factors such as natural selection may also cause $\theta$ to deviate
+factors such as natural selection may also cause <span class="arithmatex">\(\theta\)</span> to deviate
 from the neutral expectation. BPP implements two options
 for this. The first option (<code>heredity = 1</code>) is to estimate the
-multipliers from the data, using a gamma prior with parameters $\alpha$
-and $\beta$ specified by the user. In the example above, a gamma prior
-$G(4, 4)$, with mean $4/4 = 1$, is specified for the multiplier for each
+multipliers from the data, using a gamma prior with parameters <span class="arithmatex">\(\alpha\)</span>
+and <span class="arithmatex">\(\beta\)</span> specified by the user. In the example above, a gamma prior
+<span class="arithmatex">\(G(4, 4)\)</span>, with mean <span class="arithmatex">\(4/4 = 1\)</span>, is specified for the multiplier for each
 locus. The MCMC should then generate a posterior for the multiplier for
 each locus. The second option (<code>heredity = 2</code>) is for the user to
 specify the multipliers in a file, and the multipliers will then be used
@@ -4262,9 +4262,9 @@ breaks.</p>
 label="table-heredity-scalar"}</p>
 <p>Note.--- The effect of the locus-specific mutation rates and the
 locus-specific heredity multipliers are different. A locus rate is used
-to multiply all $\theta$s and $\tau$s for the locus, while a heredity
-multiplier is used to multiply all $\theta$ parameters for the locus but
-not the $\tau$s. Nevertheless, those parameters are quite likely to be
+to multiply all <span class="arithmatex">\(\theta\)</span>s and <span class="arithmatex">\(\tau\)</span>s for the locus, while a heredity
+multiplier is used to multiply all <span class="arithmatex">\(\theta\)</span> parameters for the locus but
+not the <span class="arithmatex">\(\tau\)</span>s. Nevertheless, those parameters are quite likely to be
 strongly correlated, especially when the species tree is small.</p>
 <h2 id="methods-of-analysis">Methods of Analysis</h2>
 <p>Here we describe the specifics of the four different types of analyses
@@ -4276,7 +4276,7 @@ combinations of two possible settings for each of the two Boolean
 control file variables <code>speciesdelimitation</code> (0 = no species
 delimitation, 1 = species delimitation) and <code>speciestree</code> (0 = fixed
 species tree, 1 = inferred species tree). Therefore, analysis A00 infers
-the biogeographical parameters $\theta$ and $\tau$ on a fixed (user
+the biogeographical parameters <span class="arithmatex">\(\theta\)</span> and <span class="arithmatex">\(\tau\)</span> on a fixed (user
 specified) tree with a fixed (delimited) number of species/populations
 as described in (<a href="https://doi.org/10.1093/genetics/164.4.1645">Rannala and Yang 2003</a>. Analysis A10 delimits the number of
 species and infers biogeographical parameters using a fixed species tree
@@ -4306,38 +4306,38 @@ probabilities of the models. Each is an instance of the MSC model, but
 the species delimitation (the number and nature of the species) and/or
 the species phylogeny may differ between models. In analyses A01, A10,
 and A11, the prior specified using control file variable <code>thetaprior</code>
-applies to all $\theta$ parameters in all models. Similarly, all MSC
+applies to all <span class="arithmatex">\(\theta\)</span> parameters in all models. Similarly, all MSC
 models specifying two or more delimited species have a parameter
-$\tau_0$ (the divergence time of the root), and these parameters (for
+<span class="arithmatex">\(\tau_0\)</span> (the divergence time of the root), and these parameters (for
 different models) are assigned the same prior, specified by the
 <code>tauprior</code> control file variable.</p>
 <h3 id="a00-demography-and-divergence-time-estimation">A00: Demography and Divergence Time Estimation</h3>
 <p>Analysis A00<code>(speciesdelimitation = 0, speciestree = 0)</code>, requires a
 user-specified species tree topology, given by variable <code>species&amp;tree</code>
-in the control file, and infers the $\theta$ and $\tau$ parameters on
+in the control file, and infers the <span class="arithmatex">\(\theta\)</span> and <span class="arithmatex">\(\tau\)</span> parameters on
 this fixed tree. The theory underlying estimation of species divergence
-times and population sizes ($\tau$s and $\theta$s) under the MSC model
+times and population sizes (<span class="arithmatex">\(\tau\)</span>s and <span class="arithmatex">\(\theta\)</span>s) under the MSC model
 when the species phylogeny is given is described in (<a href="https://doi.org/10.1093/genetics/164.4.1645">Rannala and Yang 2003</a>. Note
-that if there are $s$ species in the species tree, the model will
-minimally contain the following parameters: $s – 1$ species divergence
-times ($\tau$s) and $s – 1$ ancestral species $\theta$s. A $\theta$
+that if there are <span class="arithmatex">\(s\)</span> species in the species tree, the model will
+minimally contain the following parameters: <span class="arithmatex">\(s – 1\)</span> species divergence
+times (<span class="arithmatex">\(\tau\)</span>s) and <span class="arithmatex">\(s – 1\)</span> ancestral species <span class="arithmatex">\(\theta\)</span>s. A <span class="arithmatex">\(\theta\)</span>
 parameter will also exist for each contemporary species with at least
 two sequences present at some locus. If the data are for a single
-species/population, the model will contain one parameter only, $\theta$
+species/population, the model will contain one parameter only, <span class="arithmatex">\(\theta\)</span>
 for that species. If there is only one species, the MSC model becomes
 the single-population Kingman coalescent. We will provide
 examples of both a single population analysis (using the control file
 <code>yu2001.bpp.ctl</code>) and a multi-species analysis (using the control file
 <code>A00.bpp.ctl</code>).</p>
-<p><strong>How many $\theta$ and $\tau$ parameters exist?</strong>\
+<p><strong>How many <span class="arithmatex">\(\theta\)</span> and <span class="arithmatex">\(\tau\)</span> parameters exist?</strong>\
 The number of parameters that BPP includes in the MSC or
 MSC-I models depends on the data configuration. The program always
-includes $\theta$ and $\tau$ parameters for each internal node
-(ancestral species) on the species tree, but includes a $\theta$ for an
+includes <span class="arithmatex">\(\theta\)</span> and <span class="arithmatex">\(\tau\)</span> parameters for each internal node
+(ancestral species) on the species tree, but includes a <span class="arithmatex">\(\theta\)</span> for an
 extant species (tip) if and only if that species has at least 2
 sequences at some loci. If two or more sequences for a species are
 specified in the control file but there are at most 0 or 1 sequence per
-locus for that species in the sequence data file, $\theta$ for that
+locus for that species in the sequence data file, <span class="arithmatex">\(\theta\)</span> for that
 species will not be identifiable or estimable. In that case, the
 posterior for the parameter will be the prior. Nevertheless, other
 results (such as the posterior distribution for other parameters or
@@ -4349,10 +4349,10 @@ as follows:\
 ((A,B), (C,D))\
 locus configuration 1: 1 1 0 0\
 locus configuration 2: 2 0 0 1\
-In this case, $\theta_A$, $\theta_{AB}$, $\theta_{ABCD}$, $\tau_{AB}$,
-and $\tau_{ABCD}$ are identifiable while $\theta_B$, $\theta_C$,
-$\theta_D$, $\theta_{CD}$ and $\tau_{CD}$ are not. Ii is impossible to
-estimate $\theta_D$ , $\theta_{CD}$ and $\tau_{CD}$ as no data are
+In this case, <span class="arithmatex">\(\theta_A\)</span>, <span class="arithmatex">\(\theta_{AB}\)</span>, <span class="arithmatex">\(\theta_{ABCD}\)</span>, <span class="arithmatex">\(\tau_{AB}\)</span>,
+and <span class="arithmatex">\(\tau_{ABCD}\)</span> are identifiable while <span class="arithmatex">\(\theta_B\)</span>, <span class="arithmatex">\(\theta_C\)</span>,
+<span class="arithmatex">\(\theta_D\)</span>, <span class="arithmatex">\(\theta_{CD}\)</span> and <span class="arithmatex">\(\tau_{CD}\)</span> are not. Ii is impossible to
+estimate <span class="arithmatex">\(\theta_D\)</span> , <span class="arithmatex">\(\theta_{CD}\)</span> and <span class="arithmatex">\(\tau_{CD}\)</span> as no data are
 available from species C.</p>
 <h4 id="input-a00-single-population">Input A00 (single population)</h4>
 <p>Our first example is a dataset of human sequence data generated by
@@ -4361,7 +4361,7 @@ The control file is found in the BPP distribution at location:</p>
 <pre><code>    examples/yu2001/yu2001.bpp.ctl
 </code></pre>
 <p>The data comprise 61 phased sequences for a single locus that will be
-analyzed to estimate the single parameter $\theta$. There is no need to
+analyzed to estimate the single parameter <span class="arithmatex">\(\theta\)</span>. There is no need to
 specify an Imap file, or tag the sequence names in the sequence file
 (<code>yu2001.txt</code>); the sequence names are read and then ignored. Multiple
 loci may be included in the sequence file. The contents of the control
@@ -4417,9 +4417,9 @@ like this:</p>
 <pre><code>    # gamma(a, b) for theta
     thetaprior = gamma 2 2000
 </code></pre>
-<p>specifies a gamma distribution for the prior on $\theta$ with parameters
-$\alpha = 2$ and $\beta = 2000$ which has mean $0.001$ and variance
-$5 \times 10^{-7}$.</p>
+<p>specifies a gamma distribution for the prior on <span class="arithmatex">\(\theta\)</span> with parameters
+<span class="arithmatex">\(\alpha = 2\)</span> and <span class="arithmatex">\(\beta = 2000\)</span> which has mean <span class="arithmatex">\(0.001\)</span> and variance
+<span class="arithmatex">\(5 \times 10^{-7}\)</span>.</p>
 <h4 id="output-a00-single-population">Output A00 (single population)</h4>
 <p>When BPP is run using the above control file a summary of the progress
 of the MCMC analysis is printed to screen. Here, we briefly explain what
@@ -4494,23 +4494,23 @@ proposals in the MCMC. The proposals are defined as follows:</p>
 -   `mix`: mixing step proposal
 </code></pre>
 <p>In the output the acceptance proportions are stable. The fifth column
-(the $\tau$ proposal acceptance proportion) is zero; this is expected
-because there are no species divergence times ($\tau$s) in the model
+(the <span class="arithmatex">\(\tau\)</span> proposal acceptance proportion) is zero; this is expected
+because there are no species divergence times (<span class="arithmatex">\(\tau\)</span>s) in the model
 when only a single species exists. Column 7, labeled <code>mthet1</code> gives the
 current average (mean) value of theta in the MCMC. Columns 8 and 9 are
 the log probability of the coalescent model (<code>log-PG</code>) and the
 log-likelihood of the sequence data on the gene tree (<code>log-L</code>). Check
 that the acceptance proportions are in a reasonable range (about 20% to
-40% for continuous parameters such as $\theta$). If you need to
+40% for continuous parameters such as <span class="arithmatex">\(\theta\)</span>). If you need to
 terminate the program before it finishes, you can do so using the key
 combination <code>Ctrl-C</code> (e.g., hold down the Control key and then press the
 C key). The final screen output, printed after the MCMC is completed,
-summarizes the posterior parameter estimates for $\theta$ (<code>theta_1H</code>)
+summarizes the posterior parameter estimates for <span class="arithmatex">\(\theta\)</span> (<code>theta_1H</code>)
 in the second column. The posterior mean in the first row, for example,
-is $0.000352$ and the lower and upper limits of the highest posterior
+is <span class="arithmatex">\(0.000352\)</span> and the lower and upper limits of the highest posterior
 density (HPD) set of values are in rows 8 and 9, respectively. In this
-case, the HPD credibility interval for $\theta$ is
-$(0.000145,0.000574)$.</p>
+case, the HPD credibility interval for <span class="arithmatex">\(\theta\)</span> is
+<span class="arithmatex">\((0.000145,0.000574)\)</span>.</p>
 <h4 id="input-a00-multiple-populations">Input A00 (multiple populations)</h4>
 <p>Our second example is a dataset of frog sequence data generated by
 <a href="https://doi.org/10.1111/j.1365-294X.2011.05411.x">Zhou et al 2012</a>. 
@@ -4520,9 +4520,9 @@ location:</p>
 <pre><code>    examples/frogs/A00.bpp.ctl
 </code></pre>
 <p>The data comprise 5 loci for 4 populations, with the number of sequences
-at each locus varying between 21 and 30. We will be estimating $\theta$s
+at each locus varying between 21 and 30. We will be estimating <span class="arithmatex">\(\theta\)</span>s
 for each of the 4 contemporary and 3 ancestral populations as well as
-the 3 species divergence times ($\tau$s). The contents of the control
+the 3 species divergence times (<span class="arithmatex">\(\tau\)</span>s). The contents of the control
 file <code>A00.bpp.ctl</code> are shown below:</p>
 <pre><code>    seed =  -1
 
@@ -4610,13 +4610,13 @@ have partially phased data (e.g., only some loci unphased in a
 particular population). The program will infer the phase as part of the
 analysis.</p>
 <p>Unlike the earlier single population analysis, in which we estimated a
-single $\theta$ parameter, in the multipopulation analysis we will be
-estimating multiple $\theta$s (one for each population) and divergence
-times ($\tau$s) between populations. Thus, we have prior distributions
-for both $\theta$ and $\tau_0$. The lines below specify a gamma
-distribution as the prior for $\theta$ with parameters $\alpha = 2$ and
-$\beta = 2000$ (the prior mean and variance of $\theta$ are $0.001$ and
-$0.0000005$):</p>
+single <span class="arithmatex">\(\theta\)</span> parameter, in the multipopulation analysis we will be
+estimating multiple <span class="arithmatex">\(\theta\)</span>s (one for each population) and divergence
+times (<span class="arithmatex">\(\tau\)</span>s) between populations. Thus, we have prior distributions
+for both <span class="arithmatex">\(\theta\)</span> and <span class="arithmatex">\(\tau_0\)</span>. The lines below specify a gamma
+distribution as the prior for <span class="arithmatex">\(\theta\)</span> with parameters <span class="arithmatex">\(\alpha = 2\)</span> and
+<span class="arithmatex">\(\beta = 2000\)</span> (the prior mean and variance of <span class="arithmatex">\(\theta\)</span> are <span class="arithmatex">\(0.001\)</span> and
+<span class="arithmatex">\(0.0000005\)</span>):</p>
 <pre><code>    # gamma(a, b) for theta
     thetaprior = gamma 2 2000 
 </code></pre>
@@ -4625,9 +4625,9 @@ $0.0000005$):</p>
     tauprior = invgamma 3 0.002 
 </code></pre>
 <p>specify an inverse gamma distribution as a prior for the root age and
-the remaining $\tau$s have a uniform Dirichlet distribution conditional
-on the root age (the prior mean and variance of the root age are $0.001$
-and $0.000001$,respectively):</p>
+the remaining <span class="arithmatex">\(\tau\)</span>s have a uniform Dirichlet distribution conditional
+on the root age (the prior mean and variance of the root age are <span class="arithmatex">\(0.001\)</span>
+and <span class="arithmatex">\(0.000001\)</span>,respectively):</p>
 <h4 id="output-a00-multiple-populations">Output A00 (multiple populations)</h4>
 <p>When BPP is run using the above control file a summary of the progress
 of the MCMC is again printed to screen as follows:</p>
@@ -4674,12 +4674,12 @@ of the MCMC is again printed to screen as follows:</p>
 </code></pre>
 <p>There are again 5 acceptance proportions for the 5 parameter proposals,
 but now the current mean values of 6 parameters are printed. The current
-mean values of $\theta$ for nodes 1, 2 and 3 (<code>mthet1 mthet2 mthet3</code>)
-are printed -- which are $\theta$s of the contemporary species K, C and
-L, and those of the 3 $\tau$s (<code>mtau1 mtau2 mtau3</code>) which are the
+mean values of <span class="arithmatex">\(\theta\)</span> for nodes 1, 2 and 3 (<code>mthet1 mthet2 mthet3</code>)
+are printed -- which are <span class="arithmatex">\(\theta\)</span>s of the contemporary species K, C and
+L, and those of the 3 <span class="arithmatex">\(\tau\)</span>s (<code>mtau1 mtau2 mtau3</code>) which are the
 divergence times for ancestral species KCLH, KCL and KC, respectively.
-If there are many populations/species only the first few $\tau$s will be
-printed to screen but all the $\tau$s will be available in the summary
+If there are many populations/species only the first few <span class="arithmatex">\(\tau\)</span>s will be
+printed to screen but all the <span class="arithmatex">\(\tau\)</span>s will be available in the summary
 created at the end of the run (see below). When the run finishes, a
 final block is written summarizing the results. The first two rows give
 the mean and median of the posterior distribution for each parameter.
@@ -4701,7 +4701,7 @@ viewing/printing using the
 <h4 id="mcmc-output-file">MCMC output file</h4>
 <p>A file will be produced (with a name specified by the control file
 variable <code>mcmcfile</code>) that contains the mcmc samples from the run for all
-the $\theta$ and $\tau$ parameters. When running under analysis method
+the <span class="arithmatex">\(\theta\)</span> and <span class="arithmatex">\(\tau\)</span> parameters. When running under analysis method
 A00 the contents of this file can be analyzed using a program such as
 <a href="">Tracer</a> to visually examine the convergence and mixing of the MCMC
 run. However, the other three analysis methods (A01, A10 and A11) are
@@ -4725,11 +4725,11 @@ automatically, and they are used as given.</p>
 </code></pre>
 <p>There are seven finetune steplengths here. They are in a fixed order and
 always read by the program even if the concerned proposal is not used.
-The first five of them are $\epsilon_1$, $\epsilon_2$, $\epsilon_3$,
-$\epsilon_4$, and $\epsilon_5$, described in (<a href="https://doi.org/10.1093/genetics/164.4.1645">Rannala and Yang 2003</a>. These are
+The first five of them are <span class="arithmatex">\(\epsilon_1\)</span>, <span class="arithmatex">\(\epsilon_2\)</span>, <span class="arithmatex">\(\epsilon_3\)</span>,
+<span class="arithmatex">\(\epsilon_4\)</span>, and <span class="arithmatex">\(\epsilon_5\)</span>, described in (<a href="https://doi.org/10.1093/genetics/164.4.1645">Rannala and Yang 2003</a>. These are
 the step lengths used in the MCMC proposals that (1) change internal
 node ages in the gene tree, (2) prune and re-graft nodes in the gene
-tree, (3) update $\theta$, (4) update $\tau$s using the rubber-band
+tree, (3) update <span class="arithmatex">\(\theta\)</span>, (4) update <span class="arithmatex">\(\tau\)</span>s using the rubber-band
 algorithm, and (5) implements the mixing step. The 6th and 7th are for
 the proposals that change the locus rates or heredity multipliers and
 that change the sequencing errors, respectively. If the model assumes
@@ -4780,12 +4780,12 @@ species and the assignment of individuals to species are fixed).</p>
     speciesdelimitation = 1 1 2 1 * speciesdelimitation algorithm1 finetune (a m)
     speciesmodelprior = 1  * 0: uniform LH; 1:uniform rooted trees
 </code></pre>
-<p>The first line specifies rjMCMC algorithm 0, with $\epsilon = 2$ in
-equations 3 and 4 of [@Yang2010]. Reasonable values for $\epsilon$ are
+<p>The first line specifies rjMCMC algorithm 0, with <span class="arithmatex">\(\epsilon = 2\)</span> in
+equations 3 and 4 of [@Yang2010]. Reasonable values for <span class="arithmatex">\(\epsilon\)</span> are
 1, 2, 5, etc.\
-The second line specifies rjMCMC algorithm 1, with $\alpha = 2$ and
-$m = 1$ in equations 6 and 7 of [@Yang2010]. Reasonable values are
-$\alpha = 1, 1.5, 2$, etc. and $m = 0.5, 1, 2$, etc.</p>
+The second line specifies rjMCMC algorithm 1, with <span class="arithmatex">\(\alpha = 2\)</span> and
+<span class="arithmatex">\(m = 1\)</span> in equations 6 and 7 of [@Yang2010]. Reasonable values are
+<span class="arithmatex">\(\alpha = 1, 1.5, 2\)</span>, etc. and <span class="arithmatex">\(m = 0.5, 1, 2\)</span>, etc.</p>
 <p>The two algorithms in theory should produce identical results. The
 variable <code>speciesmodelprior</code> specifies Priors 0 and 1. Prior 0 means
 equal probabilities for labeled histories (which are rooted trees with
@@ -4833,13 +4833,13 @@ tree estimation with species delimitation and assignment fixed
 conventional MCMC moves, as discussed above. PSPR is the acceptance
 proportion for the SPR/Nodeslider moves that change the species
 phylogeny [@Rannala2017]. The next two numbers are posterior means of
-$\theta$ for the root population (-1 is printed if $\theta$s are
-integrated out) and $\tau_0$ for the root age. The last two numbers are
+<span class="arithmatex">\(\theta\)</span> for the root population (-1 is printed if <span class="arithmatex">\(\theta\)</span>s are
+integrated out) and <span class="arithmatex">\(\tau_0\)</span> for the root age. The last two numbers are
 the log MSC gene-tree density (<a href="https://doi.org/10.1093/genetics/164.4.1645">Rannala and Yang 2003</a> and the average log
 sequence likelihood [@Felsenstein1981].</p>
 <p><strong>The MCMC sample</strong> of species trees is collected in the file mcmc.txt.
 Below are two lines from that file. The numbers after : are the branch
-lengths ($\tau$s), while those after # are $\theta$s. I hope to change
+lengths (<span class="arithmatex">\(\tau\)</span>s), while those after # are <span class="arithmatex">\(\theta\)</span>s. I hope to change
 the output format to be more consistent with the Newark format.</p>
 <pre><code>    (((H #0.000708: 0.004728, C #0.000740: 0.004728) #0.002814: 0.001190, G #0.000574: 0.005918) #0.004132: 0.007626, O #0.002036: 0.013544) #0.003835;
     (((H #0.000708: 0.004728, C #0.000740: 0.004728) #0.002814: 0.001190, G #0.000574: 0.005918) #0.003740: 0.007351, O #0.002786: 0.013268) #0.003506;
@@ -4893,11 +4893,11 @@ should be sampling from this prior distribution.) The species
 delimitation model is represented using four 0-1 flags for the four
 interior nodes 6, 7, 8, 9 in the guide tree, with 0 for 'collapsed' and
 1 for 'resolved'. Note that the tips in the guide tree are numbered 1,
-2, $\cdots, s$ for $s$ potential species, while the interior (ancestral)
-nodes are numbered $s + 1, s + 2, \cdots, 2s – 1$, with $s + 1$ to be
+2, <span class="arithmatex">\(\cdots, s\)</span> for <span class="arithmatex">\(s\)</span> potential species, while the interior (ancestral)
+nodes are numbered <span class="arithmatex">\(s + 1, s + 2, \cdots, 2s – 1\)</span>, with <span class="arithmatex">\(s + 1\)</span> to be
 the root of the guide tree. The numbering is through a tree-traversal
 algorithm, fixed by the program. This same order is used to specify the
-divergence time parameters ($\tau$s), so you can work out the order by
+divergence time parameters (<span class="arithmatex">\(\tau\)</span>s), so you can work out the order by
 looking at the list of nodes in the screen output (look at the
 "population by population table", "# species divergence times in the
 order:", etc.).</p>
@@ -4962,8 +4962,8 @@ random one of the models defined by the guide tree or starting tree.</p>
 <p>After the chain has started, the five ratios after the % sign are the
 acceptance proportions for the conventional MCMC moves discussed above.</p>
 <p>Next there are three numbers related to the rjMCMC move, highlighted in
-red above. The rest of the line shows the posterior mean for $\theta$
-for the root and posterior mean for $\tau_0$ (which exist in all
+red above. The rest of the line shows the posterior mean for <span class="arithmatex">\(\theta\)</span>
+for the root and posterior mean for <span class="arithmatex">\(\tau_0\)</span> (which exist in all
 species-tree or species delimitation models), the current log MSC
 density and average log sequence likelihood The three numbers related to
 the rjMCMC move, "2 0.0225 110" in the example, mean that the current
@@ -5059,13 +5059,13 @@ combinations or replicates in different folders at the same time.</p>
 <li>
 <p>The program used the burnin to adjust the step lengths for the
     proposals in the MCMC algorithm. If the rjMCMC stays in species
-    model 0, which does not have any $\tau$ parameter, no information is
-    collected during the burnin about the proposals to change $\tau$ and
-    the automatically adjusted step length for $\tau$ can be very poor.</p>
+    model 0, which does not have any <span class="arithmatex">\(\tau\)</span> parameter, no information is
+    collected during the burnin about the proposals to change <span class="arithmatex">\(\tau\)</span> and
+    the automatically adjusted step length for <span class="arithmatex">\(\tau\)</span> can be very poor.</p>
 </li>
 <li>
-<p>You probably need to evaluate the impact of the priors on $\theta$s
-    and $\tau$. See the note about the gamma distribution later in this
+<p>You probably need to evaluate the impact of the priors on <span class="arithmatex">\(\theta\)</span>s
+    and <span class="arithmatex">\(\tau\)</span>. See the note about the gamma distribution later in this
     document.</p>
 </li>
 </ul>
@@ -5094,8 +5094,8 @@ for the rjMCMC moves, while PNNI is acceptance proportion for the NNI or
 SPR moves. P(4)=0.9474 means that based on the states sampled, the
 number of species 4 has the highest posterior probability (compared with
 1 species, 2 species, etc.) and the probability is 0.9474. The next two
-numbers are posterior means of $\theta$ for the root population (-1 is
-printed if $\theta$s are integrated out) and $\tau_0$ for the root age.
+numbers are posterior means of <span class="arithmatex">\(\theta\)</span> for the root population (-1 is
+printed if <span class="arithmatex">\(\theta\)</span>s are integrated out) and <span class="arithmatex">\(\tau_0\)</span> for the root age.
 These are followed by the log MSC gene-tree density and the average log
 likelihood.</p>
 <p>The summary of the sample by BPP has four sections, as
@@ -5203,7 +5203,7 @@ load on the hardware threads.</p>
 <p>This option instructs BPP to create a checkpoint file
 (save the progress) after a specified number of MCMC iterations. The
 MCMC loop in BPP consists of
-<code>N = burnin + sampfreq*nsample</code> iterations, numbered as $1,2,\cdots,N$.
+<code>N = burnin + sampfreq*nsample</code> iterations, numbered as <span class="arithmatex">\(1,2,\cdots,N\)</span>.
 There are two formats, where X, Y are whole numbers:</p>
 <pre><code>    checkpoint = X
     checkpoint = X Y
@@ -5225,7 +5225,7 @@ file, starting from 1 and incrementing with every new checkpoint file.</p>
 scripts for running MCMC (using BPP or MCMCtree) to calculate the
 marginal likelihood (or the Bayes factor), as described in @Rannala2017.</p>
 <p>The program takes a control file you provide (such as bpp.ctl) and
-generates $K = 16$ control files with different beta values, which are
+generates <span class="arithmatex">\(K = 16\)</span> control files with different beta values, which are
 used to run bpp to sample from the different power posterior
 distributions. The program also generates job submission scripts and
 submit the jobs using qsub. All generated control files and output files
@@ -5265,7 +5265,7 @@ bpp to confirm that the control file works. Then run BDdriver as
 follows:</p>
 <pre><code>    BFdriver A00.ctl 16 tree1.sh
 </code></pre>
-<p>Here A00.ctl is the control file we have prepared. $K = 16$ is the
+<p>Here A00.ctl is the control file we have prepared. <span class="arithmatex">\(K = 16\)</span> is the
 number of points in the Gauss-Legendre qradrature algorithm for
 numerical integration. You can use 8 for testing, and 16 or 32 for real
 calculation. <code>tree1.sh</code> is the temporary script file for job submission
@@ -5304,22 +5304,22 @@ at the bottom of the file commands).</p>
 <p>Then copy the ElnfX values into the excel file, and estimate the
 logarithm of the marginal likelihood by summing (<code>weights * ElnfX / 2</code>)
 over the 16 points. This gives the log marginal likelihood to be
-$-3185.93$.</p>
+<span class="arithmatex">\(-3185.93\)</span>.</p>
 <h4 id="exercise-and-results">Exercise and results</h4>
 <p>Duplicate the calculation for the alternative species tree (tree2) in
 the folder /bf2. Change the species tree topology to (((L, H), C), K),
 and use tree2.sh as the temporary job script file. Everything else
 should be the same as described above.</p>
-<p>My runs gave the log marginal likelihood for tree 2 to be $-3186.14$.
+<p>My runs gave the log marginal likelihood for tree 2 to be <span class="arithmatex">\(-3186.14\)</span>.
 The ratio of the posterior probabilities for the two trees is then
 estimated to be
-$P_1/P_2 = \exp{-3185.93 - (-3186.14)} = exp{0.21} = 1.24$. With
-BPP4.0 and the inverse-gamma priors on $\theta$ and
-$\tau$s, the MCMC runs (A01) gave the posterior probabilities for trees
+<span class="arithmatex">\(P_1/P_2 = \exp\{-3185.93 - (-3186.14)\} = exp\{0.21\} = 1.24\)</span>. With
+BPP4.0 and the inverse-gamma priors on <span class="arithmatex">\(\theta\)</span> and
+<span class="arithmatex">\(\tau\)</span>s, the MCMC runs (A01) gave the posterior probabilities for trees
 1 and 2 as 0.167 and 0.137, with the ratio 1.22. The MCMC runs and the
 marginal likelihood calculations seem to agree with each other. (Note
-that with [bpp3]{.smallcaps} and the gamma priors on $\theta$ and
-$\tau$s, the posteriors are 0.16 and 0.13 with the ratio 1.2 [@Yang2015
+that with [bpp3]{.smallcaps} and the gamma priors on <span class="arithmatex">\(\theta\)</span> and
+<span class="arithmatex">\(\tau\)</span>s, the posteriors are 0.16 and 0.13 with the ratio 1.2 [@Yang2015
 fig. 4].</p>
 <h4 id="common-errors-and-problems">Common errors and problems</h4>
 <p>Check the bpp control file by running bpp at the command line before
@@ -5334,7 +5334,7 @@ MSC-I <a href="https://doi.org/10.1093/molbev/msz296">Flouri et al 2020</a> mode
 BPP implements the JC model only, the simulation program
 allows GTR+G (and its special cases) and allows among-loci heterogeneity
 in the process of sequence evolution. The different loci can have
-different exchangeability parameters ($a, b, c, d, e, f$) and base
+different exchangeability parameters (<span class="arithmatex">\(a, b, c, d, e, f\)</span>) and base
 compositions in the GTR model, different overall evolutionary rates,
 different extent of among-site rate variation (reflected in the alpha
 parameter for the gamma model), and different among-branch rate drifts
@@ -5374,7 +5374,7 @@ program reads the control file correctly.</p>
     basefreqs = 0  10  10  10  10   * 0: random, Dirichlet(aT,aC,aA,aG), for base frequencies
     alpha_siterate = 0  100  20  5  * G(a, b) for alpha for sites &amp; K for discrete gamma
 </code></pre>
-<p><code>seed</code> Use $-1$ to simulate different datasets every time the program is
+<p><code>seed</code> Use <span class="arithmatex">\(-1\)</span> to simulate different datasets every time the program is
 run. If you use a positive integer the data will stay exactly the same,
 which is a bad idea.</p>
 <p><code>seqfile, treefile, Imapfile, concatfile, modelparafile.</code> These are
@@ -5406,26 +5406,26 @@ sequences in a file with the suffix <code>_full</code> (or <code>MySeq_full.txt<
 example).</p>
 <p><code>species&amp;tree.</code> This block specifies the number and names of species,
 the species tree, and the parameters under the multispecies coalescent
-model, including the species divergence times ($\tau$s) and population
-size parameters ($\theta = 4N\mu$). For the example above, 100 loci,
+model, including the species divergence times (<span class="arithmatex">\(\tau\)</span>s) and population
+size parameters (<span class="arithmatex">\(\theta = 4N\mu\)</span>). For the example above, 100 loci,
 each of 1000 sites, will be simulated, on the species tree ((A, B), (C,
 D)), with 3, 2, 1, 1 sequences for A, B, C, D, so that there are 7
-sequences at each locus. The divergence time parameters ($\tau$s) are
-after ':' in the tree, while the population size parameters ($\theta$s)
-are after '#'. Thus we have 0.01 for all $\theta$s, and
-$\tau_{ABCD} = 0.012$, $\tau_{AB} = 0.01$, and $\tau_{CD} = 0.011$. We
-need $\theta_A$ and $\theta_B$ because 2 or more sequences are sampled
-from species A and B. Parameters $\theta_C$ and $\theta_D$ are
+sequences at each locus. The divergence time parameters (<span class="arithmatex">\(\tau\)</span>s) are
+after ':' in the tree, while the population size parameters (<span class="arithmatex">\(\theta\)</span>s)
+are after '#'. Thus we have 0.01 for all <span class="arithmatex">\(\theta\)</span>s, and
+<span class="arithmatex">\(\tau_{ABCD} = 0.012\)</span>, <span class="arithmatex">\(\tau_{AB} = 0.01\)</span>, and <span class="arithmatex">\(\tau_{CD} = 0.011\)</span>. We
+need <span class="arithmatex">\(\theta_A\)</span> and <span class="arithmatex">\(\theta_B\)</span> because 2 or more sequences are sampled
+from species A and B. Parameters <span class="arithmatex">\(\theta_C\)</span> and <span class="arithmatex">\(\theta_D\)</span> are
 unnecessary in this case as only one sequence is sampled from C and D:
 if you specify them, they will be ignored by the program. Note that both
-$\theta$s and $\tau$s are measured by the expected number of mutations
-per site, so that $\theta = 0.01$ means that two sequences sampled from
+<span class="arithmatex">\(\theta\)</span>s and <span class="arithmatex">\(\tau\)</span>s are measured by the expected number of mutations
+per site, so that <span class="arithmatex">\(\theta = 0.01\)</span> means that two sequences sampled from
 the population are 1% different. For reference, the estimate for the
-human species is $\theta_H = 0.0006$.</p>
+human species is <span class="arithmatex">\(\theta_H = 0.0006\)</span>.</p>
 <p><code>model.</code> This can take two possible values: 0 for JC69 and 7 for GTR.
 The next few lines are relevant for the GTR model.</p>
 <p><code>Qrates</code> specifies the exchangeability parameters in the GTR model
-($a, b, c, d, e, f$ for TC, TA, TG, CA, CG, and AG, in @Yang1994a).
+(<span class="arithmatex">\(a, b, c, d, e, f\)</span> for TC, TA, TG, CA, CG, and AG, in @Yang1994a).
 There are two options, either to have those rates fixed for all loci or
 to have them sampled at random. The first has the following format (note
 that the first 0-1 number is a switch):</p>
@@ -5433,43 +5433,43 @@ that the first 0-1 number is a switch):</p>
 </code></pre>
 <p>The input is one integer value (0 or 1) which acts as a switch followed
 by six real numbers. The line above fixes the rates at
-$a = 2, b = c = d = e = 1$ and $f = 2$, so that the transition rate is
+<span class="arithmatex">\(a = 2, b = c = d = e = 1\)</span> and <span class="arithmatex">\(f = 2\)</span>, so that the transition rate is
 twice as high as the transversion rate, and the model corresponds to K80
 or HKY. Note that only the relative rates matter, because the rate
-matrix ($Q$) is scaled so that the average rate (over the base
+matrix (<span class="arithmatex">\(Q\)</span>) is scaled so that the average rate (over the base
 frequencies) is 1 and branch lengths are measured in the expected number
 of mutations/substitutions per site. Nevertheless the program expects
 six rate parameters in the input here.</p>
 <pre><code>Qrates = 0  10 5 5 5 5 10   *  0: dirichlet, for TC TA TG CA CG AG
 </code></pre>
-<p>The second option, above, is to sample $a, b, c, d, e$ from the
+<p>The second option, above, is to sample <span class="arithmatex">\(a, b, c, d, e\)</span> from the
 Dirichlet distribution for every locus. The above specifies Dir(10, 5,
 5, 5, 5, 10), with parameters
-$\alpha_a = 10, \alpha_b = \alpha_c = \alpha_d = \alpha_e = 10$, and
-$\alpha_f = 10$. The rates generated from the Dirichlet sum to 1, and
+<span class="arithmatex">\(\alpha_a = 10, \alpha_b = \alpha_c = \alpha_d = \alpha_e = 10\)</span>, and
+<span class="arithmatex">\(\alpha_f = 10\)</span>. The rates generated from the Dirichlet sum to 1, and
 they are rescaled. Note that larger values for those parameters mean
-less variance, while the mean for $a$, say, is given by
-$\alpha_a/\alpha$ with
-$\alpha = \alpha_a + \alpha_b + \alpha_c + \alpha_d + \alpha_e +
-\alpha_f$. The specification here gives on average a
+less variance, while the mean for <span class="arithmatex">\(a\)</span>, say, is given by
+<span class="arithmatex">\(\alpha_a/\alpha\)</span> with
+<span class="arithmatex">\(\alpha = \alpha_a + \alpha_b + \alpha_c + \alpha_d + \alpha_e +
+\alpha_f\)</span>. The specification here gives on average a
 transition/transversion rate ratio of 2 (if the base frequencies are
-fixed at $\frac{1}{4}$ each), but it varies among loci.</p>
+fixed at <span class="arithmatex">\(\frac{1}{4}\)</span> each), but it varies among loci.</p>
 <p><code>basefreqs.</code> The base frequency parameters
-($\pi_T, \pi_C, \pi_A, \pi_G$) can also be fixed or sampled from the
+(<span class="arithmatex">\(\pi_T, \pi_C, \pi_A, \pi_G\)</span>) can also be fixed or sampled from the
 Dirichlet distribution, like the <code>Qrates</code>. The two options are as
 follows.</p>
 <pre><code>    basefreqs = 1 0.15 0.35 0.15 0.35  * 1: fixed; Base frequencies are for TCAG.
     basefreqs = 0  10  10 10  10       * 0: random, Dirichlet(aT, aC, aA, aG), for base frequencies
 </code></pre>
-<p><code>alpha_siterate.</code> The gamma shape parameter ($\alpha$) for rate
+<p><code>alpha_siterate.</code> The gamma shape parameter (<span class="arithmatex">\(\alpha\)</span>) for rate
 variation among sites of the same locus can be fixed or sampled from a
 gamma distribution. The possible options are as follows. When alpha is
 fixed, the same value is used for all loci. Otherwise different
-$\alpha$s are used for different loci. Note that given alpha, the rates
-for sites at the same locus have a G(($\alpha, \alpha$) distribution
+<span class="arithmatex">\(\alpha\)</span>s are used for different loci. Note that given alpha, the rates
+for sites at the same locus have a G((<span class="arithmatex">\(\alpha, \alpha\)</span>) distribution
 with mean 1 [@Yang1993; @Yang1994]. The fourth option below will allow
-the program to sample $\alpha$ from $G(100, 20)$, with mean 5, for each
-locus and then use $G(\alpha, \alpha)$ to describe the among-site rate
+the program to sample <span class="arithmatex">\(\alpha\)</span> from <span class="arithmatex">\(G(100, 20)\)</span>, with mean 5, for each
+locus and then use <span class="arithmatex">\(G(\alpha, \alpha)\)</span> to describe the among-site rate
 variation for the locus.</p>
 <pre><code>    alpha_siterate = 1 0            * 1: alpha fixed at 0(inf), one rate for all sites at the locus
     alpha_siterate = 1  5.6 0       * 1: alpha fixed at 5.6, K = 0(inf) for continuous gamma
@@ -5489,13 +5489,13 @@ for loci, use the following format.</p>
     locusrate = 1.0 5.0 dir
 </code></pre>
 <p>Here <code>mu_bar</code> is the mean rate across loci.</p>
-<p>If <code>prior = dir</code> (gamma-Dirichlet), the total rate ($L\bar\mu$) is
-partitioned to generate the locus-rates ($\mu_i$) according to the
-Dirichlet distribution with concentration parameter $\alpha$ (<code>a_mui</code>).
-Large $\alpha$ (10 or 100, say) means that the rates are similar among
+<p>If <code>prior = dir</code> (gamma-Dirichlet), the total rate (<span class="arithmatex">\(L\bar\mu\)</span>) is
+partitioned to generate the locus-rates (<span class="arithmatex">\(\mu_i\)</span>) according to the
+Dirichlet distribution with concentration parameter <span class="arithmatex">\(\alpha\)</span> (<code>a_mui</code>).
+Large <span class="arithmatex">\(\alpha\)</span> (10 or 100, say) means that the rates are similar among
 loci, while small values (1 or 0.5, say) mean that rates are highly
 variable among loci. If <code>prior = iid</code> (conditional i.i.d.), the locus
-rates ($\mu_i$) are i.i.d. given the mean rate ($\bar\mu$):</p>
+rates (<span class="arithmatex">\(\mu_i\)</span>) are i.i.d. given the mean rate (<span class="arithmatex">\(\bar\mu\)</span>):</p>
 <pre><code>    mu_i ~ Gamma(a_mui, a_mui/mubar)
 </code></pre>
 <p><code>clock.</code> This is used to specify strict-clock or relaxed-clock models.
@@ -5512,43 +5512,43 @@ unavailable for the MSC-I model).</p>
     clock = 3 0.1 10 iid LN   * iid for loci &amp; log-normal for branches
 </code></pre>
 <p>The specification (<code>clock = 2 0.1 10 dir G</code>) means the following. First
-the average variance parameter is = 0.1. Then the total $L\bar\mu$ is
-partitioned into $\mu_i$ (for $i = 1, 2, \cdots, L$) according to the
-Dirichlet distribution with concentration parameter $\alpha = 10$
+the average variance parameter is = 0.1. Then the total <span class="arithmatex">\(L\bar\mu\)</span> is
+partitioned into <span class="arithmatex">\(\mu_i\)</span> (for <span class="arithmatex">\(i = 1, 2, \cdots, L\)</span>) according to the
+Dirichlet distribution with concentration parameter <span class="arithmatex">\(\alpha = 10\)</span>
 (<code>a_vi</code>).</p>
 <p>In contrast, the specification (<code>clock = 2 0.1 10 iid LN</code>) means that
-the variance parameter for locus $\nu_i$ is generated as
-$\nu_i|\bar\nu \sim G(\alpha, \alpha/\bar\nu)$ with shape parameter
-$\alpha = 10$ (<code>a_vi</code>) and mean $\bar\nu = 0.1$.</p>
-<p>In both prior models (<code>prior=dir</code> and <code>iid</code>), $\alpha$ (<code>a_vi</code>) is
-inversely related to the variance in $\mu_i$ among loci: use small
-values of $\alpha$ (2, 1, or 0.5) if the clock nearly holds at some loci
+the variance parameter for locus <span class="arithmatex">\(\nu_i\)</span> is generated as
+<span class="arithmatex">\(\nu_i|\bar\nu \sim G(\alpha, \alpha/\bar\nu)\)</span> with shape parameter
+<span class="arithmatex">\(\alpha = 10\)</span> (<code>a_vi</code>) and mean <span class="arithmatex">\(\bar\nu = 0.1\)</span>.</p>
+<p>In both prior models (<code>prior=dir</code> and <code>iid</code>), <span class="arithmatex">\(\alpha\)</span> (<code>a_vi</code>) is
+inversely related to the variance in <span class="arithmatex">\(\mu_i\)</span> among loci: use small
+values of <span class="arithmatex">\(\alpha\)</span> (2, 1, or 0.5) if the clock nearly holds at some loci
 but is seriously violated at others, and large values (such as 10 or
 100) if the clock is violated in the same extent at different loci.</p>
-<p><code>clock = 2.</code> Given the locus rate $\mu_i$ (specified using the
-<code>locusrate</code> variable) and the variance parameter $\nu_i$ (specified
-using the <code>clock</code> variable) for locus $i$, the rates for species-tree
+<p><code>clock = 2.</code> Given the locus rate <span class="arithmatex">\(\mu_i\)</span> (specified using the
+<code>locusrate</code> variable) and the variance parameter <span class="arithmatex">\(\nu_i\)</span> (specified
+using the <code>clock</code> variable) for locus <span class="arithmatex">\(i\)</span>, the rates for species-tree
 branches are specified as follows. If <code>dist = G</code> (for gamma), the rate
-for branch $j$ at locus $i$ has the following gamma distribution with
-mean $\mu_i$ and variance $\nu_i$
-$$r_{ij} | \mu_i, \nu_i \sim G(\mu_i^2/\nu_i, \mu_i/\nu_i).$$</p>
+for branch <span class="arithmatex">\(j\)</span> at locus <span class="arithmatex">\(i\)</span> has the following gamma distribution with
+mean <span class="arithmatex">\(\mu_i\)</span> and variance <span class="arithmatex">\(\nu_i\)</span>
+<span class="arithmatex">\(<span class="arithmatex">\(r_{ij} | \mu_i, \nu_i \sim G(\mu_i^2/\nu_i, \mu_i/\nu_i).\)</span>\)</span></p>
 <p>If <code>dist = LN</code> (for log-normal), the rate has the log-normal
-distribution $$r_{ij} | \mu_i, \nu_i \sim LN(\mu_i, \nu_i).$$</p>
+distribution <span class="arithmatex">\(<span class="arithmatex">\(r_{ij} | \mu_i, \nu_i \sim LN(\mu_i, \nu_i).\)</span>\)</span></p>
 <p><code>clock = 3.</code> The correlated-rates model is specified similarly, and for
-the MSC model only. Given the locus rate $\mu_i$ (specified using the
-<code>locusrate</code> variable) and the variance parameter $\nu_i$ (specified
-using the <code>clock</code> variable) for locus $i$, the rates for species-tree
+the MSC model only. Given the locus rate <span class="arithmatex">\(\mu_i\)</span> (specified using the
+<code>locusrate</code> variable) and the variance parameter <span class="arithmatex">\(\nu_i\)</span> (specified
+using the <code>clock</code> variable) for locus <span class="arithmatex">\(i\)</span>, the rates for species-tree
 branches are specified recursively, starting from the root towards the
 tips.</p>
-<p>If <code>dist = G</code> (for gamma), the rate for branch $j$ at locus $i$ has the
+<p>If <code>dist = G</code> (for gamma), the rate for branch <span class="arithmatex">\(j\)</span> at locus <span class="arithmatex">\(i\)</span> has the
 following gamma distribution with shape parameter
-$\alpha = \mu_i^2/\nu_i$ and with the mean to be the rate for the
-parental branch of $j$ or $r_{i,p(j)}$:
-$$r_{ij} | \mu_i, \nu_i, r_{i,p(j)} \sim G(\frac{\mu_i^2}{\nu_i}, \frac{\mu_i^2}{\nu_i r_{i,p(j)}}).$$
-If <code>dist = LN</code> (for log-normal), the rate for branch $j$ at locus $i$
+<span class="arithmatex">\(\alpha = \mu_i^2/\nu_i\)</span> and with the mean to be the rate for the
+parental branch of <span class="arithmatex">\(j\)</span> or <span class="arithmatex">\(r_{i,p(j)}\)</span>:
+<span class="arithmatex">\(<span class="arithmatex">\(r_{ij} | \mu_i, \nu_i, r_{i,p(j)} \sim G(\frac{\mu_i^2}{\nu_i}, \frac{\mu_i^2}{\nu_i r_{i,p(j)}}).\)</span>\)</span>
+If <code>dist = LN</code> (for log-normal), the rate for branch <span class="arithmatex">\(j\)</span> at locus <span class="arithmatex">\(i\)</span>
 has the log-normal distribution with the mean to be the parental rate
-and variance parameter $\nu_i$:
-$$r_{ij} | \nu_i, r_{i,p(j)} \sim LN(r_{i,p(j)}, \nu_i).$$</p>
+and variance parameter <span class="arithmatex">\(\nu_i\)</span>:
+<span class="arithmatex">\(<span class="arithmatex">\(r_{ij} | \nu_i, r_{i,p(j)} \sim LN(r_{i,p(j)}, \nu_i).\)</span>\)</span></p>
 <p>After the rates for branches (populations) on the species tree are
 generated for the locus, they are used to calculate the gene-tree branch
 lengths. Gene-tree branches residing in the same species/populations
@@ -5575,24 +5575,24 @@ includes a block as above (see the file <code>MCcoalMigration.ctl</code>). The l
 <code>migration = 7</code>, where 7 is the number of populations on the species
 tree, tells the program to simulate migrations. This number is fixed by
 the species tree and is used here for error checking. This is then
-followed by a migration matrix, of size $7\times 7$. The names of the
+followed by a migration matrix, of size <span class="arithmatex">\(7\times 7\)</span>. The names of the
 populations are read and ignored by the program, and the order of the
 populations is fixed. You should run the program without the migration
 matrix first and then use the screen output to use the correct order of
 populations to specify the migration matrix.</p>
-<p>In the migration matrix, values 0 and $-1$ mean that migration is either
+<p>In the migration matrix, values 0 and <span class="arithmatex">\(-1\)</span> mean that migration is either
 impossible (for example, if the two populations did not live at the same
 time) or not allowed (if the two populations were contemporary but no
 migration between them is assumed to occur). Use 0 for both cases here.
 Positive values are scaled migration rates, with the element on the
-$i$th row $j$th column to be $M_{ij} = N_j m_{ij}$, where $m_{ij}$ is
-the migration rate per generation in population $j$ from population $i$,
-or the proportion of individuals in population $j$ that are immigrants
-from population $i$, and where $\mu$ is the mutation rate per site per
-generation. In the example above, $M_{A\to B} = 1.1$, which means that
-on average 1.1 individuals are immigrants from population $A$ to
-population $B$.</p>
-<p>Note that the $\theta$ parameter for a modern species has to be
+<span class="arithmatex">\(i\)</span>th row <span class="arithmatex">\(j\)</span>th column to be <span class="arithmatex">\(M_{ij} = N_j m_{ij}\)</span>, where <span class="arithmatex">\(m_{ij}\)</span> is
+the migration rate per generation in population <span class="arithmatex">\(j\)</span> from population <span class="arithmatex">\(i\)</span>,
+or the proportion of individuals in population <span class="arithmatex">\(j\)</span> that are immigrants
+from population <span class="arithmatex">\(i\)</span>, and where <span class="arithmatex">\(\mu\)</span> is the mutation rate per site per
+generation. In the example above, <span class="arithmatex">\(M_{A\to B} = 1.1\)</span>, which means that
+on average 1.1 individuals are immigrants from population <span class="arithmatex">\(A\)</span> to
+population <span class="arithmatex">\(B\)</span>.</p>
+<p>Note that the <span class="arithmatex">\(\theta\)</span> parameter for a modern species has to be
 specified in the tree file even if only one sequence is sampled from
 that species but migrations into that species are allowed by the
 migration matrix.</p>
@@ -5652,6 +5652,18 @@ migration matrix.</p>
     
     
       <script src="../assets/javascripts/bundle.220ee61c.min.js"></script>
+      
+        
+          <script src="../mathjax.js"></script>
+        
+      
+        
+          <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        
+      
+        
+          <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        
       
     
   </body>
