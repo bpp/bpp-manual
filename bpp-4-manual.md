@@ -176,11 +176,11 @@ information" signal.
 If you publish results obtained using BPP you should cite the version
 number of the BPP release you used as well as the canonical citation,
 which as of release v4.3.8 is
-
-> Tomáš Flouri, Xiyun Jiao, Bruce Rannala, Ziheng Yang (2018) Species
-> Tree Inference with BPP Using Genomic Sequences and the Multispecies
-> Coalescent, Molecular Biology and Evolution 35: 2585--2593.
-
+```
+Tomáš Flouri, Xiyun Jiao, Bruce Rannala, Ziheng Yang (2018) Species
+Tree Inference with BPP Using Genomic Sequences and the Multispecies
+Coalescent, Molecular Biology and Evolution 35: 2585--2593.
+```
 You can also cite the one of the BPP tutorials and the
 original papers describing the methods you used (see above). Be sure to
 state the priors that you used since they are necessary for

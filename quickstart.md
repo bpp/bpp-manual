@@ -1,3 +1,25 @@
-# Quick Start
+---
+hide:
+  - navigation
+  - toc
+---
 
-A test
+# BPP Quick Start
+Here we provide a quick start for users interested in installing and running BPP on an example dataset for frogs. Once you have succeeded in installing and running the program you can read the documentation to learn how to prepare input files and run the program on your own data.
+
+## Linux
+```
+wget -c https://github.com/bpp/bpp/releases/download/v4.6.2/bpp-4.6.2-linux-x86_64.tar.gz -O - | tar -xz
+export PATH=$PATH:$PWD/bpp-4.6.2-linux-x86_64/bin
+cd bpp-4.6.2-linux-x86_64/examples/frogs/
+bpp --cfile A00.bpp.ctl
+```
+
+## Mac
+```
+wget -c https://github.com/bpp/bpp/releases/download/v4.6.2/bpp-4.6.2-macos-x86_64.tar.gz -O - | tar -xz
+export PATH=$PATH:$PWD/bpp-4.6.2-macos-x86_64/bin
+cd bpp-4.6.2-macos-x86_64/examples/frogs/
+bpp --cfile A00.bpp.ctl
+```
+

@@ -11,7 +11,8 @@ fi
 
 cp mkdocs.yml ./site/ &&
 cp bpp-4-manual.md ./site/docs/ &&
-cp quickstart.md ./site/docs/index.md &&
+cp quickstart.md ./site/docs/ &&
+cp index.md ./site/docs/ &&
 cp mathjax.js ./site/docs/ &&
 echo "copied files to site" &&
 (cd ./site; mkdocs gh-deploy)
