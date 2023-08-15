@@ -2995,18 +2995,22 @@ Under the model of variable $M$ among loci, all migration rates for all loci may
 ```
 In options (a) and (b), the default prior specified with migprior is assigned on $M_{SC}$.
 
-## Odds and Ends
+## Combined Analyses of Organelle Genomes and Sex Chromosomes
+When performing a combined analysis of data from autosomal, mitochondrial, chloroplast or sex chromosomes
+one needs to account for the differences of effective population sizes between loci from these
+different sources. This can be done using a *heredity multiplier* (referred to as an inheritance scalar by [Hey and Nielsen 2004](https://doi.org/10.1534/genetics.103.024182)). The `heredity` variable in the BPP control file allows for 
+such differences. Here are some examples:
 ```
     heredity = 0       # (0: No variation)
     heredity = 1 4 4   # (1: estimate, & a_gamma b_gamma)
     heredity = 2 heredity.txt      # (2: from file)
 ```
-`heredity = 0` is the default and means that $\theta$ is the same for
+The specification `heredity = 0` is the default and means that $\theta$ is the same for
 all loci. `heredity = 1` or `2` specifies two models that allow $\theta$
 to vary among loci, which may be useful for combined analysis of data
 from autosomal, mitochondrial, X and Y loci. With such mixed data, the
 effective population sizes are different among loci, so that a heredity
-multiplier [inheritance scalars @Hey2004] should be applied. Other
+multiplier ([Hey and Nielsen 2004](https://doi.org/10.1534/genetics.103.024182)) should be applied. Other
 factors such as natural selection may also cause $\theta$ to deviate
 from the neutral expectation. BPP implements two options
 for this. The first option (`heredity = 1`) is to estimate the
@@ -3020,20 +3024,14 @@ as fixed constants in the MCMC run. The file simply contains as many
 numerical values as the number of loci, separated by spaces or line
 breaks.
 
-  --------------- -----------------
-                  
-  Genome           Heredity scalar
-                  
-  Nuclear            autosome 1
-  X chromosome          0.75
-  Y chromosome          0.25
-  Mitochondrial         0.25
-  --------------- -----------------
+| Genome        | Heredity scalar |
+|:--------------|:----------------|
+| Autosome      | 1               |
+| X chromosome  | 0.75            |
+| Y chromosome  | 0.25            |
+| Mitochondrial | 0.25            |
 
-  : Heredity scalars
-
-[\[table-heredity-scalar\]]{#table-heredity-scalar
-label="table-heredity-scalar"}
+Table. Examples of Common Heredity Scalars
 
 Note.--- The effect of the locus-specific mutation rates and the
 locus-specific heredity multipliers are different. A locus rate is used
