@@ -213,10 +213,7 @@ have not used a command line program before, read
 [Obtaining BPP](#obtaining-bpp). If
 you want to compile the program yourself (you must do this if you are
 using a Unix variant other than Linux or Mac OSX) go to
-[Compiling the BPP Program](#compiling-the-bpp-program). Note in the
-examples below that the `$` symbol represents the shell prompt, type
-the command listed *after* this prompt symbol (your prompt symbol may
-be different).
+[Compiling the BPP Program](#compiling-the-bpp-program). 
 
 ### Obtaining BPP
 
@@ -229,13 +226,12 @@ Download the distribution file containing an executable for your
 operating system and uncompress the file. Change the current directory
 to be the root of the subdirectory created by uncompressing the file.
 For example, on a Linux machine you could type the following to download
-and install bpp version 4.4.1 (the latest version may be different from
+and install bpp version 4.6.2 (the latest version may be different from
 this):
-```shell
-$ wget https://github.com/bpp/bpp/releases/download/\
-$ v4.4.1/bpp-4.4.1-linux-x86_64.tar.gz
-$ tar -xvzf bpp-4.4.1-linux-x86_64.tar.gz
-$ cd bpp-4.4.1-linux-x86_64/
+```
+wget https://github.com/bpp/bpp/releases/download/v4.6.2/bpp-4.6.2-linux-x86_64.tar.gz
+tar -xzf bpp-4.6.2-linux-x86_64.tar.gz
+cd bpp-4.6.2-linux-x86_64
 ```
 You are now ready to proceed to [BPP Trial Run](#bpp-trial-run)
 
@@ -261,12 +257,12 @@ Mac OSX:
 To compile the program you will need to have a C compiler and the Make
 program installed on your machine. To test whether this software is
 installed (on a Unix machine) you can type:
-```shell
-$ cc --version; make --version
+```
+cc --version; make --version
 ```
 which should produce output similar to the following if a compiler is
 installed:
-```
+```{ .yaml .no-copy }
 cc (Ubuntu 9.3.0-10ubuntu2) 9.3.0
 Copyright (C) 2019 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
@@ -280,7 +276,7 @@ This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
 ```
 If instead you see an error message such as:
-```
+```{ .yaml .no-copy }
 Command 'cc' not found
 ```
 then you (or your system) administrator will need to install the
@@ -300,22 +296,22 @@ subdirectory before executing the commands outlined below. The program
 needs to be compiled only once. For example, the following commands use
 the gcc compiler to compile the program and move the generated
 executable file (bpp) into the bin/ folder.
-```shell
-$ cd bpp
-$ mkdir bin
-$ cd src
-$ make
-$ mv bpp ../bin
+```
+cd bpp
+mkdir bin
+cd src
+make
+mv bpp ../bin
 ```
 If you use git you can instead clone the bpp repository and check out
 the master branch (which contains source code for the latest stable
 version of bpp) and then compile the program:
-```shell
-$ git clone https://github.com/bpp/bpp.git
-$ cd bpp
-$ git checkout master
-$ cd src
-$ make
+```
+git clone https://github.com/bpp/bpp.git
+cd bpp
+git checkout master
+cd src
+make
 ```
 You are now ready to proceed to [BPP Trial Run](#bpp-trial-run)
 
@@ -327,9 +323,9 @@ your current directory to the top level of the directory created by
 uncompressing the bpp distribution file. For example, in Linux the
 following commands will uncompress the distribution file and move you to
 the top level of the bpp directory:
-```shell
-$ tar -xvzf bpp-4.4.1-linux-x86_64.tar.gz
-$ cd bpp-4.4.1-linux-x86_64
+```
+tar -xvzf bpp-4.6.2-linux-x86_64.tar.gz
+cd bpp-4.6.2-linux-x86_64
 ```
 In the bpp/ subdirectory, run the program in Windows by typing the
 following command within the Terminal application:
@@ -337,14 +333,14 @@ following command within the Terminal application:
 bin\bpp --cfile examples\frogs\A00.bpp.ctl
 ```
 In Linux or Mac OSX type the following commands within a terminal:
-```shell
-$ cd examples/frogs/
-$ ../../bin/bpp --cfile examples/frogs/A00.bpp.ctl
+```
+cd examples/frogs/
+../../bin/bpp --cfile examples/frogs/A00.bpp.ctl
 ```
 If the program executed successfully, you should see initial output
 similar to the following:
-```
-bpp v4.4.1_linux_x86_64, 31GB RAM, 12 cores
+```{ .yaml .no-copy }
+bpp v4.6.2_linux_x86_64, 31GB RAM, 12 cores
 https://github.com/bpp/bpp
 	
 Auto-selected SIMD ISA: AVX2
@@ -3108,9 +3104,9 @@ examples of both a single population analysis (using the control file
 `yu2001.bpp.ctl`) and a multi-species analysis (using the control file
 `A00.bpp.ctl`).
 
-**How many $\theta$ and $\tau$ parameters exist?**\
+**How many $\theta$ and $\tau$ parameters exist?**  
 The number of parameters that BPP includes in the MSC or
-MSC-I models depends on the data configuration. The program always
+MSC-I/MSC-M models depends on the data configuration. The program always
 includes $\theta$ and $\tau$ parameters for each internal node
 (ancestral species) on the species tree, but includes a $\theta$ for an
 extant species (tip) if and only if that species has at least 2
@@ -3123,14 +3119,16 @@ results (such as the posterior distribution for other parameters or
 posterior probabilities for species trees and species delimitations)
 will still be correct. The same applies to other more complex cases of
 missing data and parameter non-identifiability. As an example, suppose
-the species tree and the numbers of sequences for two kinds of loci are
-as follows:\
-((A,B), (C,D))\
-locus configuration 1: 1 1 0 0\
-locus configuration 2: 2 0 0 1\
+the species tree and the numbers of sequences (for species A, B, C and D from left to right) for two kinds of loci are
+as follows:
+
+((A,B), (C,D))  
+locus configuration 1: 1 1 0 0  
+locus configuration 2: 2 0 0 1
+
 In this case, $\theta_A$, $\theta_{AB}$, $\theta_{ABCD}$, $\tau_{AB}$,
 and $\tau_{ABCD}$ are identifiable while $\theta_B$, $\theta_C$,
-$\theta_D$, $\theta_{CD}$ and $\tau_{CD}$ are not. Ii is impossible to
+$\theta_D$, $\theta_{CD}$ and $\tau_{CD}$ are not. It is impossible to
 estimate $\theta_D$ , $\theta_{CD}$ and $\tau_{CD}$ as no data are
 available from species C.
 
@@ -3217,7 +3215,7 @@ number of columns and their specific content varies somewhat. Omitting
 some mostly irrelevant output related to the adjustment of proposal
 moves, the output to screen when this control file is run appears as
 follows:
-```
+```{ .yaml .no-copy }
          |  Acceptance proportions  |
     Prgs | Gage Gspr thet  tau  mix | mthet1       log-PG         log-L
     -------------------------------------------------------------------
@@ -3259,8 +3257,8 @@ follows:
     ESS*      757.838791  1180.434956
     Eff*      0.075784  0.118043
 ```
-The line:
-```
+Note that in these examples we are using a random seed from the computer clock so your results will differ slightly from those shown. The line:
+```{ .yaml .no-copy }
          |  Acceptance proportions  |
     Prgs | Gage Gspr thet  tau  mix | mthet1       log-PG         log-L
     -------------------------------------------------------------------
@@ -3273,17 +3271,17 @@ still running the burn-in iterations. For example, `-15%` means that 15
 percent of the burn-in iterations remain to be completed. The next 5
 columns are the current acceptance proportions for different parameter
 proposals in the MCMC. The proposals are defined as follows:
-```
+
 -   `Gage`: proposal to change ages of nodes on gene trees
 
--   `Gsbr`: proposal to change gene tree topology using SPR move
+-   `Gspr`: proposal to change gene tree topology using SPR move
 
 -   `thet`: proposal to change $\theta$ parameter
 
 -   `tau`: proposal to change $\tau$ parameter
 
 -   `mix`: mixing step proposal
-```
+
 In the output the acceptance proportions are stable. The fifth column
 (the $\tau$ proposal acceptance proportion) is zero; this is expected
 because there are no species divergence times ($\tau$s) in the model
@@ -3350,14 +3348,14 @@ file `A00.bpp.ctl` are shown below:
     # gamma(a, b) for theta (estimate theta)
     thetaprior = gamma 2 2000 
 
-    # invgamma(a, b) for root tau & Dirichlet(a) for other tau's
-    tauprior = invgamma 3 0.002 
+    # gamma(a, b) for root tau & Dirichlet(a) for other tau's
+    tauprior = gamma 2 1000 
 
     # finetune for GBtj, GBspr, theta, tau, mix, locusrate, seqerr
     finetune =  1: 5 0.001 0.001  0.001 0.3 0.33 1.0  
 
     # MCMCsamples, locusrate, heredityscalars, genetrees, substitutionparams
-    print = 1 0 0 0 0   
+    print = 1 0 0 0
 
     burnin = 8000
     sampfreq = 2
@@ -3404,7 +3402,7 @@ for each population, where the populations are assumed to be in the same
 order as specified above (in the `species&tree` block) and the Boolean
 variable indicates that the sequence data for a population are either
 unphased (1) or phased (0). Ambiguity characters are used to represent
-genotypes for unphased sequences (see [BPP control file variables](#bpp-control-file-variables). 
+genotypes for unphased sequences (see [BPP control file variables](#bpp-control-file-variables)). 
 In the example data the sequences
 are unphased for all 4 populations. Currently, it is not possible to
 have partially phased data (e.g., only some loci unphased in a
@@ -3425,10 +3423,10 @@ $0.0000005$):
 ```
 The lines:
 ```
-    # invgamma(a, b) for root tau & Dirichlet(a) for other tau's
-    tauprior = invgamma 3 0.002 
+    # gamma(a, b) for root tau & Dirichlet(a) for other tau's
+    tauprior = gamma 1 1000 
 ```
-specify an inverse gamma distribution as a prior for the root age and
+specify a gamma distribution as a prior for the root age and
 the remaining $\tau$s have a uniform Dirichlet distribution conditional
 on the root age (the prior mean and variance of the root age are $0.001$
 and $0.000001$,respectively):
@@ -3437,7 +3435,7 @@ and $0.000001$,respectively):
 
 When BPP is run using the above control file a summary of the progress
 of the MCMC is again printed to screen as follows:
-```
+```{ .yaml .no-copy }
          |  Acceptance proportions  |
     Prgs | Gage Gspr thet  tau  mix | mthet1 mthet2 mthet3   mtau1  mtau2  mtau3       log-PG        log-L
     ------------------------------------------------------------------------------------------------------
@@ -3517,190 +3515,161 @@ run. However, the other three analysis methods (A01, A10 and A11) are
 trans-model analyses in which the number of parameters and or/the
 meaning of the parameters changes as the chain runs so it is not correct
 to examine the trace plot without conditioning on a particular model.
-
-#### Adjusting step lengths for MCMC moves (finetune)
-
-You can use the automatic adjustment of the finetune variable (MCMC step
-lengths), which appears to be reliable, but make sure that the
-acceptance proportions are neither too small nor too large. Below are
-notes for manual adjustments of the step lengths. Often I use automatic
-adjustments to generate good step lengths and then copy them into the
-control file, so that the next time the automatic procedure starts with
-already good step lengths.
-
-Below are some notes about adjusting the step lengths manually (finetune
-= 0).
-
-First note the following line in the control file ChenLi2001.bpp.ctl.
-Here finetune = 0 means that MCMC step lengths will not be adjusted
-automatically, and they are used as given.
+An example of 5 lines from the `mcmc.txt` file produced by the above
+example are given below:
+```{ .yaml .no-copy }
+Gen	theta_1K	theta_2C	theta_3L	theta_4H	theta_5KCLH	theta_6KCL	theta_7KC	tau_5KCLH	tau_6KCL	tau_7KC	lnL
+2	0.002848	0.010633	0.006000	0.002231	0.003697	0.001594	0.000704	0.001754	0.001717	0.001708	-4466.479
+4	0.002848	0.011774	0.004789	0.002231	0.003697	0.002134	0.000798	0.001754	0.001717	0.001708	-4457.097
+6	0.002848	0.010660	0.005826	0.002231	0.003697	0.001250	0.000799	0.001754	0.001717	0.001705	-4448.002
+8	0.002848	0.012103	0.005826	0.002231	0.002615	0.001250	0.000803	0.001754	0.001717	0.001696	-4455.900
 ```
-    finetune = 0: .01 .02 .03 .04 .05 .01 .01  # auto (0 or 1): MCMC step lengths
-```
-There are seven finetune steplengths here. They are in a fixed order and
-always read by the program even if the concerned proposal is not used.
-The first five of them are $\epsilon_1$, $\epsilon_2$, $\epsilon_3$,
-$\epsilon_4$, and $\epsilon_5$, described in ([Rannala and Yang 2003](https://doi.org/10.1093/genetics/164.4.1645). These are
-the step lengths used in the MCMC proposals that (1) change internal
-node ages in the gene tree, (2) prune and re-graft nodes in the gene
-tree, (3) update $\theta$, (4) update $\tau$s using the rubber-band
-algorithm, and (5) implements the mixing step. The 6th and 7th are for
-the proposals that change the locus rates or heredity multipliers and
-that change the sequencing errors, respectively. If the model assumes
-the same rate for all loci and does not use heredity multipliers, the
-6th proposal step is not used. If the model assumes no sequencing
-errors, the 7th step is not used. The acceptance proportions for the
-first five proposals are always printed out on the screen, but those for
-the 6th and 7th are printed out only if the concerned proposal is used
-in the model. In the example above, only the first five proposals are
-used in the algorithm and we will change the step lengths so that the
-acceptance proportions become close to 30%. If the acceptance proportion
-is too small (say, \<0.10)), decrease the corresponding finetune
-parameter. If the acceptance proportion is too large (say, \>0.80),
-increase the finetune parameter.
-
-Run the program for a small number of iterations and look at the screen
-output for the acceptance proportions.
-```
-    lnpG0 = 2440.0952  lnL0 = -43946.6769
-     0% 0.13 0.00 0.00 0.04 0.43  0.0009 0.0009 0.0008  0.0150 0.0067 0.0057 2399.70 -43752.8348  0:05
-     5% 0.14 0.00 0.00 0.04 0.44  0.0009 0.0009 0.0008  0.0148 0.0064 0.0057 2340.71 -43738.0172  0:09
-    10% 0.14 0.00 0.00 0.04 0.44  0.0009 0.0009 0.0008  0.0149 0.0064 0.0056 2383.91 -43739.3830  0:14
-```
-Here the second acceptance proportion, at 0.00, is much too small, which
-means that the corresponding step-length (0.02 in the control file) is
-much too large. Terminate the run (Ctrl-C) and decrease the value in the
-control file. Then run the program again (use the up and down arrow keys
-to retrieve past commands). Repeat this process a few times until every
-acceptance proportion is neither too small nor too large. In this
-example, changing 0.02 to 0.002 brings the acceptance proportion to
- 24%, which is slightly too small but already good enough.
-
-Those MCMC proposals are used in all four analyses (A00, A01, A10, A11),
-so that the description here applies to all of them. Note that the
-finetune parameters affect the efficiency of the MCMC or how fast one
-can obtain reliable results. In theory they do not change the results if
-all runs using different finetune parameters are long enough to generate
-reliable results.
-
-`A01` means species tree estimation when the assignments and
-delimitation are fixed.
-```
-    speciesdelimitation = 0    *
-    speciestree = 1    * NNI/SPR over species trees
-    speciesmodelprior = 1  * 0: uniform LH; 1:uniform rooted trees; 2: uniformSLH; 3: uniformSRooted
-```
-This invokes the NNI or SPR algorithm to change the species tree
-topology, while species delimitation is fixed (so that the number of
-species and the assignment of individuals to species are fixed).
-
-A10, for species delimitation using a user-specified guide tree
-[@Yang2010; @Rannala2013], is specified using
-```
-    speciesdelimitation = 1 0 2   * speciesdelimitation algorithm0 and finetune(e)
-    speciesdelimitation = 1 1 2 1 * speciesdelimitation algorithm1 finetune (a m)
-    speciesmodelprior = 1  * 0: uniform LH; 1:uniform rooted trees
-```
-The first line specifies rjMCMC algorithm 0, with $\epsilon = 2$ in
-equations 3 and 4 of [@Yang2010]. Reasonable values for $\epsilon$ are
-1, 2, 5, etc.\
-The second line specifies rjMCMC algorithm 1, with $\alpha = 2$ and
-$m = 1$ in equations 6 and 7 of [@Yang2010]. Reasonable values are
-$\alpha = 1, 1.5, 2$, etc. and $m = 0.5, 1, 2$, etc.
-
-The two algorithms in theory should produce identical results. The
-variable `speciesmodelprior` specifies Priors 0 and 1. Prior 0 means
-equal probabilities for labeled histories (which are rooted trees with
-internal nodes ordered by their age). This is the prior used by
-[@Yang2010 eq. 2]. Prior 1 means equal probabilities for rooted trees.
-This is now the default. The prior with the user specified probabilities
-for nodes described by [@Rannala2013] is deleted since version 2.3(?).
-
-`A11`, for joint species delimitation and species tree inference or for
-unguided species delimitation [@Yang2014a], is specified as follows.
-```
-    speciesdelimitation = 1 0 2    * rjMCMC speciesdelimitation algorithm0(e)
-    *speciesdelimitation = 1 1 2 1  * rjMCMC speciesdelimitation algorithm1(a m)
-    speciestree = 1    * NNI over species trees
-    speciesmodelprior = 1  * 0: uniform LH; 1:uniform rooted trees; 2: uniformSLH; 3: uniformSRooted
-```
-In this case, BPP will use the rjMCMC algorithm (either
-algorithm 0 or algorithm 1 of [@Yang2010] to change the species
-delimitation model and the NNI/SPR move to change the species tree
-topology.
-
-For A11, `speciesmodelprior` can take the four values 0, 1, 2, 3, which
-mean Priors 0, 1, 2, 3, respectively. As mentioned above, Prior 1 (which
-is the default) assigns equal probabilities to the rooted species trees,
-while Prior 0 means equal probabilities for the labeled histories
-(rooted trees with the internal nodes ordered by age). Priors 2 and 3
-assign equal probabilities for the numbers of species (1/s each for 1,
-2, \..., s species given s populations) and then divided up the
-probability for any specific number of species among the compatible
-models (of species delimitation and species phylogeny) either uniformly
-\[Prior 3\] or in proportion to the labeled histories \[Prior 2\].
-Priors 2 and 3 are mentioned by [@Yang2014a] and implemented by
-[@Yang2015]. Prior 3 may be suitable when there are many populations.
 
 ### A01: Species Tree Estimation
 
+Analysis A01 `(speciedelimitation = 0, speciestree = 1)` assumes that the species delimitation is fixed
+(e.g., species assignments are as specified in the Map file) but that the species tree is unknown. The
+program estimated the species tree topology in addition to the $\theta$s and $\tau$s.
+
 #### Input A01
+Our example uses the dataset of frog sequence data generated by [Zhou et al 2012](https://doi.org/10.1111/j.1365-294X.2011.05411.x)
+that we considered previously. The contents of the control file `A01.bpp.ctl` are shown below:
+```
+  seed =  -1
+  seqfile = frogs.txt
+  Imapfile = frogs.Imap.txt
+  outfile = out.txt
+  mcmcfile = mcmc.txt
+
+  speciesdelimitation = 0 * fixed species tree
+  speciestree = 1  0.4 0.2 0.1   * speciestree pSlider ExpandRatio ShrinkRatio
+
+  speciesmodelprior = 1  * 0: uniform LH; 1:uniform rooted trees; 2: uniformSLH; 3: uniformSRooted
+
+  species&tree = 4  K  C  L  H
+                    9  7 14  2
+                 ((K, C), (L, H));
+        phase =   1  1  1  1
+   
+  usedata = 1  * 0: no data (prior); 1:seq like
+  nloci = 5  * number of data sets in seqfile
+
+  cleandata = 0    * remove sites with ambiguity data (1:yes, 0:no)?
+
+  thetaprior = gamma 2 2000 # gamma(a, b) for theta (estimate theta)
+  tauprior = gamma 2 1000 # gamma(a, b) for root tau & Dirichlet(a) for other tau's
+
+  finetune =  1: 5 0.001 0.001  0.001 0.3 0.33 1.0  # finetune for GBtj, GBspr, theta, tau, mix, locusrate, seqerr
+
+  print = 1 0 0 0   * MCMC samples, locusrate, heredityscalars, Genetrees
+  burnin = 8000
+  sampfreq = 2
+  nsample = 100000
+```
+The two lines:
+```
+  speciesdelimitation = 0 * fixed species delimitation
+  speciestree = 1  0.4 0.2 0.1   * speciestree pSlider ExpandRatio ShrinkRatio
+```
+now specify that the species delimitation is fixed and the species tree topology is being estimated
+`speciestree = 1`. The 3 parameters following the `speciestree` variable specify the probability that the
+*node slider* move is used, rather than the subtree-pruning-regrafting (SPR) move to modify the species tree
+and the expand/shrink ratios for the node slider move; these proportions can be adjusted on the interval $(0,1)$
+and will affect mixing of the MCMC. For more details, see the description of the control file variable [14 speciestree](#14-speciestree).
+If no parameters are specified after `speciestree = 1` then the SPR move is used exclusively. See 
+[Rannala and Yang 2017](https://doi.org/10.1093/sysbio/syw119) for a description of the proposals available
+to change species trees in the MCMC.
+The line:
+```
+ speciesmodelprior = 1  * 0: uniform LH; 1:uniform rooted trees; 2: uniformSLH; 3: uniformSRooted
+```
+specifies the prior distribution on the species tree topologies. The specification `speciesmodelprior = 1` uses
+a prior that gives equal probability to all rooted trees apriori. See the description of the control file
+variable [15 speciesmodelprior](#15-speciesmodelprior) for more details. The available priors are described in 
+[Yang and Rannala 2014](https://doi.org/10.1093/molbev/msu279).
+
 #### Output A01
-#### MCMC output file
-Suppose we use the control file bpp.4s.ctl to run analysis A01: species
-tree estimation with species delimitation and assignment fixed
-(speciesdelimitation = 0, speciestree = 1).
+When BPP is run using the above control file a summary of the progress of the MCMC is again printed to screen as follows:
+```{ .yaml .no-copy }
 
-The screen output will look like this:
+     |         Acceptance proportions         |
+Prgs | Gage Gspr thet  tau  mix   Sspr   Ssnl | mthet1   mtau1       log-PG        log-L
+---------------------------------------------------------------------------------------
+(some output omitted here)
+   5%  0.64 0.26 0.31 0.28 0.27 0.0980 0.0000   0.0037  0.0019   1213.12189  -4448.22572  1:00
+  10%  0.64 0.26 0.30 0.28 0.27 0.0865 0.0000   0.0037  0.0019   1212.13271  -4447.30801  1:37
+  15%  0.64 0.26 0.30 0.27 0.27 0.0885 0.0000   0.0037  0.0019   1205.76722  -4446.44035  2:20
+  20%  0.64 0.26 0.30 0.27 0.27 0.0867 0.0000   0.0037  0.0019   1209.18617  -4445.20436  3:03
+  25%  0.64 0.26 0.31 0.27 0.27 0.0919 0.0000   0.0038  0.0019   1189.24742  -4444.02665  3:45
+  30%  0.65 0.26 0.31 0.27 0.27 0.0959 0.0000   0.0038  0.0018   1218.30083  -4443.50919  4:28
+  35%  0.65 0.26 0.31 0.27 0.27 0.0908 0.0000   0.0038  0.0019   1271.24840  -4443.30946  5:13
+  40%  0.65 0.26 0.31 0.27 0.27 0.0903 0.0000   0.0038  0.0018   1221.51424  -4442.93455  5:56
+  45%  0.65 0.26 0.31 0.28 0.27 0.0865 0.0000   0.0037  0.0018   1179.64791  -4442.58322  6:39
+  50%  0.65 0.26 0.31 0.28 0.27 0.0883 0.0000   0.0038  0.0018   1220.10587  -4442.33168  7:21
+  55%  0.65 0.26 0.31 0.28 0.27 0.0882 0.0000   0.0037  0.0018   1230.47093  -4442.53042  8:03
+  60%  0.65 0.26 0.31 0.28 0.27 0.0900 0.0000   0.0037  0.0019   1210.69277  -4443.13901  8:46
+  65%  0.65 0.26 0.31 0.28 0.27 0.0906 0.0000   0.0037  0.0019   1259.02426  -4443.42635  9:29
+  70%  0.65 0.26 0.31 0.28 0.27 0.0907 0.0000   0.0037  0.0019   1227.92007  -4443.74417  10:11
+  75%  0.65 0.26 0.31 0.28 0.27 0.0907 0.0000   0.0037  0.0019   1254.82843  -4443.96093  10:55
+  80%  0.65 0.26 0.31 0.28 0.27 0.0912 0.0000   0.0037  0.0019   1211.86344  -4443.93739  11:40
+  85%  0.65 0.26 0.31 0.28 0.27 0.0922 0.0000   0.0037  0.0019   1205.06522  -4443.99758  12:23
+  90%  0.65 0.26 0.31 0.28 0.27 0.0924 0.0000   0.0037  0.0019   1191.95318  -4444.06010  13:05
+  95%  0.65 0.26 0.31 0.28 0.27 0.0918 0.0000   0.0037  0.0019   1213.34484  -4444.05286  13:47
+ 100%  0.65 0.26 0.31 0.28 0.27 0.0916 0.0000   0.0037  0.0019   1224.45872  -4443.84148  14:30
+
+14:30 spent in MCMC
+
+Species in order:
+   1. K
+   2. C
+   3. L
+   4. H
+
+(A) Best trees in the sample (15 distinct trees in all)
+    33978  0.33978  0.33978 ((C, (H, L)), K);
+    17928  0.17928  0.51905 (C, ((H, L), K));
+     8961  0.08961  0.60866 ((C, K), (H, L));
+     8236  0.08236  0.69102 (C, ((H, K), L));
+     6896  0.06896  0.75998 (((C, H), L), K);
+     4548  0.04548  0.80546 (((C, L), H), K);
+     4066  0.04066  0.84612 (C, (H, (K, L)));
+     3037  0.03037  0.87649 ((C, (H, K)), L);
+     2775  0.02775  0.90424 (((C, K), H), L);
+     2245  0.02245  0.92669 (((C, H), K), L);
+     2131  0.02131  0.94800 ((C, L), (H, K));
+     1786  0.01786  0.96586 (((C, K), L), H);
+     1423  0.01423  0.98009 (((C, L), K), H);
+     1094  0.01094  0.99103 ((C, H), (K, L));
+      897  0.00897  1.00000 ((C, (K, L)), H);
+
+(B) Best splits in the sample of trees (10 splits in all)
+ 60867 0.608664  0011
+ 45422 0.454215  0111
+ 30230 0.302297  1011
+ 13522 0.135219  1100
+ 13404 0.134039  1001
+ 10235 0.102349  0101
+  8102 0.081019  0110
+  8057 0.080569  1101
+  6057 0.060569  1010
+  4106 0.041060  1110
+
+(C) Majority-rule consensus tree
+(K, C, (L, H) #0.608664);
+
+(D) Best tree (or trees from the mastertree file) with support values
+((C, (H, L) #0.608664) #0.454215, K);   [P = 0.339777]
 ```
-     5% 0.28 0.28 0.28 0.35 0.29  0.0000  0.0033 0.0138 2403.43 -43721.0651  0:13
-    10% 0.27 0.27 0.27 0.36 0.30  0.0000  0.0028 0.0142 2304.08 -43723.0804  0:21
-    15% 0.26 0.27 0.26 0.36 0.30  0.0000  0.0025 0.0143 2308.11 -43723.8564  0:27
-      ^^ Pjump for MCMC moves ^^  PSPR   theta  tau     lnpG    E(lnL)
-```
-Here the five Pjump values are the acceptance proportions for the five
-conventional MCMC moves, as discussed above. PSPR is the acceptance
-proportion for the SPR/Nodeslider moves that change the species
-phylogeny [@Rannala2017]. The next two numbers are posterior means of
-$\theta$ for the root population (-1 is printed if $\theta$s are
-integrated out) and $\tau_0$ for the root age. The last two numbers are
-the log MSC gene-tree density ([Rannala and Yang 2003](https://doi.org/10.1093/genetics/164.4.1645) and the average log
-sequence likelihood [@Felsenstein1981].
+The first part of this output are the current acceptance proportions and running means
+for different parameters as the MCMC was run. 
+Columns 2 to 6 are the five acceptance proportions for the conventional MCMC moves, as discussed above. 
+Columns 7 and 8 are the acceptance proportions for moves that
+change the species tree topology, both are much lower than the
+other parameter proposals, this is typical and it is often not possible
+to improve these acceptance proportions. 
+Columns 9 and 10 are posterior means of $\theta$ and $\tau$ for the root population (-1 is printed in column 9 if $\theta$s are integrated out). The last two numbers are the log MSC gene-tree density ([Rannala and Yang 2003](https://doi.org/10.1093/genetics/164.4.1645)) and the average log sequence likelihood (Felsenstein 1981).
 
-**The MCMC sample** of species trees is collected in the file mcmc.txt.
-Below are two lines from that file. The numbers after : are the branch
-lengths ($\tau$s), while those after \# are $\theta$s. I hope to change
-the output format to be more consistent with the Newark format.
-```
-    (((H #0.000708: 0.004728, C #0.000740: 0.004728) #0.002814: 0.001190, G #0.000574: 0.005918) #0.004132: 0.007626, O #0.002036: 0.013544) #0.003835;
-    (((H #0.000708: 0.004728, C #0.000740: 0.004728) #0.002814: 0.001190, G #0.000574: 0.005918) #0.003740: 0.007351, O #0.002786: 0.013268) #0.003506;
-```
-The BPP summary of the sample will look like the
-following.
-```
-    Read tree sample, count trees & splits
-    tree 20000  (((H, C), G), O);
-    20001 trees read, 1 distinct trees.
-
-    Species in order:
-    1. H
-    2. C
-    3. G
-    4. O
-
-    (A) Best trees in the sample (1 distinct trees in all)
-    20001  1.00000  1.00000  (O, (G, (H, C)));
-
-    (B) Best splits in the sample of trees (2 splits in all)
-    20001   1.00000  1100
-    20001   1.00000  1110
-
-    (C) Majority-rule consensus tree
-    (O, (G, (H, C) #1.000000) #1.000000);
-
-    (D) Best tree (or trees from the mastertree file) with support values
-    (O, (G, (H, C) #1.000000) #1.000000);  [P = 1.00000]
-```
+Next, there are 4 sections: A, B, C and D summarizing the results.
 Section (A) lists the species trees in decreasing order of posterior
 probabilities. From this you can easily identify the 95% or 99%
 credibility set of species trees. Section (B) lists the splits (or
@@ -3709,26 +3678,94 @@ into account the location of the root, and may be different from the
 splits for unrooted trees. Section (C) prints the majority-rule
 consensus tree, with posterior probabilities for nodes.
 
-### A10: Species Delimitation
+#### MCMC output file
+The MCMC sample of species trees is collected in the file mcmc.txt.
+Below are five lines from that file. The numbers after `:` are the branch
+lengths ($\tau$s), while those after `#` are the $\theta$s. 
+```{ .yaml .no-copy }
+(K #0.002983: 0.001998, ((C #0.009671: 0.001684, H #0.003031: 0.001684) #0.001835: 0.000250, L #0.006266: 0.001934) #0.000560: 0.000065) #0.002770;
+(K #0.003247: 0.002176, ((C #0.010528: 0.001871, H #0.004726: 0.001871) #0.002902: 0.000147, L #0.006615: 0.002017) #0.000950: 0.000158) #0.003016;
+(K #0.003234: 0.002167, ((C #0.010486: 0.001843, H #0.003294: 0.001843) #0.002186: 0.000147, L #0.007822: 0.001989) #0.001087: 0.000178) #0.003003;
+(K #0.002677: 0.001794, ((C #0.010973: 0.001516, H #0.001906: 0.001516) #0.001821: 0.000093, L #0.005827: 0.001609) #0.001261: 0.000185) #0.002486;
+(K #0.002677: 0.001794, ((C #0.009869: 0.001516, H #0.003071: 0.001516) #0.001821: 0.000109, L #0.005788: 0.001625) #0.002495: 0.000169) #0.002486;
+```
 
+### A10: Species Delimitation
+Analysis A10 `(speciedelimitation = 1, speciestree = 0)` assumes that the species delimitation is unknown
+(e.g., population assignments as specified in the Map file may not represent distinct species) but that the species *guide tree* is fixed (known). The
+program calculates the posterior probabilities of different possible species delimitations as well as of $\theta$s and $\tau$s.
 
 #### Input A10
-#### Output A10
-#### MCMC output file
+Our example uses the dataset of frog sequence data generated by [Zhou et al 2012](https://doi.org/10.1111/j.1365-294X.2011.05411.x)
+that we considered previously. The contents of the control file `A10.bpp.ctl` are shown below:
+```
+	seed =  -1
+	seqfile = frogs.txt
+	Imapfile = frogs.Imap.txt
+	outfile = out.txt
+	mcmcfile = mcmc.txt
 
-We apply rjMCMC algorithm to the frogs data (A10:
-`speciesdelimitation = 1, speciestree = 0`).
+	speciesdelimitation = 1 1 2 1 * species delimitation rjMCMC algorithm1 finetune (a m)
+	speciestree = 0        * species tree NNI/SPR
+
+	speciesmodelprior = 1  * 0: uniform LH; 1:uniform rooted trees; 2: uniformSLH; 3: uniformSRooted
+
+	species&tree = 4  K  C  L  H
+                      9  7 14  2
+                 ((K, C), (L, H));
+	phase =   1  1  1  1
+                  
+	usedata = 1  * 0: no data (prior); 1:seq like
+	nloci = 1  * number of data sets in seqfile
+
+	cleandata = 1    * remove sites with ambiguity data (1:yes, 0:no)?
+
+	thetaprior = gamma 2 2000 # gamma(a, b) for theta (estimate theta)
+	tauprior = gamma 2 1000 # gamma(a, b) for root tau & Dirichlet(a) for other tau's
+
+	finetune =  1: 5 0.001 0.001  0.001 0.3 0.33 1.0  # finetune for GBtj, GBspr, theta, tau, mix, locusrate, seqerr
+
+	print = 1 0 0 0   * MCMC samples, locusrate, heredityscalars, Genetrees
+	burnin = 8000
+	sampfreq = 2
+	nsample = 100000
 ```
-    cd frogs\r1
-    ..\..\bin\bpp ..\A10.bpp.ctl
+the lines:
 ```
-**The screen output** will look like the following. The species
-delimitation models that can be generated from the fixed guide tree are
-listed, together with their prior probabilities calculated by
+	speciesdelimitation = 1 1 2 1 * species delimitation rjMCMC algorithm1 finetune (a m)
+	speciestree = 0        * species tree NNI/SPR
+```
+specify that the species tree is fixed `speciestree = 0` (a guide tree is used as specified in the control file)
+and the rjMCMC algorithm 1, with $\alpha = 2$ and $m = 1$ in equations 6 and 7 of 
+[Yang and Rannala 2010](https://doi.org/10.1073/pnas.0913022107) is used for species
+delimitation. Another possible specification for delimitation would be:
+```
+speciesdelimitation = 1 0 2
+```
+which would specify rjMCMC algorithm 0 with $\epsilon = 2$ in
+equations 3 and 4 of [Yang and Rannala 2010](https://doi.org/10.1073/pnas.0913022107).
+The two algorithms in theory should produce identical results. 
+The line:
+```
+speciesmodelprior = 1  * 0: uniform LH; 1:uniform rooted trees; 2: uniformSLH; 3: uniformSRooted
+```
+specifies the prior distribution on topologies (see above) Prior 0 means
+equal probabilities for labeled histories (which are rooted trees with
+internal nodes ordered by their age). This is the prior used by
+[Yang and Rannala 2010](https://doi.org/10.1073/pnas.0913022107).
+Prior 1 means equal probabilities for rooted trees (now the default). 
+The prior with user specified probabilities
+for nodes described by [Rannala and Yang 2013](https://doi.org/10.1534/genetics.112.149039) was removed from BPP after version 2.3.
+We also reduced the number of loci to 1 (`nloci = 1`) in this control file because otherwise species
+delimitation model 5 (three species) has a posterior probability of 1.
+
+#### Output A10
+The species delimitation models that can be generated from the fixed guide tree will be
+listed in the output, together with their prior probabilities calculated by
 BPP. (As a check, if you use `usedata = 0`, the MCMC
 should be sampling from this prior distribution.) The species
-delimitation model is represented using four 0-1 flags for the four
-interior nodes 6, 7, 8, 9 in the guide tree, with 0 for 'collapsed' and
+delimitation model (for 4 populations as in this data set) is represented using three 0-1 flags for the three
+interior nodes 5, 6, 7 in the guide tree, with 0 for 'collapsed' and
 1 for 'resolved'. Note that the tips in the guide tree are numbered 1,
 2, $\cdots, s$ for $s$ potential species, while the interior (ancestral)
 nodes are numbered $s + 1, s + 2, \cdots, 2s – 1$, with $s + 1$ to be
@@ -3736,80 +3773,64 @@ the root of the guide tree. The numbering is through a tree-traversal
 algorithm, fixed by the program. This same order is used to specify the
 divergence time parameters ($\tau$s), so you can work out the order by
 looking at the list of nodes in the screen output (look at the
-"population by population table", "\# species divergence times in the
+"population by population table", "# species divergence times in the
 order:", etc.).
-```
-    Number of species-delimitation models =  5
-    delimitation model   1: 000  prior  0.20000
-    delimitation model   2: 100  prior  0.20000
-    delimitation model   3: 101  prior  0.20000
-    delimitation model   4: 110  prior  0.20000
-    delimitation model   5: 111  prior  0.20000
 
-    [Note: Ancestral nodes in order:   5 KCLH  6 KC  7 LH]
+When BPP is run using the above control file a summary of the progress of the MCMC is again printed to screen as follows:
+```{ .yaml .no-copy }
+     |     Acceptance proportions      |
+Prgs | Gage Gspr thet  tau  mix     rj | np del        mldp mthet1   mtau1       log-PG        log-L
+----------------------------------------------------------------------------------------------------
+(some output omitted here)
+   5%  0.62 0.25 0.30 0.33 0.29 0.0061   10 111 P[5]=0.9726 0.0026  0.0009   217.01433   -972.53408  0:08
+  10%  0.63 0.25 0.30 0.34 0.29 0.0037   10 111 P[5]=0.9845 0.0026  0.0009   229.43024   -972.60186  0:12
+  15%  0.63 0.25 0.30 0.34 0.29 0.0033   10 111 P[5]=0.9886 0.0026  0.0009   224.68967   -972.41862  0:16
+  20%  0.63 0.25 0.30 0.34 0.29 0.0037   10 111 P[5]=0.9885 0.0026  0.0009   210.93188   -972.34981  0:21
+  25%  0.63 0.25 0.30 0.33 0.29 0.0038   10 111 P[5]=0.9892 0.0026  0.0009   224.49484   -972.24813  0:26
+  30%  0.63 0.25 0.30 0.33 0.28 0.0035   10 111 P[5]=0.9901 0.0026  0.0009   216.40848   -972.27563  0:30
+  35%  0.63 0.25 0.30 0.33 0.28 0.0033   10 111 P[5]=0.9907 0.0026  0.0009   224.00442   -972.50421  0:35
+  40%  0.63 0.25 0.30 0.33 0.28 0.0031   10 111 P[5]=0.9912 0.0026  0.0009   213.49838   -972.43257  0:40
+  45%  0.63 0.25 0.30 0.33 0.29 0.0034   10 111 P[5]=0.9905 0.0026  0.0009   209.30067   -972.37969  0:45
+  50%  0.63 0.25 0.30 0.33 0.29 0.0033   10 111 P[5]=0.9906 0.0026  0.0009   232.27193   -972.51538  0:50
+  55%  0.63 0.25 0.30 0.33 0.29 0.0035   10 111 P[5]=0.9900 0.0026  0.0009   203.35457   -972.50992  0:55
+  60%  0.63 0.25 0.30 0.33 0.29 0.0037   10 111 P[5]=0.9895 0.0026  0.0009   206.99225   -972.50202  1:00
+  65%  0.63 0.25 0.30 0.33 0.28 0.0038   10 111 P[5]=0.9898 0.0026  0.0009   217.40496   -972.48296  1:05
+  70%  0.63 0.25 0.30 0.33 0.29 0.0038   10 111 P[5]=0.9893 0.0026  0.0009   216.82582   -972.50246  1:10
+  75%  0.63 0.25 0.30 0.33 0.29 0.0037   10 111 P[5]=0.9896 0.0026  0.0009   204.99588   -972.56907  1:15
+  80%  0.63 0.25 0.30 0.33 0.29 0.0036   10 111 P[5]=0.9897 0.0026  0.0009   217.51889   -972.54354  1:21
+  85%  0.63 0.25 0.30 0.33 0.28 0.0037   10 111 P[5]=0.9893 0.0026  0.0009   212.80419   -972.51050  1:27
+  90%  0.63 0.25 0.30 0.33 0.29 0.0037   10 111 P[5]=0.9896 0.0026  0.0009   223.34976   -972.47616  1:33
+  95%  0.63 0.25 0.30 0.33 0.29 0.0036   10 111 P[5]=0.9893 0.0026  0.0009   215.63544   -972.48464  1:39
+ 100%  0.63 0.25 0.30 0.33 0.28 0.0037   10 111 P[5]=0.9895 0.0026  0.0009   201.02451   -972.47685  1:45
 
-    MCMC settings: 8000 burnin, sampling every 2, 100000 samples
-    Approximating posterior, using sequence data
-    (Settings: cleandata=1 print=1 saveconP=1 moveinnode=1)
+1:45 spent in MCMC
 
-    Starting rjMCMC...
-    PrSplit = 0.500000
-    rj algorithm 1: new theta from G(a=2.00, m=1.00)
+Summarizing the species-delimitation sample in file mcmc.txt
 
-    Starting species-delimitation model: 111
+Number of species-delimitation models = 5
 
-    root dist = 0.00095
+     model    prior    posterior
+   1 000   0.200000   0.000000
+   2 100   0.200000   0.000000
+   3 101   0.200000   0.004630
+   4 110   0.200000   0.005960
+   5 111   0.200000   0.989410
 
-    Initial parameters, np = 3.
-    Genetrees generated from the MSC density.
-    0.00108  0.00074  0.00075
-    lnpG0 =  752.4533  lnL0 = -3402.2670
-    -3% 0.70 0.13 0.00 0.20 0.36   3 0.0198 111 P[5]=0.8750  -1.0000 0.0007  787.23 -3127.1399
-    (nsteps = 5)
-    Current Pjump:      0.69618  0.13189  0.00000  0.19758  0.35650
-    Current finetune:   5.00000  0.00100  0.00100  0.00100  0.30000
-    New     finetune:  18.97702  0.00041  0.00001  0.00063  0.36913
+Order of ancestral nodes:
+  KCLH
+  KC
+  LH
 
-    -2% 0.70 0.30 0.00 0.19 0.27   3 0.0209 111 P[5]=0.8575  -1.0000 0.0007  775.05 -3125.7744
-    (nsteps = 5)
-    Current Pjump:      0.69565  0.29861  0.00000  0.18742  0.27050
-    Current finetune:  18.97702  0.00041  0.00001  0.00063  0.36913
-    New     finetune:  71.87933  0.00041  0.00000  0.00037  0.32779
-
-    -1% 0.70 0.31 0.00 0.20 0.33   3 0.0126 111 P[5]=0.8990  -1.0000 0.0007  732.14 -3126.0675
-    (nsteps = 5)
-    Current Pjump:      0.69528  0.30537  0.00000  0.20442  0.33250
-    Current finetune:  71.87933  0.00041  0.00000  0.00037  0.32779
-    New     finetune:  99.00000  0.00042  0.00000  0.00024  0.37030
-
-     0% 0.69 0.30 0.00 0.23 0.26   3 0.0165 111 P[5]=0.9215  -1.0000 0.0007  723.36 -3125.7568  0:11
-
-    (nsteps = 5)
-    Current Pjump:      0.69354  0.29812  0.00000  0.23367  0.26400
-    Current finetune:  99.00000  0.00042  0.00000  0.00024  0.37030
-    New     finetune:  99.00000  0.00042  0.00000  0.00018  0.31993
-
-     5% 0.70 0.30 0.00 0.29 0.34   2 0.0260 110 P[5]=0.8731  -1.0000 0.0007  773.34 -3125.8363  0:25
-    10% 0.70 0.30 0.00 0.30 0.34   3 0.0234 111 P[5]=0.8778  -1.0000 0.0007  745.39 -3125.8263  0:39
-    15% 0.70 0.30 0.00 0.30 0.34   2 0.0225 110 P[5]=0.8879  -1.0000 0.0007  762.56 -3125.9276  0:53
-
-    ^^ Pjump for MCMC moves ^^       Prj      P[model 5]     theta    tau   lnpG     E(lnL)
+Guide tree with posterior probability for presence of nodes:
+((K, C)#0.995370, (L, H)#0.994040)#1.000000;;
 ```
 The starting species delimitation model is generated by choosing at
 random one of the models defined by the guide tree or starting tree.
-
-After the chain has started, the five ratios after the % sign are the
-acceptance proportions for the conventional MCMC moves discussed above.
-
-Next there are three numbers related to the rjMCMC move, highlighted in
-red above. The rest of the line shows the posterior mean for $\theta$
-for the root and posterior mean for $\tau_0$ (which exist in all
-species-tree or species delimitation models), the current log MSC
-density and average log sequence likelihood The three numbers related to
-the rjMCMC move, "2 0.0225 110" in the example, mean that the current
-model is 110 (using the flags of fig. 1 in Yang and Rannala, 2010), and
-the rjMCMC move has the acceptance proportion 0.0225. \[What does the
-number 2 mean?\] In general the larger this proportion, the more
+After the chain has started, columns 2-6 give the
+acceptance proportions for the conventional MCMC moves discussed above
+while column 7 (rj) now shows the acceptance proportion for reversible jump proposals (collapsing 
+or expanding species delimitations on the guide tree).
+In general the larger this proportion, the more
 efficient the rjMCMC algorithm is. However there is no optimal
 acceptance proportion for the rjMCMC move, and a value close to 0 may
 not necessarily mean a problem. If one model has posterior probability
@@ -3819,61 +3840,68 @@ probabilities can cause the acceptance proportion for the rjMCMC to be
 close to 0. It has been noted that if the rjMCMC algorithm is suffering
 from poor mixing, different starting species trees often lead to
 different results.
-
-Next the posterior probability for the best species-tree model (the most
-frequently visited tree model up to now) is printed. In the example,
-"P\[5\]=0.8879" means tree model 5 (111) is the most favoured model,
-with the posterior at 0.8879.
-
-After the MCMC is finished, the program will summarize the sample. The
-output looks like the following. The seven delimitation models are
-listed again, together with their posterior and prior probabilities.
+Next there are three numbers related to the rjMCMC move. 
+The rest of the line shows the posterior means for $\theta$ and
+$\tau_0$ of the root ancestral population (which exist in all
+species-tree or species delimitation models), the current log MSC
+density and average log sequence likelihood. The three numbers 
+in columns 8-10 that are related to the rjMCMC move, for example,
+```{ .yaml .no-copy }
+10 111 P[5]=0.9895
 ```
-    Summarizing the species-delimitation sample in file mcmc.txt
+represent the number of parameters in the current model (np), in this case 10, the species
+delimitation, in this case 111, and the current posterior probability of the most probable
+delimitation P[5]=0.9895. This means that delimitation model 5 (111) is the most favoured model,
+with the posterior at 0.9895.
 
-    Number of species-delimitation models =  5
-    model    prior  posterior
-    1  000   0.20000   0.00000
-    2  100   0.20000   0.00000
-    3  101   0.20000   0.00038
-    4  110   0.20000   0.10019
-    5  111   0.20000   0.89943
+After the MCMC is finished, the program will summarize the sample. This
+output is:
+```{ .yaml .no-copy }
+Summarizing the species-delimitation sample in file mcmc.txt
 
-    [Note: Ancestral nodes in order:   5 KCLH  6 KC  7 LH]
+Number of species-delimitation models = 5
 
-    Guide tree with posterior probability for presence of nodes
-    ((K, C) #0.999620, (L, H) #0.899810) #1.000000;
+     model    prior    posterior
+   1 000   0.200000   0.000000
+   2 100   0.200000   0.000000
+   3 101   0.200000   0.004630
+   4 110   0.200000   0.005960
+   5 111   0.200000   0.989410
+
+Order of ancestral nodes:
+  KCLH
+  KC
+  LH
+
+Guide tree with posterior probability for presence of nodes:
+((K, C)#0.995370, (L, H)#0.994040)#1.000000;;
 ```
-The MCMC sample file mcmc.txt. As the number of parameters changes when
+The five delimitation models are listed, together with their posterior and prior probabilities.
+
+#### MCMC output file
+The MCMC output was saved in the file mcmc.txt. As the number of parameters changes when
 the rjMCMC moves between models, the mcmc sample file may not be very
-useful, so you can ignore it. Right now the header line is generated
+useful, so you can often ignore it. Right now the header line is generated
 using the starting species tree and should be ignored. After the header
 line, each line of output has the following numbers, separated by TABs:
 iteration number, the number of parameters, the tree, the sampled
-parameter values, and lnL.
+parameter values, and lnL. Here are the first 6 lines of mcmc.txt:
+```{ .yaml .no-copy }
+Gen	np	tree	theta_1K	theta_2C	theta_5KCLH	theta_6KC	theta_7LH	tau_5KCLH	tau_6KC	lnL
+2	10	111	0.001207	0.003438	0.003433	0.000722	0.004404	0.003324	0.000834	0.000736	0.000516	0.000528	-972.035
+4	10	111	0.001207	0.003438	0.001733	0.000874	0.004570	0.003914	0.001036	0.000736	0.000596	0.000528	-971.105
+6	10	111	0.001207	0.003438	0.003411	0.001107	0.003353	0.001307	0.001944	0.000736	0.000708	0.000386	-973.526
+8	10	111	0.001698	0.004529	0.001902	0.000913	0.003032	0.000349	0.001474	0.000607	0.000584	0.000346	-972.899
+10	10	111	0.001979	0.005280	0.002217	0.001065	0.004159	0.000407	0.001990	0.000707	0.000680	0.000348	-970.674
 ```
-    Gen np  tree    tau_5KCLH   tau_6KC tau_7LH lnL
-    2   3   111 0.00079675  0.0007372   0.00065989  -3122.248
-    4   3   111 0.00074995  0.00067776  0.00059457  -3122.427
-    ...
-    786 3   111 0.00037556  0.00010047  2.5634e-05  -3129.184
-    788 3   111 0.00065693  7.9848e-05  3.6489e-05  -3116.988
-    790 2   110 0.00044831  5.7933e-05  -3125.574
-    792 2   110 0.00060611  0.00029978  -3122.610
-    794 2   110 0.00060611  0.00048884  -3122.912
-    796 2   110 0.00041675  0.00027494  -3130.812
-    798 2   110 0.00034214  0.0002618   -3142.615
-    800 3   111 0.00044038  0.00033698  9.8583e-05  -3129.386
-    802 3   111 0.00060202  0.00047807  7.7594e-05  -3121.725
-```
-If you know the unix command grep, you can retrieve the lines for the
-same tree model to summarize the posterior for parameters in that model.
+If you know the unix command `grep`, you can retrieve the lines for the
+same tree model to summarize the posterior for parameters in that model, for example,
 ```
     grep "3 111" mcmc.txt > result.Tree111.txt
 ```
 In theory this should give you the same posterior as if you run analysis
-A00 with the species tree fixed at tree 111. In practice I think it is
-simpler that you edit the Imap file and the control file to run analysis
+A00 with the species tree fixed at tree 111. In practice it is
+simpler to edit the Imap file and the control file to run analysis
 A00.
 
 **Running rjMCMC Algorithms.**
@@ -3913,6 +3941,32 @@ A00.
     document.
 
 ### A11: Joint Species Delimitation and Species Tree Estimation
+
+`A11`, for joint species delimitation and species tree inference or for
+unguided species delimitation [@Yang2014a], is specified as follows.
+```
+    speciesdelimitation = 1 0 2    * rjMCMC speciesdelimitation algorithm0(e)
+    *speciesdelimitation = 1 1 2 1  * rjMCMC speciesdelimitation algorithm1(a m)
+    speciestree = 1    * NNI over species trees
+    speciesmodelprior = 1  * 0: uniform LH; 1:uniform rooted trees; 2: uniformSLH; 3: uniformSRooted
+```
+In this case, BPP will use the rjMCMC algorithm (either
+algorithm 0 or algorithm 1 of [@Yang2010] to change the species
+delimitation model and the NNI/SPR move to change the species tree
+topology.
+
+For A11, `speciesmodelprior` can take the four values 0, 1, 2, 3, which
+mean Priors 0, 1, 2, 3, respectively. As mentioned above, Prior 1 (which
+is the default) assigns equal probabilities to the rooted species trees,
+while Prior 0 means equal probabilities for the labeled histories
+(rooted trees with the internal nodes ordered by age). Priors 2 and 3
+assign equal probabilities for the numbers of species (1/s each for 1,
+2, \..., s species given s populations) and then divided up the
+probability for any specific number of species among the compatible
+models (of species delimitation and species phylogeny) either uniformly
+\[Prior 3\] or in proportion to the labeled histories \[Prior 2\].
+Priors 2 and 3 are mentioned by [@Yang2014a] and implemented by
+[@Yang2015]. Prior 3 may be suitable when there are many populations.
 
 #### Input A11
 #### Output A11
@@ -3993,6 +4047,89 @@ Section (C) lists the delimited species and their posterior
 probabilities, and section (D) lists the posterior probability for the
 number of species, together with the prior probabilities calculated by
 BPP.
+
+### Adjusting step lengths for MCMC moves (finetune)
+
+The specified proposal step lengths are the initial values when automatic adjustment is
+used and are the fixed step lengths when manual specification of step lengths is used.
+The automatic adjustment of the finetune variable (MCMC step lengths) appears to be reliable
+and is recommended. However, be sure to check that the resulting
+acceptance proportions are neither too small nor too large. Here we provide
+some guidance for manual adjustments of the step lengths. A good strategy is to use automatic
+adjustments initially to generate good step lengths and then copy the step lengths into the
+control file, while continuing to use automatic adjustment; that way the next time the control file is run the 
+automatic adjustment procedure will start with near-optimal step lengths and less optimization
+will therefore be required.
+
+#### Adjusting the step lengths manually (finetune = 0)
+
+First note the following line found in the control file `yu2001.bpp.ctl`.
+Here finetune = 1 means that MCMC step lengths will be adjusted
+automatically, and the specified values are used as initial values.
+```
+    finetune = 1: 2 0.00002 0.0001 0.0005 0.5 0.2 1.0
+```
+There are seven finetune steplengths here. They are in a fixed order and
+always read by the program even if the concerned proposal is not used.
+The first five of them are $\epsilon_1$, $\epsilon_2$, $\epsilon_3$,
+$\epsilon_4$, and $\epsilon_5$, described in 
+([Rannala and Yang 2003](https://doi.org/10.1093/genetics/164.4.1645)). These are
+the step lengths used in the MCMC proposals that (1) change internal
+node ages in the gene tree, (2) prune and re-graft nodes in the gene
+tree (SPR), (3) update $\theta$, (4) update $\tau$s using the rubber-band
+algorithm, and (5) implements the mixing step. The 6th and 7th are for
+the proposals that change the locus rates or heredity multipliers and
+that change the sequencing errors, respectively. If the model assumes
+the same rate for all loci and does not use heredity multipliers, the
+6th proposal step is not used. If the model assumes no sequencing
+errors, the 7th step is not used. The acceptance proportions for the
+first five proposals are always printed out on the screen, but those for
+the 6th and 7th are printed out only if the concerned proposal is used
+in the model. In the example above, only the first five proposals are
+used in the algorithm and we will manually change the step lengths so that the
+acceptance proportions become close to 30%. 
+First, edit the line, changing it to:
+```
+    finetune = 0: 2 0.00002 0.0001 0.0005 0.5 0.2 1.0
+```
+The basic strategy for adjusting fine-tune parameters is if the acceptance proportion
+is too small (e.g., $<0.10$), decrease the corresponding finetune
+parameter. If the acceptance proportion is too large (e.g., $>0.80$),
+increase the finetune parameter.
+Run the program for a small number of iterations and look at the screen
+output to examine the acceptance proportions:
+```
+   0%  0.71 0.19 0.34 0.00 0.41   0.0004    463.81031  -12720.98567  0:04
+   5%  0.72 0.19 0.32 0.00 0.41   0.0003    458.65988  -12720.53426  0:04
+  10%  0.72 0.19 0.34 0.00 0.42   0.0004    454.99289  -12720.66361  0:05
+  15%  0.72 0.19 0.34 0.00 0.41   0.0004    481.20520  -12720.78839  0:06
+```
+Here the first acceptance proportion, at 0.72, appears too large, which
+means that the corresponding finetune parameter (2 in the control file) is
+too small, similarly the second acceptance proportion, at 0.19, appears 
+too small, which means that the corresponding finetune parameter is too large. 
+Terminate the run (Ctrl-C) and edit the finetune values in the
+control file and then run the program again, checking the acceptance rates. 
+Repeat this process a few times until every
+acceptance proportion is neither too small nor too large. In this
+example, changing the second finetune parameter (SPR) from $0.00001$ to 
+$0.000003$ brings the acceptance proportion to about $0.30$, namely:
+```
+  10%  0.71 0.31 0.34 0.00 0.30   0.0004    447.59035  -12721.04474  0:06
+  15%  0.71 0.30 0.33 0.00 0.30   0.0004    487.91342  -12720.96697  0:07
+  20%  0.71 0.30 0.32 0.00 0.30   0.0003    430.67545  -12720.83600  0:08
+```
+However, increasing the first finetune parameter (even by an order of magnitude to 20) has little effect. Sometimes it will not
+be possible to reduce the acceptance proportion for a parameter, as in
+this case (even using automatic adjustment produces an acceptance proportion of about $0.71$ in this case).
+
+The MCMC proposals discussed above are used in all four analyses (A00, A01, A10, A11),
+so that the description here applies to all of them. Note that the
+finetune parameters affect the efficiency of the MCMC or how fast one
+can obtain reliable results. In theory they do not change the results if
+runs using different finetune parameters (with potentially different acceptance proportions) are all run for long enough to generate
+reliable results.
+
 
 ## Advanced Features of BPP
 
