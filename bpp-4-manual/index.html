@@ -4845,7 +4845,7 @@ file <code>yu2001.bpp.ctl</code> are shown below:</p>
     speciestree = 0
 
     species&amp;tree = 1  H
-                      61  
+                      61  # max number of sequences
 
     # 0: no data (prior); 1:seq like
     usedata = 1
@@ -4862,9 +4862,8 @@ file <code>yu2001.bpp.ctl</code> are shown below:</p>
     # auto (0 or 1): finetune for GBtj, GBspr, theta, tau, mix, locusrate, seqerr
     finetune = 1: 2 0.00001 0.0001  0.0005 0.5 0.2 1.0  
 
-    # MCMC samples, locusrate, heredityscalars, genetrees, locussubstitution
+    # MCMC samples, locusrate, heredityscalars, genetrees
     print = 1 0 0 0  
-
     burnin = 4000
     sampfreq = 2
     nsample = 10000
