@@ -233,12 +233,12 @@ Download the distribution file containing an executable for your
 operating system and uncompress the file. Change the current directory
 to be the root of the subdirectory created by uncompressing the file.
 For example, on a Linux machine you could type the following to download
-and install bpp version 4.6.2 (the latest version may be different from
+and install bpp version 4.7.0 (the latest version may be different from
 this):
 ```
-wget https://github.com/bpp/bpp/releases/download/v4.6.2/bpp-4.6.2-linux-x86_64.tar.gz
-tar -xzf bpp-4.6.2-linux-x86_64.tar.gz
-cd bpp-4.6.2-linux-x86_64
+wget https://github.com/bpp/bpp/releases/download/v4.7.0/bpp-4.7.0-linux-x86_64.tar.gz
+tar -xzf bpp-4.7.0-linux-x86_64.tar.gz
+cd bpp-4.7.0-linux-x86_64
 ```
 You are now ready to proceed to [BPP Trial Run](#bpp-trial-run)
 
@@ -331,8 +331,8 @@ uncompressing the bpp distribution file. For example, in Linux the
 following commands will uncompress the distribution file and move you to
 the top level of the bpp directory:
 ```
-tar -xvzf bpp-4.6.2-linux-x86_64.tar.gz
-cd bpp-4.6.2-linux-x86_64
+tar -xvzf bpp-4.7.0-linux-x86_64.tar.gz
+cd bpp-4.7.0-linux-x86_64
 ```
 In the bpp/ subdirectory, run the program in Windows by typing the
 following command within the Terminal application:
@@ -347,7 +347,7 @@ cd examples/frogs/
 If the program executed successfully, you should see initial output
 similar to the following:
 ```{ .yaml .no-copy }
-bpp v4.6.2_linux_x86_64, 31GB RAM, 12 cores
+bpp v4.7.0_linux_x86_64, 31GB RAM, 12 cores
 https://github.com/bpp/bpp
 	
 Auto-selected SIMD ISA: AVX2
@@ -368,6 +368,31 @@ for help on the BPP discussion group at:
 When posting on the forum, please specify the exact command you typed
 and the error message you received (preferably by copying and pasting
 this information from your terminal or attaching a screen shot).
+
+### BPP Command-line Options
+
+Below is a list of command-line options for running BPP.
+
+| Command-line option      | Meaning                                                                                                 |
+|:-------------------------|:--------------------------------------------------------------------------------------------------------|
+|                          | With no options, bpp prints out the version number and computer hardware information                    |
+| `--help`                 | Display help information                                                                                |
+| `--cfile FILENAME`       | Run the MCMC using the specified control file                                                           |
+| `--version`              | Display version information                                                                             |
+| `--quiet`                | Output warnings and fatal errors to stderr only                                                         |
+| `--cfile FILENAME`       | Run MCMC for the specified control file                                                                 |
+| `--resume FILENAME`      | Resume analysis from a specified checkpoint file                                                        |
+| `--arch SIMD`            | Force specific vector instruction set (default: auto)                                                   |
+| `--msci-create FILENAME` | Construct the extended Newick notation for the MSC-I model using an MSC-I definition file               |
+| `--bfdriver FILENAME`    | Create control files for marginal likelihood calculation                                                |
+| `--points INTEGER`       | Number of G-L quadrature points (used with --bfdriver)                                                  |
+| `--summary FILENAME`     | Summarize results using specified control file (no MCMC)                                                |
+| `--theta_slide FLOAT`    | Use ‘slide’ move for $\theta$ with probability PROB and ‘gibbs’ move with 1 – PROB (default PROB = 0.2) |
+| `--theta_mode INTEGER`   | Change window size for sliding-window moves for $\theta$:                                               |
+|                          | 1: one step length for all $\theta$ (default)                                                           |
+|                          | 2: one step length for tip and one for inner nodes                                                      |
+|                          | 3: one step length for each node                                                                        |
+| `--no-pin`               | Disables thread pinning                                                                                 |
 
 ## Input File Formats
 
@@ -2922,7 +2947,7 @@ hybridization R A, T C as S H tau=no, no phi=0.40
 tree (A,B)R;
 bidirection  A R, B R as X Y phi=0.1,0.2
 ```
-The above figure illustrates the specifications of models A, B, C, and D of [Flouri et al 2020](https://doi.org/10.1093/molbev/msz296).  In models A, B1, and C, the introgression event is from the source branch RA to the target branch TC, with a new introgression branch SH created.  The introgression probability ($\varphi = 0.1$) is assigned to the newly added introgression branch (SH) while $1 – \varphi$ is assigned to the other parent branch (TH).  Models A, B1, and C are distinguished by using the keyword `tau` (which means the same as `tau-parent` in the Newick notation of the MSci model). Model A assumes that the two parental species S and T of the hybridization node H have distinct ages from H, with $\tau_S > \tau_H$ and $\tau_T > \tau_H$.  Thus we have `hybridization R A, T C as S H tau=yes, yes phi=0.10`: the first `yes` means that parental node S on the source branch RA has a distinct tau from node H and that the second `yes` means that parental node T on the target branch TC has a distinct tau from node H.  Note that there are often multiple ways of specifying the same MSC-I model and here you can specify model A by starting with the binary tree `((A, C), B)` and adding branch TH as a introgression event.  Model A might appear to be nonsensical biologically since only contemporary species can exchange migrants.  Nevertheless, model A may be used to represent introgressions from a ghost species not sampled in the sequence dataset.  Suppose at time $\tau_S$ a speciation event generated two species SA and SH, and at $\tau_H$, species SH contributed migrants into species THC, but species SH has since become extinct or is otherwise not sampled in the data.  This scenario matches model A.
+The above figure illustrates the specifications of models A, B, C, and D of [Flouri et al 2020](https://doi.org/10.1093/molbev/msz296).  In models A, B1, and C, the introgression event is from the source branch RA to the target branch TC, with a new introgression branch SH created.  The introgression probability ($\varphi = 0.1$) is assigned to the newly added introgression branch (SH) while $1 – \varphi$ is assigned to the other parent branch (TH).  Models A, B1, and C are distinguished by using the keyword `tau` (which means the same as `tau-parent` in the Newick notation of the MSC-I model). Model A assumes that the two parental species S and T of the hybridization node H have distinct ages from H, with $\tau_S > \tau_H$ and $\tau_T > \tau_H$.  Thus we have `hybridization R A, T C as S H tau=yes, yes phi=0.10`: the first `yes` means that parental node S on the source branch RA has a distinct tau from node H and that the second `yes` means that parental node T on the target branch TC has a distinct tau from node H.  Note that there are often multiple ways of specifying the same MSC-I model and here you can specify model A by starting with the binary tree `((A, C), B)` and adding branch TH as a introgression event.  Model A might appear to be nonsensical biologically since only contemporary species can exchange migrants.  Nevertheless, model A may be used to represent introgressions from a ghost species not sampled in the sequence dataset.  Suppose at time $\tau_S$ a speciation event generated two species SA and SH, and at $\tau_H$, species SH contributed migrants into species THC, but species SH has since become extinct or is otherwise not sampled in the data.  This scenario matches model A.
 Model B1 assumes $\tau_S = \tau_H$ and $\tau_T > \tau_H$ so there is no new tau for parent S of the hybridization node H, and there is a new tau for parent T.  Thus we have `tau=no, yes`.  Model B2 works similarly.  In model C, none of parents S and T has a distinct age from H, so we have `tau=no, no`.  One interpretation is that species C is a hybrid species. In model D for the bidirectional introgression (BDI) model, there is no distinction of source and target branches.  We specify two phi values, assigned to the introgression (horizontal) branches: $\varphi_X = 0.1$ for node X (or into node X) and $\varphi_Y = 0.2$ for node Y (see above figure).
 
 ### The MSC-M Model
@@ -3165,7 +3190,7 @@ file `yu2001.bpp.ctl` are shown below:
     speciestree = 0
 
     species&tree = 1  H
-                      61  
+                      61  # max number of sequences
 
     # 0: no data (prior); 1:seq like
     usedata = 1
@@ -3182,9 +3207,8 @@ file `yu2001.bpp.ctl` are shown below:
     # auto (0 or 1): finetune for GBtj, GBspr, theta, tau, mix, locusrate, seqerr
     finetune = 1: 2 0.00001 0.0001  0.0005 0.5 0.2 1.0  
 
-    # MCMC samples, locusrate, heredityscalars, genetrees, locussubstitution
+    # MCMC samples, locusrate, heredityscalars, genetrees
     print = 1 0 0 0  
-
     burnin = 4000
     sampfreq = 2
     nsample = 10000
@@ -4475,7 +4499,7 @@ that the simulation has been successful:
 ```{ .yaml .no-copy }
 bpp --simulate MCcoal.ctl 
 Site rates: alpha sampled from Gamma(100.000000,20.000000), K = 5
-bpp v4.6.2_linux_x86_64, 15GB RAM, 8 cores
+bpp v4.7.0_linux_x86_64, 15GB RAM, 8 cores
 https://github.com/bpp/bpp
 
 Detected CPU features: mmx sse sse2 sse3 ssse3 sse4.1 sse4.2 popcnt avx avx2
@@ -4822,3 +4846,5 @@ Check the bpp control file by running bpp at the command line before
 submitting the jobs. Make sure that the bpp program is on your path or
 use a full path. You may have to edit the source file `BFdriver.c` and
 recompile.
+
+## Experimental Features (Use at Your Own Risk!)

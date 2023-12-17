@@ -9,17 +9,17 @@ Here we provide a quick start for users interested in installing and running BPP
 
 ## Linux
 ```
-wget -c https://github.com/bpp/bpp/releases/download/v4.6.2/bpp-4.6.2-linux-x86_64.tar.gz -O - | tar -xz
-export PATH=$PATH:$PWD/bpp-4.6.2-linux-x86_64/bin
-cd bpp-4.6.2-linux-x86_64/examples/frogs/
+wget -c https://github.com/bpp/bpp/releases/download/v4.7.0/bpp-4.7.0-linux-x86_64.tar.gz -O - | tar -xz
+export PATH=$PATH:$PWD/bpp-4.7.0-linux-x86_64/bin
+cd bpp-4.7.0-linux-x86_64/examples/frogs/
 bpp --cfile A00.bpp.ctl
 ```
 
 ## Mac
 ```
-wget -c https://github.com/bpp/bpp/releases/download/v4.6.2/bpp-4.6.2-macos-x86_64.tar.gz -O - | tar -xz
-export PATH=$PATH:$PWD/bpp-4.6.2-macos-x86_64/bin
-cd bpp-4.6.2-macos-x86_64/examples/frogs/
+wget -c https://github.com/bpp/bpp/releases/download/v4.7.0/bpp-4.7.0-macos-x86_64.tar.gz -O - | tar -xz
+export PATH=$PATH:$PWD/bpp-4.7.0-macos-x86_64/bin
+cd bpp-4.7.0-macos-x86_64/examples/frogs/
 bpp --cfile A00.bpp.ctl
 ```
 
