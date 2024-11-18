@@ -233,12 +233,12 @@ Download the distribution file containing an executable for your
 operating system and uncompress the file. Change the current directory
 to be the root of the subdirectory created by uncompressing the file.
 For example, on a Linux machine you could type the following to download
-and install bpp version 4.7.0 (the latest version may be different from
+and install bpp version 4.8.0 (the latest version may be different from
 this):
 ```
-wget https://github.com/bpp/bpp/releases/download/v4.7.0/bpp-4.7.0-linux-x86_64.tar.gz
-tar -xzf bpp-4.7.0-linux-x86_64.tar.gz
-cd bpp-4.7.0-linux-x86_64
+wget https://github.com/bpp/bpp/releases/download/v4.8.0/bpp-4.8.0-linux-x86_64.tar.gz
+tar -xzf bpp-4.8.0-linux-x86_64.tar.gz
+cd bpp-4.8.0-linux-x86_64
 ```
 You are now ready to proceed to [BPP Trial Run](#bpp-trial-run)
 
@@ -331,8 +331,8 @@ uncompressing the bpp distribution file. For example, in Linux the
 following commands will uncompress the distribution file and move you to
 the top level of the bpp directory:
 ```
-tar -xvzf bpp-4.7.0-linux-x86_64.tar.gz
-cd bpp-4.7.0-linux-x86_64
+tar -xvzf bpp-4.8.0-linux-x86_64.tar.gz
+cd bpp-4.8.0-linux-x86_64
 ```
 In the bpp/ subdirectory, run the program in Windows by typing the
 following command within the Terminal application:
@@ -347,7 +347,7 @@ cd examples/frogs/
 If the program executed successfully, you should see initial output
 similar to the following:
 ```{ .yaml .no-copy }
-bpp v4.7.0_linux_x86_64, 31GB RAM, 12 cores
+bpp v4.8.0_linux_x86_64, 31GB RAM, 12 cores
 https://github.com/bpp/bpp
 	
 Auto-selected SIMD ISA: AVX2
@@ -620,35 +620,34 @@ as the need arises.
 |-------------------------------|-----------------------|---------------------|--------------------|--------------|
 | [1](#1-seed)                  | *seed*                | (-d,+d)             | True               | None         |
 | [2](#2-usedata)               | *usedata*             | b                   | True               | None         |
-| [3](#3-outfile)               | **outfile**           | s                   | True               | None         |
-| [4](#4-mcmcfile)              | **mcmcfile**          | s                   | True               | None         |
-| [5](#5-seqfile)               | **seqfile**           | s                   | True               | <-17         |
-| [6](#6-finetune)              | **finetune**          | b [f*]              | True               | ->8          |
-| [7](#7-print)                 | **print**             | b b b b b           | True               | None         |
-| [8](#8-burnin)                | `burnin`              | +d                  | True               | <-6          |
-| [9](#9-sampfreq)              | **sampfreq**          | +d                  | True               | None         |
-| [10](#10-nsample)             | **nsample**           | +d                  | True               | None         |
-| [11](#11-species&tree)        | **species&tree**      | +d s* +d* t         | True               | ->{12,16,25} |
-| [12](#12-imapfile)            | `Imapfile`            | s                   | 11[1]>1            | <-11         |
-| [13](#13-speciesdelimitation) | *speciesdelimitation* | b [b f*]            | True               | ->15         |
-| [14](#14-speciestree)         | *speciestree*         | b                   | True               | ->14         |
-| [15](#15-speciesmodelprior)   | `speciesmodelprior`   | +d                  | 13[1]=1 OR 14[1]=1 | <-\{13,14\}  |
-| [16](#16-phase)               | **phase**             | b*                  | 11[1]              | <-11         |
-| [17](#17-nloci)               | *nloci*               | +d                  | True               | ->5 <-31     |
-| [18](#18-model)               | *model*               | s [s]               | True               | None         |
-| [19](#19-qrates)              | *Qrates*              | b +f +f +f +f +f +f | 18=''7''           | <-18         |
-| [20](#20-basefreqs)           | *basefreqs*           | b +f +f +f +f       | 18=''7''           | <-18         |
-| [21](#21-alphaprior)          | *alphaprior*          | f f +d              | True               | None         |
-| [22](#22-cleandata)           | *cleandata*           | b                   | True               | None         |
-| [23](#thetaprior)             | *thetaprior*          | s [(f*, f f s)]     | True               | None         |
-| [24](#tauprior)               | *tauprior*            | s f f               | True               | None         |
-| [25](#phiprior)               | `phiprior`            | f f                 | 11[4]              | <-11         |
-| [26](#locusrate)              | *locusrate*           | +d [(f f f s, s, )] | True               | <-27 ->27    |
-| [27](#clock)                  | *clock*               | +d [f f f s s]      | True               | <-26 ->26    |
-| [28](#heredity)               | *heredity*            | +d [(f f, s)]       | True               | None         |
-| [29](#checkpoint)             | *checkpoint*          | +d [(+d)]           | True               | None         |
-| [30](#constraintfile)         | *constraintfile*      | s                   | True               | None         |
-| [31](#threads)                | `threads`             | +d [ +d +d ]        | True               | ->17         |
+| [3](#3-jobname)               | **jobname**           | s                   | True               | None         |
+| [4](#4-seqfile)               | **seqfile**           | s                   | True               | <-16         |
+| [5](#5-finetune)              | **finetune**          | b [f*]              | True               | ->7          |
+| [6](#6-print)                 | **print**             | b b b b b           | True               | None         |
+| [7](#7-burnin)                | `burnin`              | +d                  | True               | <-5          |
+| [8](#8-sampfreq)              | **sampfreq**          | +d                  | True               | None         |
+| [9](#9-nsample)               | **nsample**           | +d                  | True               | None         |
+| [10](#10-species&tree)        | **species&tree**      | +d s* +d* t         | True               | ->{11,15,24} |
+| [11](#11-imapfile)            | `Imapfile`            | s                   | 10[1]>1            | <-10         |
+| [12](#12-speciesdelimitation) | *speciesdelimitation* | b [b f*]            | True               | ->14         |
+| [13](#13-speciestree)         | *speciestree*         | b                   | True               | ->13         |
+| [14](#14-speciesmodelprior)   | `speciesmodelprior`   | +d                  | 12[1]=1 OR 13[1]=1 | <-\{12,13\}  |
+| [15](#15-phase)               | **phase**             | b*                  | 10[1]              | <-10         |
+| [16](#16-nloci)               | *nloci*               | +d                  | True               | ->4 <-30     |
+| [17](#17-model)               | *model*               | s [s]               | True               | None         |
+| [18](#18-qrates)              | *Qrates*              | b +f +f +f +f +f +f | 17=''7''           | <-17         |
+| [19](#19-basefreqs)           | *basefreqs*           | b +f +f +f +f       | 17=''7''           | <-17         |
+| [20](#20-alphaprior)          | *alphaprior*          | f f +d              | True               | None         |
+| [21](#21-cleandata)           | *cleandata*           | b                   | True               | None         |
+| [22](#22-thetaprior)          | *thetaprior*          | s [(f*, f f s)]     | True               | None         |
+| [23](#23-tauprior)            | *tauprior*            | s f f               | True               | None         |
+| [24](#24-phiprior)            | `phiprior`            | f f                 | 10[4]              | <-10         |
+| [25](#25-locusrate)           | *locusrate*           | +d [(f f f s, s, )] | True               | <-26 ->26    |
+| [26](#26-clock)               | *clock*               | +d [f f f s s]      | True               | <-25 ->25    |
+| [27](#27-heredity)            | *heredity*            | +d [(f f, s)]       | True               | None         |
+| [28](#28-checkpoint)          | *checkpoint*          | +d [(+d)]           | True               | None         |
+| [29](#29-constraintfile)      | *constraintfile*      | s                   | True               | None         |
+| [30](#30-threads)             | `threads`             | +d [ +d +d ]        | True               | ->16         |
 
 **Table 2.** Complete list of BPP control file variables. The column `Variable` contains the
   control file variable name, the column `Values` specifies (using symbols) the format of the values (symbols are defined in
@@ -752,39 +751,34 @@ usedata = 0
 usedata = 1
 ```
 
-### 3 outfile
+### 3 jobname
 ------------------------------------------------------------------------
 ```
-outfile = s
+jobname = s
 ```
 **DESCRIPTION**  
-Sets the path/name of the output file to be the string `s`  
+Defines the job name, which serves as a prefix for all output files generated by
+the analysis, including the main output file and the MCMC sample file.
 **VALUES**  
-`s`, a string of characters specifying the directory path and name
-of file that will receive the program output.  
+`s`, a string specifying the common prefix for all output files. This string may
+include a directory path.
 **EXAMPLES**
 ```
-outfile = /home/mickey/mouse_out.txt
+jobname = /home/mickey/mouse
 ```
 
-### 4 mcmcfile
-------------------------------------------------------------------------
+The above will create several files such as:
+
 ```
-mcmcfile = s
-```
-**DESCRIPTION**  
-Sets the name of the file receiving MCMC output to be the string
-`s`  
-**VALUES**  
-`s`, a string of characters specifying the directory path and name
-of file that will receive the MCMC output.  
-**EXAMPLES**
-```
-mcmcfile = /home/mickey/mouse_mcmc.txt
-mcmcfile = mcmc.txt
+/home/mickey/mouse.txt        # main output file
+/home/mickey/mouse.mcmc.txt   # MCMC sample file
+/home/mickey/mouse.SeedUsed   # seed information file
 ```
 
-### 5 seqfile
+Additional files may be generated depending on the type of analysis.
+
+
+### 4 seqfile
 ------------------------------------------------------------------------
 ```
 seqfile = s
@@ -801,7 +795,7 @@ seqfile = /home/mickey/mouse_seq.txt
 seqfile = sequences.txt
 ```
 
-### 6 finetune
+### 5 finetune
 ------------------------------------------------------------------------
 ```
 finetune = b: [f*]
@@ -867,7 +861,7 @@ finetune = 0: .01 .02 .03 .04 .05 .01 .01 .01 .01 .01 .01 .01 .01 .01 .01
 finetune = 1
 ```
 
-### 7 print
+### 6 print
 ------------------------------------------------------------------------
 ```
 print = b b b b b
@@ -891,7 +885,7 @@ print = 0 1 1 1 0
 print = 1 1 1 1 1
 ```
 
-### 8 burnin
+### 7 burnin
 ------------------------------------------------------------------------
 ```
 burnin = +d
@@ -913,14 +907,14 @@ burnin = 100
 burnin = 10000
 ```
 
-### 9 sampfreq
+### 8 sampfreq
 ------------------------------------------------------------------------
 ```
 sampfreq = +d
 ```
 **DESCRIPTION**  
 Specifies the interval at which samples from the MCMC are to be written
-to the output file specified by `mcmcfile`.  
+to the MCMC output file specified by `jobname`.  
 **VALUES**  
 `+d`, a positive integer specifying the interval between samples
 from the MCMC.  
@@ -932,14 +926,14 @@ sampfreq = 2
 sampfreq = 10
 ```
 
-### 10 nsample
+### 9 nsample
 ------------------------------------------------------------------------
 ```
 nsample = +d
 ```
 **DESCRIPTION**  
 Specifies the number of samples from the MCMC that are to be written to
-the output file specified by `mcmcfile`.  
+the MCMC output file specified by `jobname`.  
 **VALUES**  
 `+d`, a positive integer specifying the number of MCMC samples.  
 **COMMENTS**  
@@ -950,7 +944,7 @@ nsample = 5000
 nsample = 25499
 ```
 
-### 11 species&tree
+### 10 species&tree
 ------------------------------------------------------------------------
 ```
 species&tree = +d s*
@@ -990,7 +984,7 @@ species&tree = 4 H C G O
 (((H, C), G), O);
 ```
 
-### 12 Imapfile
+### 11 Imapfile
 ------------------------------------------------------------------------
 ```
 Imapfile = s
@@ -1012,7 +1006,7 @@ Imapfile = /home/foo/bar_Imap.txt
 Imapfile = Imap.txt
 ```
 
-### 13 speciesdelimitation
+### 12 speciesdelimitation
 ------------------------------------------------------------------------
 ```
 speciesdelimitation = b [b f*]
@@ -1038,7 +1032,7 @@ speciesdelimitation = 1 0 2
 speciesdelimitation = 1 1 2 1
 ```
 
-### 14 speciestree
+### 13 speciestree
 ------------------------------------------------------------------------
 ```
 speciestree = b
@@ -1064,7 +1058,7 @@ speciestree = 1
 speciestree = 0
 ```
 
-### 15 speciesmodelprior
+### 14 speciesmodelprior
 ------------------------------------------------------------------------
 ```
 speciesmodelprior
@@ -1100,7 +1094,7 @@ speciesmodelprior = 0
 speciesmodelprior = 3
 ```
 
-### 16 phase
+### 15 phase
 ------------------------------------------------------------------------
 ```
 phase = b*
@@ -1151,7 +1145,7 @@ phase = 0 0 0 0 1
 phase = 1 1 1 1 1
 ```
 
-### 17 nloci
+### 16 nloci
 ------------------------------------------------------------------------
 ```
 nloci = +d
@@ -1178,7 +1172,7 @@ nloci = 1
 nloci = 2000
 ```
 
-### 18 model
+### 17 model
 ------------------------------------------------------------------------
 ```
 model = s [s]
@@ -1230,7 +1224,7 @@ model = CPREV
 model = Custom models.txt
 ```
 
-### 19 Qrates
+### 18 Qrates
 ------------------------------------------------------------------------
 ```
 Qrates = b +f +f +f +f +f +f
@@ -1282,7 +1276,7 @@ Qrates = 1 2 1 1 1 1 2
 Qrates = 0 1 1 1 1 1 1
 ```
 
-### 20 basefreqs
+### 19 basefreqs
 ------------------------------------------------------------------------
 ```
 basefreqs = b +f +f +f +f
@@ -1309,7 +1303,7 @@ basefreqs = 1 0.15 0.35 0.15 0.35
 basefreqs = 0 10 10 10 10
 ```
 
-### 21 alphaprior
+### 20 alphaprior
 ------------------------------------------------------------------------
 ```
 alphaprior = f f +d
@@ -1344,7 +1338,7 @@ $\textrm{Var}(\alpha) = \frac{\alpha_p}{\beta_p^2}$
 alphaprior = 1 1 4
 ```
 
-### 22 cleandata
+### 21 cleandata
 ------------------------------------------------------------------------
 ```
 cleandata = b
@@ -1367,7 +1361,7 @@ cleandata = 1
 cleandata = 0
 ```
 
-### 23 thetaprior
+### 22 thetaprior
 ------------------------------------------------------------------------
 ```
 thetaprior = s [(f*, f f s)]
@@ -1466,7 +1460,7 @@ thetaprior = beta 1 10 0.0001 0.2
 thetaprior = gamma 0.001 1
 ```
 
-### 24 tauprior 
+### 23 tauprior 
 ------------------------------------------------------------------------
 ```
 tauprior = s f f
@@ -1515,7 +1509,7 @@ tauprior = invgamma 3 0.03
 tauprior = gamma 0.01 1
 ```
 
-### 25 phiprior
+### 24 phiprior
 ------------------------------------------------------------------------
 ```
 phiprior = f f
@@ -1546,7 +1540,7 @@ phiprior = 1 1
 phiprior = 1.5 1.5
 ```
 
-### 26 locusrate
+### 25 locusrate
 ------------------------------------------------------------------------
 ```
 locusrate = d+[(f f f s, s)]
@@ -1651,7 +1645,7 @@ locusrate = 1 2 3 2 dir
 locusrate = 1 1 1 1 iid
 ```
 
-### 27 clock
+### 26 clock
 ------------------------------------------------------------------------
 ```
 clock = +d [f f f s s]
@@ -1776,7 +1770,7 @@ clock = 2 10.0 100.0 5.0 dir LN
 clock = 3 10.0 50.0 3.0 dir G
 ```
 
-### 28 heredity
+### 27 heredity
 ------------------------------------------------------------------------
 ```
 heredity = +d [(f f, s, )]
@@ -1835,7 +1829,7 @@ heredity = 1 4 4
 heredity = 2 scalars.txt
 ```
 
-### 29 checkpoint
+### 28 checkpoint
 ------------------------------------------------------------------------
 ```
 checkpoint = +d [(+d)]
@@ -1851,8 +1845,8 @@ subsequently created (second optional argument).
 **DEFAULT**  
 If the checkpoint value is undefined no checkpoint file is created.  
 **COMMENTS**  
-The checkpoint files are named OUTFILE.Z.chk where outfile is the name
-specified by the `outfile` variable and Z is the number of the
+The checkpoint files are named `JOBNAME.Z.chk` where `JOBNAME` is the name
+specified by the `jobname` variable and `Z` is the number of the
 checkpoint file (the first checkpoint file is labeled 1, the second 2,
 and so on). To resume execution of the program starting from a
 checkpoint use the BPP `–resume` switch followed by the checkpoint file
@@ -1863,7 +1857,7 @@ checkpoint = 100000
 checkpoint = 100000 10000
 ```
 
-### 30 constraintfile
+### 29 constraintfile
 ------------------------------------------------------------------------
 ```
 constraintfile = s
@@ -1882,7 +1876,7 @@ the analysis.
 constraintfile = myconstraints.txt
 ```
 
-### 31 threads
+### 30 threads
 ------------------------------------------------------------------------
 ```
 threads = +d [+d +d]
@@ -1930,8 +1924,7 @@ Control files illustrating the 4 methods of analysis A00, A01, A10 and A11 are f
 
     seqfile = frogs.txt
     Imapfile = frogs.Imap.txt
-    outfile = out.txt
-    mcmcfile = mcmc.txt
+    jobname = out
 
     # fixed species tree and delimitation
     speciesdelimitation = 0 
@@ -2016,8 +2009,7 @@ generated by the program called SeedUsed.
 ```
     seqfile = frogs.txt
     Imapfile = frogs.Imap.txt
-    outfile = out.txt
-    mcmcfile = mcmc.txt
+    jobname = out
 ```
 These lines specify the names of the files used to run the program and
 summarize the output. The program will assume that all these files are
@@ -2027,11 +2019,11 @@ file named `frogs.txt`. See [Sequence File](#sequence-file) for a
 description of the sequence data file format.
 The line `Imapfile = frogs.Imap.txt` specifies that the map file is
 named `frogs.Imap.txt`. See [Imap File](#imap-file) for
-a description of the map file format. The lines `outfile = out.txt` and
-`mcmcfile = mcmc.txt` specify that the program output and mcmc samples
-are printed to files named `out.txt` and `mcmc.txt`, respectively. The
-format of the output file depends on the type of analysis being
-performed and is described in [Methods of Analysis](#methods-of-analysis).
+a description of the map file format. The line `jobname = out` specifies
+that the program output and mcmc samples are printed to files named
+`out.txt` and `out.mcmc.txt`, respectively. The format of the output file
+depends on the type of analysis being performed and is described in
+[Methods of Analysis](#methods-of-analysis).
 ```
     # fixed species tree
     speciesdelimitation = 0 
@@ -2229,7 +2221,7 @@ The line `print = 1 0 0 0` specifies the information that is printed out
 during the MCMC run. It has several boolean variables (0 for off and 1
 for on) that control the printouts during the MCMC. The first variable
 specifies whether the MCMC samples are written into the main sample file
-(mcmc.txt). The second flag is for locus-specific rate parameters (rate
+(out.mcmc.txt). The second flag is for locus-specific rate parameters (rate
 $\mu_i$, variance parameter $\nu_i$ and species-tree branch rates for
 locus $r_{ij}$). The third flag is for locus-specific heredity scalars
 if those are estimated from the data. The fourth flag is for printing
@@ -2250,16 +2242,16 @@ such traceplot programs.
 The variable setting `print = -1` specifies that BPP will
 not perform an MCMC analysis and will instead read an existing MCMC
 sample file and summarize the results. Thus, with setting `print = 1`,
-the `mcmc.txt` file receives the MCMC program output, but with
+the `out.mcmc.txt` file receives the MCMC program output, but with
 `print = -1`, it instead provides the program input. When using this
 option be careful not to overwrite files that you intended to keep. The
 `print = -1` option is useful for combining MCMC samples from multiple
 runs to produce the posterior summary. Suppose you run the same analysis
-3 times in different directories -- you can merge the mcmc.txt files
+3 times in different directories -- you can merge the out.mcmc.txt files
 from the three runs into one file and run the program using the
 `print = -1` option to summarize the posterior for the combined sample.
 Note that if you forced one or more of the jobs to terminate (using the
-Unix kill command for example) the last line of each mcmc.txt file may
+Unix kill command for example) the last line of each out.mcmc.txt file may
 incomplete. If that is the case, you should delete the incomplete line.
 The header lines of any files being concatenated should also be deleted.
 Do not combine the MCMC samples from different types of analyses (i.e.,
@@ -3005,10 +2997,10 @@ In order to summarize the posterior from the MCMC samples, only those samples ta
 
 In the case of four species, the following awk commands may be used to split the samples into two files (this assumes that tau_S and tau_T are in column 10 and 11)
 ```
-awk 'BEGIN {cnt=0} NR>1{if ($10 > $11) {cnt=cnt+1;}}} END {print cnt}' mcmc.txt
+awk 'BEGIN {cnt=0} NR>1{if ($10 > $11) {cnt=cnt+1;}}} END {print cnt}' out.mcmc.txt
 # split sample file into ab.txt (samples where t_AB > t_CD) and cd.txt (t_CD > t_AB)
-head -n 1 mcmc.txt > cd.txt; awk 'NR>1 {if ($10<$11) print $0}' mcmc.txt >> cd.txt
-head -n 1 mcmc.txt > ab.txt; awk 'NR>1 {if ($10>$11) print $0}' mcmc.txt >> ab.txt
+head -n 1 out.mcmc.txt > cd.txt; awk 'NR>1 {if ($10<$11) print $0}' out.mcmc.txt >> cd.txt
+head -n 1 out.mcmc.txt > ab.txt; awk 'NR>1 {if ($10>$11) print $0}' out.mcmc.txt >> ab.txt
 ```
 Use something like this if you understand the syntax. The running mean of the migration rate printed on the monitor during the MCMC run is the posterior mean after the filtering.
 Note that this problem of the migration rate appearing and disappearing during the MCMC may exist when a migration event involves ancestral populations, and is not limited to the balanced species tree for four species.  Later we should automate the summary of the MCMC sample.  
@@ -3182,8 +3174,7 @@ file `yu2001.bpp.ctl` are shown below:
     seed = -1
 
     seqfile = yu2001.txt
-    outfile = out.txt
-    mcmcfile = mcmc.txt
+    jobname = out
 
     # fixed species delimitation and species tree
     speciesdelimitation = 0 
@@ -3352,8 +3343,7 @@ file `A00.bpp.ctl` are shown below:
 
     seqfile = frogs.txt
     Imapfile = frogs.Imap.txt
-    outfile = out.txt
-    mcmcfile = mcmc.txt
+    jobname = out
 
     # fixed number of species/populations
     speciesdelimitation = 0 
@@ -3529,16 +3519,16 @@ Density (HPD) Interval](https://en.wikipedia.org/wiki/Credible_interval)
 Efficiency (Eff\*). Larger values for ESS\* and Eff\* indicate better
 mixing and more reliable estimates. The above information is also
 printed (along with other technical details of the run) to the output
-file specified by the `outfile` variable in the control file (in our
-example, `out.txt`). A tree file in NEXUS/Newick format is also created
-and placed in the file named FigTree.tre which is formatted for
-viewing/printing using the
+file specified by the `jobname` variable in the control file (in our
+example, `jobname = out` and thus the output file is called `out.txt`).
+A tree file in NEXUS/Newick format is also created and placed in the file named
+FigTree.tre which is formatted for viewing/printing using the
 [Figtree](http://tree.bio.ed.ac.uk/software/figtree/) program
 
 #### MCMC output file
 
 A file will be produced (with a name specified by the control file
-variable `mcmcfile`) that contains the mcmc samples from the run for all
+variable `jobname`) that contains the mcmc samples from the run for all
 the $\theta$ and $\tau$ parameters. When running under analysis method
 A00 the contents of this file can be analyzed using a program such as
 [Tracer]() to visually examine the convergence and mixing of the MCMC
@@ -3546,7 +3536,7 @@ run. However, the other three analysis methods (A01, A10 and A11) are
 trans-model analyses in which the number of parameters and or/the
 meaning of the parameters changes as the chain runs so it is not correct
 to examine the trace plot without conditioning on a particular model.
-An example of 5 lines from the `mcmc.txt` file produced by the above
+An example of 5 lines from the `out.mcmc.txt` file produced by the above
 example are given below:
 ```{ .yaml .no-copy }
 Gen	theta_1K	theta_2C	theta_3L	theta_4H	theta_5KCLH	theta_6KCL	theta_7KC	tau_5KCLH	tau_6KCL	tau_7KC	lnL
@@ -3569,8 +3559,7 @@ that we considered previously. The contents of the control file `A01.bpp.ctl` ar
   seed =  -1
   seqfile = frogs.txt
   Imapfile = frogs.Imap.txt
-  outfile = out.txt
-  mcmcfile = mcmc.txt
+  jobname = out
 
   speciesdelimitation = 0 * fixed species tree
   speciestree = 1  0.4 0.2 0.1   * speciestree pSlider ExpandRatio ShrinkRatio
@@ -3710,7 +3699,7 @@ splits for unrooted trees. Section (C) prints the majority-rule
 consensus tree, with posterior probabilities for nodes.
 
 #### MCMC output file
-The MCMC sample of species trees is collected in the file mcmc.txt.
+The MCMC sample of species trees is collected in the file out.mcmc.txt.
 Below are five lines from that file. The numbers after `:` are the branch
 lengths ($\tau$s), while those after `#` are the $\theta$s. 
 ```{ .yaml .no-copy }
@@ -3733,8 +3722,7 @@ that we considered previously. The contents of the control file `A10.bpp.ctl` ar
 	seed =  -1
 	seqfile = frogs.txt
 	Imapfile = frogs.Imap.txt
-	outfile = out.txt
-	mcmcfile = mcmc.txt
+	jobname = out
 
 	speciesdelimitation = 1 1 2 1 * species delimitation rjMCMC algorithm1 finetune (a m)
 	speciestree = 0        * species tree NNI/SPR
@@ -3836,7 +3824,7 @@ Prgs | Gage Gspr thet  tau  mix     rj | np del        mldp mthet1   mtau1      
 
 1:45 spent in MCMC
 
-Summarizing the species-delimitation sample in file mcmc.txt
+Summarizing the species-delimitation sample in file out.mcmc.txt
 
 Number of species-delimitation models = 5
 
@@ -3888,7 +3876,7 @@ with the posterior at 0.9895.
 After the MCMC is finished, the program will summarize the sample. This
 output is:
 ```{ .yaml .no-copy }
-Summarizing the species-delimitation sample in file mcmc.txt
+Summarizing the species-delimitation sample in file out.mcmc.txt
 
 Number of species-delimitation models = 5
 
@@ -3910,13 +3898,13 @@ Guide tree with posterior probability for presence of nodes:
 The five delimitation models are listed, together with their posterior and prior probabilities.
 
 #### MCMC output file
-The MCMC output was saved in the file mcmc.txt. As the number of parameters changes when
+The MCMC output was saved in the file out.mcmc.txt. As the number of parameters changes when
 the rjMCMC moves between models, the mcmc sample file may not be very
 useful, so you can often ignore it. Right now the header line is generated
 using the starting species tree and should be ignored. After the header
 line, each line of output has the following numbers, separated by TABs:
 iteration number, the number of parameters, the tree, the sampled
-parameter values, and lnL. Here are the first 6 lines of mcmc.txt:
+parameter values, and lnL. Here are the first 6 lines of out.mcmc.txt:
 ```{ .yaml .no-copy }
 Gen	np	tree	theta_1K	theta_2C	theta_5KCLH	theta_6KC	theta_7LH	tau_5KCLH	tau_6KC	lnL
 2	10	111	0.001207	0.003438	0.003433	0.000722	0.004404	0.003324	0.000834	0.000736	0.000516	0.000528	-972.035
@@ -3928,7 +3916,7 @@ Gen	np	tree	theta_1K	theta_2C	theta_5KCLH	theta_6KC	theta_7LH	tau_5KCLH	tau_6KC	
 If you know the unix command `grep`, you can retrieve the lines for the
 same tree model to summarize the posterior for parameters in that model, for example,
 ```
-    grep "3 111" mcmc.txt > result.Tree111.txt
+    grep "3 111" out.mcmc.txt > result.Tree111.txt
 ```
 In theory this should give you the same posterior as if you run analysis
 A00 with the species tree fixed at tree 111. In practice it is
@@ -3984,8 +3972,7 @@ that we considered previously. The contents of the control file `A11.bpp.ctl` ar
 
 	seqfile = frogs.txt
 	Imapfile = frogs.Imap.txt
-	outfile = out.txt
-	mcmcfile = mcmc.txt
+	jobname = out
 
 	speciesdelimitation = 1 1 2 1  * species delimitation rjMCMC algorithm1 finetune (a m)
 	speciestree = 1  0.4 0.2 0.1   * speciestree pSlider ExpandRatio ShrinkRatio
@@ -4123,7 +4110,7 @@ number of species, together with the prior probabilities calculated by
 BPP.
 
 #### MCMC output file
-The sampled trees and delimitations from the MCMC are printed to the specified file `mcmc.txt`. An example of 5 lines from this file is: 
+The sampled trees and delimitations from the MCMC are printed to the specified file `out.mcmc.txt`. An example of 5 lines from this file is: 
 ```{ .yaml .no-copy }
 (C #0.010039: 0.001675, ((L #0.006075: 0.001466, H #0.003617: 0.001466) #0.002155: 0.000205, K #0.003031: 0.001671) #0.000955: 0.000004) #0.004713; 4
 (C #0.009000: 0.001462, ((L #0.006482: 0.001228, H #0.001665: 0.001228) #0.001957: 0.000230, K #0.002632: 0.001458) #0.000511: 0.000004) #0.003204; 4
@@ -4637,7 +4624,7 @@ SSE instruction set even if AVX (which has twice the register size of
 SSE and thus in theory yields twice the speedup) is present on the
 system. To completely disable vector instruction, one can use the
 arch=CPU option. The available values for the arch tag are 'CPU', 'SSE',
-'AVX' and 'AVX2'.
+'AVX', 'AVX2' and 'NEON'.
 
 ![Fig-Numa](https://github.com/bpp/bpp-manual/blob/191d107413566b145360597fdfdfef3e68ce9173/figures/fig-numa.png?raw=true)
 
@@ -4707,8 +4694,8 @@ additional checkpoints are created every Y steps. For example, if X =
 10000 and Y = 10000, the first checkpoint is created at MCMC iteration
 10000, and further checkpoints at iterations 20000, 30000, etc.
 
-The checkpoint files are named OUTFILE.Z.chk, where OUTFILE is the label
-specified for the outfile option, and Z is the number of the checkpoint
+The checkpoint files are named `JOBNAME.Z.chk`, where `JOBNAME` is the label
+specified for the `jobname` option, and `Z` is the number of the checkpoint
 file, starting from 1 and incrementing with every new checkpoint file.
 
 To resume from a checkpoint file, use the resume switch, i.e.
