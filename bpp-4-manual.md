@@ -565,6 +565,25 @@ with an error message. For example the following will cause an error.
     constraint = (G,H);
     constraint = (F,G);
 ```
+Date File
+------------------------------
+The **date file** is optional and its name is
+specified in the control file by setting variable `datefile` to
+the name of the date file. 
+When using tip-dating, each sample has an associated sample age. 
+The `datefile` assigns an age to the sample using the individual ID tag.
+The dates are in units before time present, so larger numbers are older.
+Any desired time units (e.g. years, thousands of year, etc) can be used so long as the mutation rate prior is on the same time scale (e.g. expected substitutions per year, expected substitutions per thousand years).
+For example, the following date file assigns `specimen1` an age 500, `specimen2` an age of 10000. The population name can be included before the caret `^` symbol or it can be excluded. 
+```
+	A^specimen1 500
+	specimen2 10000
+	B^specimen3 45000
+	B^specimen4 35000
+```
+Each line should have one individual followed by the sample age.
+Each sequence in the dataset must be included in the date file.
+Also see the date file `mammoth/dates.txt` in the `examples` subdirectory.
 
 Control File
 ------------
@@ -648,6 +667,7 @@ as the need arises.
 | [28](#28-checkpoint)          | *checkpoint*          | +d [(+d)]           | True               | None         |
 | [29](#29-constraintfile)      | *constraintfile*      | s                   | True               | None         |
 | [30](#30-threads)             | `threads`             | +d [ +d +d ]        | True               | ->16         |
+| [31](#31-datefile)            | *datefile*            | s                   | 25[3]               | None    |
 
 **Table 2.** Complete list of BPP control file variables. The column `Variable` contains the
   control file variable name, the column `Values` specifies (using symbols) the format of the values (symbols are defined in
@@ -1550,7 +1570,7 @@ Specifies the model of substitution rate variation among loci, as well
 as the parameters, and the prior on the parameters of the model.  
 **VALUES**  
 `d+[(f f f s, s)]`, specifies the model and parameters. The variable
-d+ takes one of 3 possible values with different numbers of additional
+d+ takes one of 4 possible values with different numbers of additional
 variables depending on d+. The permissible combinations are:
 
 | **d+** | **[args]**                                                          | **Description**                    |
@@ -1560,6 +1580,8 @@ variables depending on d+. The permissible combinations are:
 |        | $\alpha_{\bar{\mu}} \,\, \beta_{\bar{\mu}} \,\, \alpha_{\mu_i}$ prior |                                    |
 | 2      | s                                                                     | Locus rates variable and specified |
 |        | Filename of file containing locus rates                               |                                    |
+| 3      | f f                                                                   | Loci have identical rates. The rate is estimated using tip-dating |
+|        | $\alpha$ $\beta$                                                        |                                    |
 
 
 where $\alpha_{\bar{\mu}}$ and $\beta_{\bar{\mu}}$ are the parameters of
@@ -1574,7 +1596,7 @@ specified `iid` is used.
 **DEPENDENCIES**  
 If both the `prior` option for the variable `locusrate` and the `prior`
 option for the variable `clock` are set, they should take the same
-value.  
+value. If the `locusrate = 3 f f` option is used, `datefile` much be specified.
 **COMMENTS**  
 The setting `locusrate = 0` (default) means that all loci have the same
 mutation rate. Setting `locusrate = 1 f f f s` specifies a model with
@@ -1636,6 +1658,12 @@ the population size parameter ($\theta$) for the root node on the
 species tree ([Burgess and Yang 2008](https://doi.org/10.1093/molbev/msn148)). The $L$ locus rates ($\mu_i$) are
 parameters in the model. If $\alpha_{\bar{\mu}} > 0$, the mean rate
 ($\bar\mu$) is a parameter as well.  
+
+The setting `locusrate = 3 f f` means the all loci have the same mutation rate, and the rate is estimated using tip-dating.
+The rate prior is $\Gamma (\alpha, \beta)$. 
+The units of the prior should match the units in the `datefile`. 
+For example, if the dates are specified in years, the rate should be in expected number of substitutions per year. 
+
 **EXAMPLES**
 ```
 locusrate = 0
@@ -1643,6 +1671,7 @@ locusrate = 2 rates.txt
 locusrate = 1 0 0 2
 locusrate = 1 2 3 2 dir
 locusrate = 1 1 1 1 iid
+locusrate = 3 20 1000000
 ```
 
 ### 26 clock
@@ -1904,6 +1933,36 @@ threads = 4
 threads = 8 4 1
 ```
 
+### 31 datefile
+------------------------------------------------------------------------
+```
+datefile = s 
+```
+**DESCRIPTION**  
+Sets the path/name of the date file to be the string s
+
+**VALUES**  
+`s`, a string specifying the name of the date file. 
+
+**DEFAULT**  
+If `datefile` is undefined, no tip dates are used in
+the analysis.  
+
+**DEPENDENCIES**  
+Model A00 must be used with tip-dating (`speciesdelimitation = 0`, `speciestree = 0`). 
+Checkpointing cannoted be used. 
+The tip-dating `locusrate` option much be used, `locusrate = 3 d d`. 
+A global clock must be used.
+This is the default or can be set with `clock = 0`.
+
+**COMMENTS**  
+See [Date File](#date-file) for a complete dscription of the date file format.
+
+**EXAMPLES**
+```
+datefile = dates.txt
+datefile = /home/foo/seqDates.txt
+```
 ## Example control file
 
 To examine the structure of a typical BPP control file, we consider the
@@ -4606,7 +4665,92 @@ This control file format is used in BPP version 4.4 onward, and is different fro
 order for populations are fixed by the program. The control file included in the release ( `MCcoal.im-3s-saturated.ctl` ) simulates data on a
 species tree for three species, with eight migration rates.
 
+### Simulation with tip-dating under the MSC
+Here we consider a simple example of a simulation under the MSC with tip-dating.
+#### The control file
+The example control file for simulating sequence alignments and gene trees has the following content:
+```
+seed =  1
 
+seqfile = simulate.txt
+treefile=simulate_trees.txt
+Imapfile = simple.Imap.txt
+datefile = dates.txt
+seqDates = seqDates.txt
+
+# fixed number of species/populations 
+*speciesdelimitation = 0
+
+# fixed species tree
+
+species&tree = 3  A B C 
+                  4 4 2
+		  (A #0.001, B #0.001):.007 #0.001, (C #0.001, D #0.001):.004 #.001);
+
+phase =   0 0 0 
+
+
+loci&length = 100 1000
+clock = 1
+locusrate =0
+model = 0
+
+```
+The only difference in the control file when using tip-dating is the inclusion of the `datefile` and `seqDates` options. `datefile` specifies the name/path to the file containing the sequence ages
+The ages are in units of expected number of substitutions, which is not the same as the inference program.
+The dates are assigned to populations. 
+The number of sample dates must match the number of samples from each population. 
+For example, in the below date file, there are 4 samples from population A with sample ages 0.00005 and  0.00006 substitutions per site.
+```
+A 0.00006
+A 0.00005
+A 0.00005
+A 0.00006
+B 0.00007
+B 0
+B 0
+B 0
+C 0
+C 0
+```
+The `seqDates` option specifies the name/path of the output file for the date file with individual names with sample dates.
+The `bpp` simulator automatically names the sequences based
+on the population names. Since the sequences are not named in the input files for the simulator,
+the simulator must generate a file to match the dates to the sequences. Below is the `seqDates`
+file that corresponds to the `datefile` shown above.
+```
+A^a1 0.000050
+A^a2 0.000050
+A^a3 0.000060
+A^a4 0.000060
+B^b1 0.000000
+B^b2 0.000000
+B^b3 0.000000
+B^b4 0.000070
+C^c1 0.000000
+C^c2 0.000000
+```
+The `seqDates` and `datefile` options must be used together in the simulator. A strict clock model
+(the default, which is equivalent to `clock = 1`) is required for simulating with tip dates. The
+simulator uses dates in units of expected substitutions, but the inference program uses dates in
+calendar time such as years or thousand years. The dates in the `seqDates` file can be converted to
+a unit of years by dividing by the per year substition rate. This is required to use the simulator
+to generate data to use in the inference program. For example, if we assume a substitution rate of
+$10^{−8}$ per year and use the same example as above, the `datefile` to use for inference would be
+```
+A^a1 5000
+A^a2 5000
+A^a3 6000
+A^a4 6000
+B^b1 0
+B^b2 0
+B^b3 0 
+B^b4 7000
+C^c1 0 
+C^c2 0 
+```
+BPP does not generate a file with the dates in years or similar units. The user must prepare this
+file after running the simulator.
 ## Advanced Features of BPP
 
 ### Threading and Checkpointing
