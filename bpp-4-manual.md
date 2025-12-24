@@ -55,6 +55,12 @@ each specified using two variables in the control file:
     species delimitation and species tree inference using unguided
     species delimitation [Yang and Rannala 2014](https://doi.org/10.1093/molbev/msu279)
 
+!!! tip "Which analysis should I use?"
+    - **A00**: You know the species tree and want to estimate θ and τ
+    - **A01**: You know the species assignments but want to infer the tree
+    - **A10**: You have a guide tree and want to test species boundaries
+    - **A11**: You want to jointly infer both tree and species boundaries
+
 A detailed guide to the use of each of these 4 methods of analysis, as
 well as example control files, are provided in
 [Methods of Analysis](#methods-of-analysis). The BPP tutorial also
@@ -373,26 +379,38 @@ this information from your terminal or attaching a screen shot).
 
 Below is a list of command-line options for running BPP.
 
+**General options:**
+
 | Command-line option      | Meaning                                                                                                 |
 |:-------------------------|:--------------------------------------------------------------------------------------------------------|
 |                          | With no options, bpp prints out the version number and computer hardware information                    |
 | `--help`                 | Display help information                                                                                |
-| `--cfile FILENAME`       | Run the MCMC using the specified control file                                                           |
 | `--version`              | Display version information                                                                             |
-| `--quiet`                | Output warnings and fatal errors to stderr only                                                         |
-| `--cfile FILENAME`       | Run MCMC for the specified control file                                                                 |
+| `--quiet`                | Only output warnings and fatal errors to stderr                                                         |
+| `--cfile FILENAME`       | Run analysis for the specified control file                                                             |
+| `--simulate FILENAME`    | Run simulation for the specified control file                                                           |
 | `--resume FILENAME`      | Resume analysis from a specified checkpoint file                                                        |
-| `--arch SIMD`            | Force specific vector instruction set (default: auto)                                                   |
-| `--msci-create FILENAME` | Construct the extended Newick notation for the MSC-I model using an MSC-I definition file               |
-| `--bfdriver FILENAME`    | Create control files for marginal likelihood calculation                                                |
-| `--points INTEGER`       | Number of G-L quadrature points (used with --bfdriver)                                                  |
+| `--msci-create FILENAME` | Construct an MSci graph using a definitions file                                                        |
 | `--summary FILENAME`     | Summarize results using specified control file (no MCMC)                                                |
-| `--theta_slide FLOAT`    | Use ‘slide’ move for $\theta$ with probability PROB and ‘gibbs’ move with 1 – PROB (default PROB = 0.2) |
-| `--theta_mode INTEGER`   | Change window size for sliding-window moves for $\theta$:                                               |
-|                          | 1: one step length for all $\theta$ (default)                                                           |
-|                          | 2: one step length for tip and one for inner nodes                                                      |
-|                          | 3: one step length for each node                                                                        |
-| `--no-pin`               | Disables thread pinning                                                                                 |
+
+**Advanced options:**
+
+| Command-line option       | Meaning                                                                                                |
+|:--------------------------|:-------------------------------------------------------------------------------------------------------|
+| `--arch SIMD`             | Force specific vector instruction set (default: auto)                                                  |
+| `--bfdriver FILENAME`     | Create control files for marginal likelihood calculation                                               |
+| `--points INTEGER`        | Number of G-L quadrature points (used with --bfdriver)                                                 |
+| `--no-pin`                | Do not pin threads to cores                                                                            |
+| `--theta_mode INTEGER`    | Definition of $\theta$ step lengths (default: 2). 1: one step length for all $\theta$; 2: one step length for tip and one for inner nodes; 3: one step length for each node |
+| `--theta-prop STRING`     | Proposal distribution for $\theta$ gibbs move: 'mg_invg' or 'mg_gamma'                                 |
+| `--theta-showeps`         | Show individual step lengths/pjumps for each $\theta$                                                  |
+| `--theta-slide-prob FLOAT`| Frequency for $\theta$ sliding window move (default: 0.1)                                              |
+| `--phi-slide-prob FLOAT`  | Frequency for $\phi$ sliding window move (default: 0.1)                                                |
+| `--wrate_mode INTEGER`    | Definition of W step lengths (default: 1)                                                              |
+| `--wrate-slide-prob FLOAT`| Frequency for W sliding window move (default: 0.1)                                                     |
+| `--wrate-showeps`         | Show individual step lengths/pjumps for each W                                                         |
+| `--extend INTEGER`        | Extend resumed analysis by number of MCMC samples (use with --resume)                                  |
+| `--keep-labels`           | Keep original node labels when summarizing results                                                     |
 
 ## Input File Formats
 
@@ -716,6 +734,109 @@ italic (only needed if changing defaults) and then the solid background and regu
 
 ## BPP control file variables
 
+### Quick Reference Tables
+
+The tables below provide a quick overview of all control file options. See the detailed sections that follow for complete documentation.
+
+#### Basic Setup
+
+| Option | Syntax | Default | Description |
+|--------|--------|---------|-------------|
+| `seed` | `seed = -1` or `seed = N` | `-1` | Random seed (-1 = auto-generate) |
+| `usedata` | `usedata = 0\|1\|2` | `1` | 0: prior only, 1: likelihood+prior, 2: prior with fixed gene tree |
+| `jobname` | `jobname = prefix` | — | Output file prefix (replaces deprecated `outfile`/`mcmcfile`) |
+| `seqfile` | `seqfile = path` | — | Path to sequence alignment file |
+| `Imapfile` | `Imapfile = path` | — | Path to individual-to-species mapping file |
+| `nloci` | `nloci = N` | — | Number of loci to analyze |
+
+#### Analysis Type
+
+| Option | Syntax | Default | Description |
+|--------|--------|---------|-------------|
+| `speciesdelimitation` | `0` or `1 [algorithm options]` | `0` | 0: fixed delimitation, 1: estimate delimitation |
+| `speciestree` | `0` or `1` | `0` | 0: fixed tree, 1: estimate tree |
+| `species&tree` | `N name1 name2 ... counts ... (newick);` | — | Species names, sample counts, and tree |
+
+**Analysis modes:** A00 (0,0), A01 (0,1), A10 (1,0), A11 (1,1)
+
+#### MCMC Settings
+
+| Option | Syntax | Default | Description |
+|--------|--------|---------|-------------|
+| `burnin` | `burnin = N` | — | Number of burn-in iterations |
+| `sampfreq` | `sampfreq = N` | — | Sample every N iterations |
+| `nsample` | `nsample = N` | — | Number of samples to collect |
+| `finetune` | `finetune = 0\|1: params...` | `1` | Auto-tune (1) or manual step sizes |
+| `checkpoint` | `checkpoint = N N` | — | Checkpoint frequency and number to keep |
+| `threads` | `threads = N [N N]` | `1` | Number of threads [start pin] |
+| `loadbalance` | `none` or `zigzag` | `none` | Thread load balancing strategy |
+
+#### Priors
+
+| Option | Syntax | Example | Description |
+|--------|--------|---------|-------------|
+| `thetaprior` | `invgamma a b [e]` | `invgamma 3 0.002` | Prior on θ (population size) |
+| | `gamma a b` | `gamma 2 100` | |
+| | `beta p q l u` | `beta 1 1 0 0.01` | |
+| `tauprior` | `invgamma a b` | `invgamma 3 0.03` | Prior on τ (divergence times) |
+| | `gamma a b` | `gamma 2 100` | |
+| `phiprior` | `beta a b` | `beta 1 1` | Prior on φ (introgression probability) |
+| `wprior` | `wprior = a b` | `wprior = 2 200` | Prior on w (migration rate) — *replaces migprior in v4.8.0* |
+
+#### Substitution Model
+
+| Option | Syntax | Default | Description |
+|--------|--------|---------|-------------|
+| `model` | `model = name` | `HKY` | JC69, K80, F81, HKY, T92, TN93, F84, GTR, or amino acid models |
+| `Qrates` | `Qrates = 0\|1\|2 [a b]` | `0` | Rate matrix: 0=fixed, 1=estimate, 2=prior |
+| `basefreqs` | `basefreqs = 0\|1\|2 [params]` | `0` | Base frequencies: 0=empirical, 1=estimate, 2=prior |
+| `alphaprior` | `alphaprior = a b` | — | Gamma prior on α (rate variation among sites) |
+| `cleandata` | `cleandata = 0\|1` | `0` | Remove ambiguous sites |
+
+#### Rate Variation
+
+| Option | Syntax | Default | Description |
+|--------|--------|---------|-------------|
+| `clock` | `clock = 1\|2\|3\|4 [params]` | `1` | 1: strict, 2: independent rates, 3: correlated, 4: simple |
+| `locusrate` | `locusrate = 0\|1\|2\|3 [params]` | `0` | 0: equal rates, 1-3: variable rates among loci |
+| `heredity` | `heredity = 0\|1\|2 [params]` | `0` | Heredity multipliers for θ |
+
+#### MSC-I Model (Introgression) *(v4.1+)*
+
+| Option | Syntax | Description |
+|--------|--------|-------------|
+| `hybridization` | `source target as node1 node2 tau=y,y phi=f` | Define introgression event |
+| `bidirection` | `pop1 pop2 as node1 node2 phi=f,f` | Bidirectional introgression |
+
+#### MSC-M Model (Migration) *(v4.6+)*
+
+| Option | Syntax | Example | Description |
+|--------|--------|---------|-------------|
+| `wprior` | `wprior = a b` | `wprior = 2 200` | Default gamma prior on w *(v4.8.0+, replaces migprior)* |
+| `migration` | `migration = N` | `migration = 2` | Number of migration connections |
+| | `source target [a b] [a_w] [pseudo_a pseudo_b]` | `A C 2 100` | Migration specification per connection |
+| `geneflow` | `geneflow = 0\|1` | `geneflow = 1` | Enable gene flow estimation |
+
+#### Output Control
+
+| Option | Syntax | Default | Description |
+|--------|--------|---------|-------------|
+| `print` | `print = N N N N N` | `1 0 0 0 0` | Control output: samples, locusrate, heredity, labels, genetrees |
+| `printlocus` | `printlocus = N l1 l2 ...` | — | Print gene trees for specific loci |
+
+#### Other Options
+
+| Option | Syntax | Default | Description |
+|--------|--------|---------|-------------|
+| `phase` | `phase = 0\|1 per species` | `0` | Analytical phasing for diploid data |
+| `speciesmodelprior` | `speciesmodelprior = N` | `1` | Prior on species models (A10, A11) |
+| `constraintfile` | `constraintfile = path` | — | Topological constraints file |
+| `datefile` | `datefile = path` | — | Tip dates for dated-tip analysis |
+| `thetamodel` | `linked-none\|all\|inner\|msci\|mscm` | `linked-none` | Link θ parameters across populations |
+| `traitfile` | `traitfile = path` | — | Trait data for morphological analysis |
+
+---
+
 ### 1 seed
 ----------------
 ```
@@ -738,9 +859,12 @@ source for the seed, and different runs will produce different results.
 When evaluating MCMC convergence by comparing results across different
 runs be sure to use -d. The positive integer seed automatically
 generated when using option -d is stored in a file named SeedUsed and
-can be used explicitly to replicate a result. It is recommended that you
-run each analysis at least twice using different seeds to confirm that
-the results are stable across runs.  
+can be used explicitly to replicate a result.
+
+!!! tip "Best Practice"
+    Run each analysis at least twice using different seeds (`seed = -1`) to confirm
+    that results are stable across runs. This helps verify MCMC convergence.
+
 **EXAMPLES**
 ```
 seed = -1
@@ -755,20 +879,23 @@ usedata = b
 **DESCRIPTION**  
 Specifies whether data (likelihood+priors) are used in calculating
 probabilities during MCMC or only priors.  
-**VALUES**  
+**VALUES**
 `0`, use only the priors to calculate probabilities (likelihood
-constant).  
-`1`, use likelihood and prior probabilities.  
-**DEFAULT**  
-`1`  
-**COMMENTS**  
+constant).
+`1`, use likelihood and prior probabilities.
+`2`, use only the priors (like `0`) but fix the gene tree topology.
+**DEFAULT**
+`1`
+**COMMENTS**
 The `0` option can be used for debugging, or examining priors. When
 using option `0` a MCMC run produces samples from the prior for each
-variable.  
+variable. Option `2` is similar to `0` but additionally fixes the gene
+tree topology during the MCMC run.
 **EXAMPLES**
 ```
 usedata = 0
 usedata = 1
+usedata = 2
 ```
 
 ### 3 jobname
@@ -797,6 +924,8 @@ The above will create several files such as:
 
 Additional files may be generated depending on the type of analysis.
 
+**NOTE:** The options `mcmcfile` and `outfile` from previous versions are now obsolete
+and have been replaced by `jobname`. Using these deprecated options will result in an error.
 
 ### 4 seqfile
 ------------------------------------------------------------------------
@@ -818,67 +947,63 @@ seqfile = sequences.txt
 ### 5 finetune
 ------------------------------------------------------------------------
 ```
-finetune = b: [f*]
+finetune = b [key:val ...]
 ```
-**DESCRIPTION**  
+**DESCRIPTION**
 Determines whether step lengths in MCMC proposals are automatically
-optimized or manually set to fixed values as well as setting either the
-fixed step lengths (manual) or the starting step lengths (optimized).
-There are up to 15 proposals with step lengths that can be adjusted. Not
-all proposals are defined for any given choice of model and analysis,
-however 15 values should always be specified when using manual as the
-order is fixed, step lengths specified for unused proposals will be
-ignored by the program. The sizes of proposal steps for each parameter
-are provided (from left to right) in the same order as listed (from top
-to bottom in table. The proposals are as follows:
+optimized or manually set to fixed values. Step lengths can optionally
+be specified using a key:value format.
 
-| Abbreviation | Parameter Proposal Description                                |
-|--------------|---------------------------------------------------------------|
-| Gage         | Node age on gene tree                                         |
-| Gspr         | Subtree pruning and regrafting move                           |
-| thet         | Theta                                                         |
-| tau          | Tau                                                           |
-| mix          | Mixing step (jointly changing mu, tau and gene tree node ages |
-| lrht         | empty                                                         |
-| phi          | Introgression probability                                     |
-| pi           | Stationary frequencies of substitution model                  |
-| qmat         | Q matrix elements of substitution model                       |
-| alfa         | Alpha parameter of gamma model for rate variation among sites |
-| mubr         | empty                                                         |
-| nubr         | empty                                                         |
-| mu\_i        | empty                                                         |
-| nu\_i        | empty                                                         |
-| brte         | empty                                                         |
+!!! warning "Syntax Change in v4.8.1"
+    The finetune syntax changed in BPP v4.8.1. The old positional syntax
+    (`finetune = 1: 5 0.001 0.001 ...`) is no longer supported. Use the
+    new key:value format or simply `finetune = 1` for default auto-tuning.
 
+The available proposal keys are:
 
-**VALUES**  
-`0: Gage Gspr thet tau mix lrht phi pi qmat alfa mubr nubr mu_i nu_i brte`  
-Use fixed step lengths in MCMC proposals as specified, where Gage is the
-specified step length for proposal Gage, and so on.  
-`1: Gage Gspr thet tau mix lrht phi pi qmat alfa mubr nubr mu_i nu_i brte`  
-Automatically optimize step lengths in MCMC proposals using specified
-initial step lengths.  
-**DEFAULT**  
-`0`  
-Manually fixes all step lengths to be $0.1$.  
-`1`  
-Fixes all initial proposal step lengths to $0.1$ prior to optimization.  
-**DEPENDENCIES**  
-If `b` is set to 1 (automatic optimization) then `burnin` has to
-be $>200$.  
-**COMMENTS**  
-The first value, before the colon, is a switch, with 0 meaning no
-automatic adjustments by the program and 1 meaning automatic adjustments
-by the program. Following the colon are the step lengths for the
-proposals used in the program. and then the step lengths specified here
-will be the initial step lengths, and the program will try to adjust
-them using the information collected during the burnin step. This option
-appears to work fine. Some notes about manually adjusting those finetune
-step lengths are provided below in section 3.2.  
+| Key  | Parameter Proposal Description                                |
+|------|---------------------------------------------------------------|
+| Gage | Node age on gene tree                                         |
+| Gspr | Subtree pruning and regrafting move                           |
+| tau  | Tau (divergence time)                                         |
+| mix  | Mixing step (jointly changing mu, tau and gene tree node ages)|
+| lrht | Locus rate and heredity                                       |
+| phis | Introgression probability (phi)                               |
+| pi   | Stationary frequencies of substitution model                  |
+| qmat | Q matrix elements of substitution model                       |
+| alfa | Alpha parameter of gamma model for rate variation among sites |
+| mubr | Mean branch rate (mu-bar)                                     |
+| nubr | Variance of branch rates (nu-bar)                             |
+| mu_i | Locus-specific mu                                             |
+| nu_i | Locus-specific nu                                             |
+| brte | Branch rate                                                   |
+
+**VALUES**
+`0`
+Use fixed step lengths (no auto-tuning). Default step lengths are used unless
+overridden with key:value pairs.
+`1`
+Automatically optimize step lengths during burnin. This is the recommended
+setting.
+`0 key:val ...`
+Use fixed step lengths with specified values.
+`1 key:val ...`
+Auto-tune with specified initial step lengths.
+**DEFAULT**
+`finetune = 1` (auto-tune with default initial values)
+**DEPENDENCIES**
+If auto-tuning is enabled (`b = 1`), then `burnin` must be > 200.
+**COMMENTS**
+For most analyses, simply using `finetune = 1` is recommended. The program
+will automatically adjust step lengths during burnin to achieve good mixing.
+Custom step lengths are only needed for difficult analyses with poor
+convergence.
 **EXAMPLES**
 ```
-finetune = 0: .01 .02 .03 .04 .05 .01 .01 .01 .01 .01 .01 .01 .01 .01 .01
-finetune = 1
+finetune = 1                          # auto-tune with defaults (recommended)
+finetune = 0                          # fixed defaults, no auto-tuning
+finetune = 1 Gage:5 Gspr:0.001        # auto-tune with custom initial values
+finetune = 0 Gage:5 Gspr:0.001 mix:0.3  # fixed custom values
 ```
 
 ### 6 print
@@ -1437,8 +1562,13 @@ prior for $\theta$ (Hey and Nielsen, 2007), which means that both the
 prior and the posterior of $\theta$ will be inverse-gamma. Use of the
 conjugate prior allows the $\theta$ parameters to be integrated out
 analytically, and thus the dimension of the parameter space is reduced.
-This typically leads to improved mixing of the MCMC. However, with this
-option, the posterior of the $\theta$ parameters will not be produced.
+This typically leads to improved mixing of the MCMC.
+
+!!! note "Trade-off: Analytical Integration vs. Posterior Estimation"
+    Using `invgamma a b` (without `e`) integrates θ analytically for better MCMC mixing,
+    but you won't get posterior distributions for θ. To estimate θ posteriors, use
+    `invgamma a b e` instead.
+
 To estimate the $\theta$ parameters when using an inverse gamma prior,
 add the letter e (or E) on the line, as follows
 ```
@@ -1596,7 +1726,7 @@ specified `iid` is used.
 **DEPENDENCIES**  
 If both the `prior` option for the variable `locusrate` and the `prior`
 option for the variable `clock` are set, they should take the same
-value. If the `locusrate = 3 f f` option is used, `datefile` much be specified.
+value. If the `locusrate = 3 f f` option is used, `datefile` must be specified.
 **COMMENTS**  
 The setting `locusrate = 0` (default) means that all loci have the same
 mutation rate. Setting `locusrate = 1 f f f s` specifies a model with
@@ -1685,10 +1815,11 @@ among lineages) is used or instead a specific variable clock model
 (allowing variation in substitution rates among lineages). If a variable
 clock model is specified, the priors on the parameters of the variable
 clock model are also specified.  
-**VALUES**  
+**VALUES**
 `+d`, specifies a strict clock (1), a variable clock with
-independent rates among branches (2), or a variable clock with
-autocorrelated rates between ancestral and descendent branches (3).  
+independent rates among branches (2), a variable clock with
+autocorrelated rates between ancestral and descendent branches (3),
+or a simple variable clock model (4).  
 `f f f s s`, are required when `clock =` 2 or 3 and specify
 respectively the parameters $\alpha_{\bar{\nu}}$, $\beta_{\bar{\nu}}$
 and $\alpha_{\nu_i}$, the prior distribution for the locus rate
@@ -1703,7 +1834,9 @@ the average ($\bar\nu$). The specification of the distribution of
 $\nu_i$ given $\bar\nu$ follows the same procedure as the specification
 of the distribution of $\mu_i$ given the mean rate $\bar\mu$ when
 modeling among-locus rate variation; see notes above about the
-`locusrate` variable.  
+`locusrate` variable.
+`f f`, are required when `clock = 4` and specify the parameters
+$\alpha_{\bar{\nu}}$ and $\beta_{\bar{\nu}}$ for the simple rates model.  
 **DEFAULT**  
 `1`  
 **DEPENDENCIES**  
@@ -1950,19 +2083,108 @@ the analysis.
 
 **DEPENDENCIES**  
 Model A00 must be used with tip-dating (`speciesdelimitation = 0`, `speciestree = 0`). 
-Checkpointing cannoted be used. 
-The tip-dating `locusrate` option much be used, `locusrate = 3 d d`. 
+Checkpointing cannot be used. 
+The tip-dating `locusrate` option must be used, `locusrate = 3 d d`. 
 A global clock must be used.
-This is the default or can be set with `clock = 0`.
+This is the default or can be set with `clock = 1`.
 
 **COMMENTS**  
-See [Date File](#date-file) for a complete dscription of the date file format.
+See [Date File](#date-file) for a complete description of the date file format.
 
 **EXAMPLES**
 ```
 datefile = dates.txt
 datefile = /home/foo/seqDates.txt
 ```
+
+### 32 thetamodel
+------------------------------------------------------------------------
+```
+thetamodel = s
+```
+**DESCRIPTION**
+Specifies how theta parameters are linked across populations in the species tree.
+**VALUES**
+`linked-none`, no linking of theta parameters (default).
+`linked-all`, all populations share the same theta.
+`linked-inner`, inner (ancestral) populations share the same theta.
+`linked-msci`, linking appropriate for MSC-I models.
+`linked-mscm`, linking appropriate for MSC-M models.
+**DEFAULT**
+`linked-none`
+**EXAMPLES**
+```
+thetamodel = linked-none
+thetamodel = linked-all
+thetamodel = linked-inner
+```
+
+### 33 printlocus
+------------------------------------------------------------------------
+```
+printlocus = +d +d +d ...
+```
+**DESCRIPTION**
+Specifies which loci should have their gene trees printed to the output.
+**VALUES**
+The first integer specifies the number of loci to print, followed by the locus numbers (1-indexed).
+**EXAMPLES**
+```
+printlocus = 2 1 5    # print gene trees for loci 1 and 5
+printlocus = 3 1 2 3  # print gene trees for loci 1, 2, and 3
+```
+
+### 34 geneflow
+------------------------------------------------------------------------
+```
+geneflow = b
+```
+**DESCRIPTION**
+Enables or disables gene flow estimation in the model.
+**VALUES**
+`0`, disable gene flow estimation.
+`1`, enable gene flow estimation.
+**DEFAULT**
+`0`
+**EXAMPLES**
+```
+geneflow = 0
+geneflow = 1
+```
+
+### 35 loadbalance
+------------------------------------------------------------------------
+```
+loadbalance = s
+```
+**DESCRIPTION**
+Specifies the load balancing strategy for distributing computation across threads.
+**VALUES**
+`none`, no dynamic load balancing (static distribution).
+`zigzag`, use zigzag load balancing for better distribution of work across threads.
+**DEFAULT**
+`none`
+**EXAMPLES**
+```
+loadbalance = none
+loadbalance = zigzag
+```
+
+### 36 traitfile
+------------------------------------------------------------------------
+```
+traitfile = s
+```
+**DESCRIPTION**
+Specifies the file containing trait data for morphological analysis.
+**VALUES**
+`s`, a string specifying the path to the trait data file.
+**EXAMPLES**
+```
+traitfile = traits.txt
+traitfile = /home/user/data/morphology.txt
+```
+
 ## Example control file
 
 To examine the structure of a typical BPP control file, we consider the
@@ -2014,11 +2236,11 @@ Control files illustrating the 4 methods of analysis A00, A01, A10 and A11 are f
     *     heredity = 1 4 4
     *     locusrate = 1 5
 
-    # finetune for GBtj, GBspr, theta, tau, mix, locusrate, seqerr
-    finetune =  1: 5 0.001 0.001  0.001 0.3 0.33 1.0  
+    # finetune: auto-adjust step lengths during burnin
+    finetune = 1
 
     # MCMC samples, locusrate, heredityscalars, Genetrees
-    print = 1 0 0 0   
+    print = 1 0 0 0
 
     burnin = 8000
 
@@ -2250,22 +2472,13 @@ divergence between the root of the species tree and the present time).
 If the mutation rate is $10^{–9}$ mutations/site/year, this distance
 will translate to a divergence time of 1 MY.
 ```
-    # finetune for GBtj, GBspr, theta, tau, mix, locusrate, seqerr
-    finetune =  1: 5 0.001 0.001  0.001 0.3 0.33 1.0  
+    # finetune: auto-adjust step lengths during burnin
+    finetune = 1  
 ```
-The line `finetune = 1: 5 0.001 0.001 0.001 0.3 0.33 1.0 ` specifies the
-step lengths used in proposals for the parameters of the MCMC algorithm.
-These step lengths can affect both mixing and convergence of the MCMC.
-The first value, before the colon (1 in the example), is a boolean
-switch, with 1 specifying automatic adjustments of step lengths by the
-program and 0 specifying no automatic adjustments. Following the colon
-are the step lengths for the proposals used in the program. If you
-choose to let the program adjust the step lengths, burnin has to be
-\>200, and the step lengths specified here will then be the initial step
-lengths, with the program adjusting/optimizing step lengths using the
-information collected during the burnin step. Automatic adjustment works
-well in most cases and is usually the best option. Some notes about
-manually adjusting the step lengths are provided below in section ?.
+The line `finetune = 1` enables automatic optimization of step lengths during
+burnin. This is the recommended setting. The program will adjust step lengths
+to achieve good mixing. If auto-tuning is enabled, burnin must be > 200.
+For custom step lengths, use the key:value format (see section 5).
 ```
     # MCMC samples, locusrate, heredityscalars, Genetrees
     print = 1 0 0 0   
@@ -3010,48 +3223,60 @@ The basic model is specified in the control file as follows, using a species tre
 ```
       ((A, B)S, (C, D)T)R;
 
-     migprior = 2 200 
+     wprior = 2 200
     migration = 2
                 A C
                 S C
 ```
-Here S is the AB common ancestor, T is the CD common ancestor, while R is the ABCD ancestor.  Not all internal nodes need to be labeled but those involved in migration have to be.  The migration line specifies 2 migration connections: one connecting source population A to target population C, and another connecting source population S to target population C, with migration rates $M_{AC}$ and $M_{SC}$.  Note that the migration rate 
+Here S is the AB common ancestor, T is the CD common ancestor, while R is the ABCD ancestor.  Not all internal nodes need to be labeled but those involved in migration have to be.  The migration line specifies 2 migration connections: one connecting source population A to target population C, and another connecting source population S to target population C, with migration rates $w_{AC}$ and $w_{SC}$.
 
-$M_{AC} = m_{AC} N_C$
+!!! warning "Version 4.8.0 Breaking Change"
+    The option `migprior` has been replaced by `wprior` with a different parameterization.
+    If you are upgrading from v4.7.x or earlier, you must update your control files.
 
-is the expected number of immigrants in population C that are from population A per generation under the real-world view with time running forward, where $m_{AC}$ is the proportion of immigrants in population C that are from population A.  See Appendix A for definitions of migration rates used in different programs. 
+BPP now uses the mutation-scaled migration rate $w$, defined as:
+
+$w_{XY} = m_{XY}/\mu$
+
+where $m_{XY}$ is the proportion of immigrants in the recipient population Y from the donor population X every generation. Previous versions (4.7.x and earlier) used the population migration rate $M_{XY} = m_{XY} \cdot N_Y$, which represents the expected number of migrants from X to Y per generation.
+
+**Converting from old to new parameterization:**
+
+$w_{XY} = 4 M_{XY} / \theta_Y$ and $M_{XY} = \theta_Y \cdot w_{XY} / 4$
+
+See Appendix A for definitions of migration rates used in different programs. 
 
 #### Prior on migration rates
-The control file variable `migprior = alpha beta` specifies a default gamma prior density with parameters `alpha` and `beta` for all migration rates.  In the example above, both $M_{AC}$ and $M_{SC}$ are assigned the gamma prior $G(2, 200)$, with prior mean $2/200 = 0.01$.
+The control file variable `wprior = alpha beta` specifies a default gamma prior density with parameters `alpha` and `beta` for all migration rates.  In the example above, both $w_{AC}$ and $w_{SC}$ are assigned the gamma prior $G(2, 200)$, with prior mean $2/200 = 0.01$.
 A separate gamma prior can instead be defined for each migration rate (where the migration connection is specified using the source and target populations) and this specification takes precedence.  For example if we specify
 ```
-     migprior = 2 200
+     wprior = 2 200
     migration = 2
                 A C  2 100
                 S C
 ```
-the priors are $M_{AC} ~ G(2, 100)$ with the prior mean $0.02$ and $M_{SC} ~ G(2, 200)$ from the default prior specified by `migprior`.
+the priors are $w_{AC} \sim G(2, 100)$ with the prior mean $0.02$ and $w_{SC} \sim G(2, 200)$ from the default prior specified by `wprior`.
 
 #### Variable migration rates among loci
-In this model, the migration rate $M_i$ at each locus *i* varies according to a gamma distribution $M_i \approx G(\alpha_M,\alpha_M/\overline{M})$, with shape parameter $\alpha_M$ while the mean rate $\overline{M}$ is assigned the gamma prior $\overline{M} \approx G(\alpha,\beta)$.  Here $\alpha_M$ is a parameter that characterizes the variation of $M_i$ among loci, with a small $\alpha_M$ (e.g., 0.5 or 1) indicating highly variable rates among loci and a large $\alpha_M$ indicating nearly constant migration rates among loci (when $\alpha_M = \infty$ all loci have the same rate).
+In this model, the migration rate $w_i$ at each locus *i* varies according to a gamma distribution $w_i \approx G(\alpha_w,\alpha_w/\overline{w})$, with shape parameter $\alpha_w$ while the mean rate $\overline{w}$ is assigned the gamma prior $\overline{w} \approx G(\alpha,\beta)$.  Here $\alpha_w$ is a parameter that characterizes the variation of $w_i$ among loci, with a small $\alpha_w$ (e.g., 0.5 or 1) indicating highly variable rates among loci and a large $\alpha_w$ indicating nearly constant migration rates among loci (when $\alpha_w = \infty$ all loci have the same rate).
 ```
-     migprior = 2 200
+     wprior = 2 200
     migration = 2
                 A C  2 100 5
                 S C
 ```
-In the above example, $M_{SC}$ is applied to all loci with the prior $G(2, 200)$, but $M_{AC}$ varies among loci according to the shape parameter 
-$\alpha_M = 5$, and the mean rate for all loci $\overline{M}_{AC}$ is assigned the gamma prior $G(2, 100)$.
+In the above example, $w_{SC}$ is applied to all loci with the prior $G(2, 200)$, but $w_{AC}$ varies among loci according to the shape parameter
+$\alpha_w = 5$, and the mean rate for all loci $\overline{w}_{AC}$ is assigned the gamma prior $G(2, 100)$.
 
 #### Priors and pseudo-priors
-When the gene flow involves ancestral species, migration may become impossible because of changes to the species divergence times in the MCMC.  In the example above, if $\tau_S < \tau_T$ migration from S to C is possible during the time period $(\tau_S, \tau_T)$, but if $\tau_S > \tau_T$ migration from S to C is impossible as the two populations were never contemporary.  Thus the MCMC proposal to change species divergence times $\tau_S$ or $\tau_T$ may cause the migration rate parameter $M_{SC}$ to disappear or reappear.  When $M_{SC}$ is absent from the model (that is, when $\tau_S > \tau_T$), the MCMC algorithm treats it as a pseudo-parameter (written as $M^*_{SC}$) and assigns it a pseudo-prior to facilitate the trans-dimensional move.  The choice of pseudo-priors affects the mixing efficiency of the MCMC, but not the correctness of the algorithm.  For good mixing, one should choose the pseudo-prior to be close to the posterior of the parameter $M_{SC}$ (which can be generated by running short chains).
+When the gene flow involves ancestral species, migration may become impossible because of changes to the species divergence times in the MCMC.  In the example above, if $\tau_S < \tau_T$ migration from S to C is possible during the time period $(\tau_S, \tau_T)$, but if $\tau_S > \tau_T$ migration from S to C is impossible as the two populations were never contemporary.  Thus the MCMC proposal to change species divergence times $\tau_S$ or $\tau_T$ may cause the migration rate parameter $w_{SC}$ to disappear or reappear.  When $w_{SC}$ is absent from the model (that is, when $\tau_S > \tau_T$), the MCMC algorithm treats it as a pseudo-parameter (written as $w^*_{SC}$) and assigns it a pseudo-prior to facilitate the trans-dimensional move.  The choice of pseudo-priors affects the mixing efficiency of the MCMC, but not the correctness of the algorithm.  For good mixing, one should choose the pseudo-prior to be close to the posterior of the parameter $w_{SC}$ (which can be generated by running short chains).
 ```
-     migprior = 2 200 
+     wprior = 2 200
     migration = 2
-                A C  2 100 
+                A C  2 100
                 S C  2 200   100 250
 ```
-In the example above, the prior $M_{SC} \approx G(2, 200)$ is applied when $\tau_S < \tau_T$, and the pseudo-prior $M^*_{SC} \approx G(100, 250)$ with mean 0.4, is applied when $\tau_S > \tau_T$.  Note that in this example the pseudo-prior is far more concentrated than the prior (with shape parameter 100 versus 2).
+In the example above, the prior $w_{SC} \approx G(2, 200)$ is applied when $\tau_S < \tau_T$, and the pseudo-prior $w^*_{SC} \approx G(100, 250)$ with mean 0.4, is applied when $\tau_S > \tau_T$.  Note that in this example the pseudo-prior is far more concentrated than the prior (with shape parameter 100 versus 2).
 In order to summarize the posterior from the MCMC samples, only those samples taken when the migration rate is defined should be used (that is, only samples collected when $\tau_S < \tau_T$ in our example).  Samples collected when the migration rate does not exist in the model (that is, when $\tau_S > \tau_T$ in our example) approximate the pseudo-prior.
 
 In the case of four species, the following awk commands may be used to split the samples into two files (this assumes that tau_S and tau_T are in column 10 and 11)
@@ -3062,17 +3287,17 @@ head -n 1 out.mcmc.txt > cd.txt; awk 'NR>1 {if ($10<$11) print $0}' out.mcmc.txt
 head -n 1 out.mcmc.txt > ab.txt; awk 'NR>1 {if ($10>$11) print $0}' out.mcmc.txt >> ab.txt
 ```
 Use something like this if you understand the syntax. The running mean of the migration rate printed on the monitor during the MCMC run is the posterior mean after the filtering.
-Note that this problem of the migration rate appearing and disappearing during the MCMC may exist when a migration event involves ancestral populations, and is not limited to the balanced species tree for four species.  Later we should automate the summary of the MCMC sample.  
-Under the model of variable $M$ among loci, all migration rates for all loci may appear and disappear if the migration involves ancestral species.  The following five ways of specifying the model and priors and pseudo-priors are accepted (with $M_{SC}$ as an example)
+Note that this problem of the migration rate appearing and disappearing during the MCMC may exist when a migration event involves ancestral populations, and is not limited to the balanced species tree for four species.  Later we should automate the summary of the MCMC sample.
+Under the model of variable $w$ among loci, all migration rates for all loci may appear and disappear if the migration involves ancestral species.  The following six ways of specifying the model and priors and pseudo-priors are accepted (with $w_{SC}$ as an example)
 ```
 (a)  S C
-(b)  S C a_M
+(b)  S C a_w
 (c)  S C a b
-(d)  S C a b a_M
+(d)  S C a b a_w
 (e)  S C a b pseudo_a pseudo_b
-(f)  S C a b a_M pseudo_a pseudo_b
+(f)  S C a b a_w pseudo_a pseudo_b
 ```
-In options (a) and (b), the default prior specified with migprior is assigned on $M_{SC}$.
+In options (a) and (b), the default prior specified with `wprior` is assigned on $w_{SC}$.
 
 ## Combined Analyses of Organelle Genomes and Sex Chromosomes
 When performing a combined analysis of data from autosomal, mitochondrial, chloroplast or sex chromosomes
@@ -3255,7 +3480,7 @@ file `yu2001.bpp.ctl` are shown below:
     thetaprior = gamma 2 2000
 
     # auto (0 or 1): finetune for GBtj, GBspr, theta, tau, mix, locusrate, seqerr
-    finetune = 1: 2 0.00001 0.0001  0.0005 0.5 0.2 1.0  
+    finetune = 1  
 
     # MCMC samples, locusrate, heredityscalars, genetrees
     print = 1 0 0 0  
@@ -3297,59 +3522,59 @@ some mostly irrelevant output related to the adjustment of proposal
 moves, the output to screen when this control file is run appears as
 follows:
 ```{ .yaml .no-copy }
-         |  Acceptance proportions  |
-    Prgs | Gage Gspr thet  tau  mix | mthet1       log-PG         log-L
-    -------------------------------------------------------------------
-     -15%  0.71 0.18 0.30 0.00 0.38   0.0004    467.11472  -12721.22305  0:01
-     (some output omitted here)
-       5%  0.71 0.29 0.33 0.00 0.24   0.0004    428.40742  -12721.09413  0:05
-      10%  0.71 0.29 0.31 0.00 0.25   0.0003    480.92848  -12720.75185  0:06
-      15%  0.71 0.29 0.30 0.00 0.24   0.0003    476.37432  -12720.65199  0:08
-      20%  0.71 0.29 0.31 0.00 0.23   0.0003    441.36960  -12720.92326  0:09
-      25%  0.71 0.29 0.32 0.00 0.23   0.0003    443.51740  -12720.85802  0:10
-      30%  0.71 0.29 0.31 0.00 0.23   0.0003    441.93616  -12720.86033  0:11
-      35%  0.71 0.29 0.31 0.00 0.23   0.0003    495.50716  -12720.84565  0:12
-      40%  0.71 0.29 0.31 0.00 0.23   0.0003    452.82049  -12720.87810  0:13
-      45%  0.71 0.29 0.31 0.00 0.23   0.0003    461.93346  -12720.94582  0:15
-      50%  0.71 0.29 0.32 0.00 0.23   0.0004    463.85955  -12721.01005  0:16
-      55%  0.71 0.29 0.32 0.00 0.23   0.0004    463.42744  -12720.98006  0:17
-      60%  0.71 0.29 0.32 0.00 0.23   0.0004    478.52797  -12721.03353  0:18
-      65%  0.71 0.29 0.32 0.00 0.23   0.0004    499.97705  -12720.96168  0:19
-      70%  0.71 0.29 0.32 0.00 0.23   0.0004    455.32489  -12720.93611  0:20
-      75%  0.71 0.29 0.32 0.00 0.23   0.0004    439.21544  -12720.99190  0:22
-      80%  0.71 0.29 0.32 0.00 0.23   0.0004    461.56954  -12721.00180  0:23
-      85%  0.71 0.29 0.32 0.00 0.23   0.0004    469.53443  -12720.99823  0:24
-      90%  0.71 0.29 0.32 0.00 0.23   0.0004    455.60303  -12720.99213  0:25
-      95%  0.71 0.29 0.32 0.00 0.23   0.0004    454.07141  -12721.00745  0:26
-     100%  0.71 0.29 0.32 0.00 0.23   0.0004    461.01044  -12720.97549  0:27
+     |    Acceptance proportions     |
+Prgs | Gage Gspr  th1  thg  tau  mix | theta1       log-PG         log-L
+------------------------------------------------------------------------
+ -15%  0.71 0.18 0.00 0.00 0.00 0.38   0.0004    467.11472  -12721.22305  0:01
+ (some output omitted here)
+   5%  0.71 0.29 0.33 0.80 0.00 0.24   0.0004    428.40742  -12721.09413  0:05
+  10%  0.71 0.29 0.31 0.82 0.00 0.25   0.0003    480.92848  -12720.75185  0:06
+  15%  0.71 0.29 0.30 0.83 0.00 0.24   0.0003    476.37432  -12720.65199  0:08
+  20%  0.71 0.29 0.31 0.84 0.00 0.23   0.0003    441.36960  -12720.92326  0:09
+  25%  0.71 0.29 0.32 0.85 0.00 0.23   0.0003    443.51740  -12720.85802  0:10
+  30%  0.71 0.29 0.31 0.86 0.00 0.23   0.0003    441.93616  -12720.86033  0:11
+  35%  0.71 0.29 0.31 0.87 0.00 0.23   0.0003    495.50716  -12720.84565  0:12
+  40%  0.71 0.29 0.31 0.88 0.00 0.23   0.0003    452.82049  -12720.87810  0:13
+  45%  0.71 0.29 0.31 0.89 0.00 0.23   0.0003    461.93346  -12720.94582  0:15
+  50%  0.71 0.29 0.32 0.90 0.00 0.23   0.0004    463.85955  -12721.01005  0:16
+  55%  0.71 0.29 0.32 0.91 0.00 0.23   0.0004    463.42744  -12720.98006  0:17
+  60%  0.71 0.29 0.32 0.92 0.00 0.23   0.0004    478.52797  -12721.03353  0:18
+  65%  0.71 0.29 0.32 0.93 0.00 0.23   0.0004    499.97705  -12720.96168  0:19
+  70%  0.71 0.29 0.32 0.94 0.00 0.23   0.0004    455.32489  -12720.93611  0:20
+  75%  0.71 0.29 0.32 0.95 0.00 0.23   0.0004    439.21544  -12720.99190  0:22
+  80%  0.71 0.29 0.32 0.96 0.00 0.23   0.0004    461.56954  -12721.00180  0:23
+  85%  0.71 0.29 0.32 0.97 0.00 0.23   0.0004    469.53443  -12720.99823  0:24
+  90%  0.71 0.29 0.32 0.97 0.00 0.23   0.0004    455.60303  -12720.99213  0:25
+  95%  0.71 0.29 0.32 0.97 0.00 0.23   0.0004    454.07141  -12721.00745  0:26
+ 100%  0.71 0.29 0.32 0.97 0.00 0.23   0.0004    461.01044  -12720.97549  0:27
 
-    0:27 spent in MCMC
+0:27 spent in MCMC
 
-              theta_1H  lnL
-    mean      0.000352  -12720.995649
-    median    0.000337  -12720.726000
-    S.D       0.000116  2.936769
-    min       0.000089  -12735.535000
-    max       0.001293  -12712.774000
-    2.5%      0.000170  -12727.454000
-    97.5%     0.000617  -12716.086000
-    2.5%HPD   0.000145  -12726.920000
-    97.5%HPD  0.000574  -12715.718000
-    ESS*      757.838791  1180.434956
-    Eff*      0.075784  0.118043
+          theta_1H  lnL
+mean      0.000352  -12720.995649
+median    0.000337  -12720.726000
+S.D       0.000116  2.936769
+min       0.000089  -12735.535000
+max       0.001293  -12712.774000
+2.5%      0.000170  -12727.454000
+97.5%     0.000617  -12716.086000
+2.5%HPD   0.000145  -12726.920000
+97.5%HPD  0.000574  -12715.718000
+ESS*      757.838791  1180.434956
+Eff*      0.075784  0.118043
 ```
 Note that in these examples we are using a random seed from the computer clock so your results will differ slightly from those shown. The line:
 ```{ .yaml .no-copy }
-         |  Acceptance proportions  |
-    Prgs | Gage Gspr thet  tau  mix | mthet1       log-PG         log-L
-    -------------------------------------------------------------------
+     |    Acceptance proportions     |
+Prgs | Gage Gspr  th1  thg  tau  mix | theta1       log-PG         log-L
+------------------------------------------------------------------------
 ```
 is a header that explains the content of each column printed during the
 run. The `Prgs` (progress) column will appear in all analyses and
 indicates the percentage of the MCMC iterations that have been
 completed. If this number is negative it indicates that the program is
 still running the burn-in iterations. For example, `-15%` means that 15
-percent of the burn-in iterations remain to be completed. The next 5
+percent of the burn-in iterations remain to be completed. The next 6
 columns are the current acceptance proportions for different parameter
 proposals in the MCMC. The proposals are defined as follows:
 
@@ -3357,17 +3582,19 @@ proposals in the MCMC. The proposals are defined as follows:
 
 -   `Gspr`: proposal to change gene tree topology using SPR move
 
--   `thet`: proposal to change $\theta$ parameter
+-   `th1`: proposal to change $\theta$ using sliding window
+
+-   `thg`: proposal to change $\theta$ using Gibbs sampler
 
 -   `tau`: proposal to change $\tau$ parameter
 
 -   `mix`: mixing step proposal
 
-In the output the acceptance proportions are stable. The fifth column
+In the output the acceptance proportions are stable. The `tau` column
 (the $\tau$ proposal acceptance proportion) is zero; this is expected
 because there are no species divergence times ($\tau$s) in the model
-when only a single species exists. Column 7, labeled `mthet1` gives the
-current average (mean) value of theta in the MCMC. Columns 8 and 9 are
+when only a single species exists. The column labeled `theta1` gives the
+current average (mean) value of theta in the MCMC. The final columns are
 the log probability of the coalescent model (`log-PG`) and the
 log-likelihood of the sequence data on the gene tree (`log-L`). Check
 that the acceptance proportions are in a reasonable range (about 20% to
@@ -3431,8 +3658,8 @@ file `A00.bpp.ctl` are shown below:
     # gamma(a, b) for root tau & Dirichlet(a) for other tau's
     tauprior = gamma 2 1000 
 
-    # finetune for GBtj, GBspr, theta, tau, mix, locusrate, seqerr
-    finetune =  1: 5 0.001 0.001  0.001 0.3 0.33 1.0  
+    # finetune: auto-adjust step lengths during burnin
+    finetune = 1  
 
     # MCMCsamples, locusrate, heredityscalars, genetrees, substitutionparams
     print = 1 0 0 0
@@ -3516,33 +3743,33 @@ and $0.000001$,respectively):
 When BPP is run using the above control file a summary of the progress
 of the MCMC is again printed to screen as follows:
 ```{ .yaml .no-copy }
-         |  Acceptance proportions  |
-    Prgs | Gage Gspr thet  tau  mix | mthet1 mthet2 mthet3   mtau1  mtau2  mtau3       log-PG        log-L
-    ------------------------------------------------------------------------------------------------------
-      -3%  0.65 0.10 0.43 0.04 0.12   0.0031 0.0095 0.0068  0.0021 0.0015 0.0014   1204.63468  -4458.38814
-     (some output omitted here)
-       5%  0.64 0.26 0.30 0.28 0.27   0.0035 0.0096 0.0067  0.0019 0.0018 0.0017   1225.51650  -4443.85539  1:09
-      10%  0.65 0.27 0.30 0.28 0.28   0.0035 0.0095 0.0068  0.0019 0.0018 0.0018   1202.62497  -4445.50020  1:47
-      15%  0.64 0.27 0.30 0.28 0.28   0.0034 0.0095 0.0068  0.0019 0.0018 0.0017   1211.95125  -4446.35694  2:25
-      20%  0.64 0.26 0.31 0.28 0.28   0.0034 0.0095 0.0067  0.0018 0.0018 0.0017   1211.09206  -4445.74292  3:05
-      25%  0.64 0.26 0.31 0.28 0.28   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1222.97603  -4446.12020  3:43
-      30%  0.64 0.26 0.31 0.28 0.28   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1216.60217  -4445.55424  4:21
-      35%  0.64 0.26 0.31 0.28 0.28   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1260.59722  -4445.22113  5:00
-      40%  0.64 0.26 0.31 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1269.45020  -4445.20340  5:38
-      45%  0.65 0.26 0.31 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1243.07668  -4445.00207  6:16
-      50%  0.65 0.26 0.31 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1229.59858  -4445.04036  6:55
-      55%  0.64 0.26 0.31 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1209.31273  -4445.43161  7:33
-      60%  0.64 0.26 0.31 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1206.22162  -4445.53994  8:11
-      65%  0.64 0.26 0.31 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1190.78837  -4445.21618  8:50
-      70%  0.64 0.26 0.31 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1203.82684  -4445.04124  9:30
-      75%  0.64 0.26 0.31 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1186.32176  -4445.00578  10:09
-      80%  0.64 0.26 0.31 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1222.75718  -4444.94315  10:47
-      85%  0.64 0.26 0.31 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1228.39106  -4444.68671  11:26
-      90%  0.64 0.26 0.31 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1228.72385  -4444.54844  12:04
-      95%  0.64 0.26 0.31 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1223.25921  -4444.25455  12:43
-     100%  0.64 0.26 0.31 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1199.52731  -4444.17857  13:21
-    }
-    13:21 spent in MCMC
+     |       Acceptance proportions       |
+Prgs | Gage Gspr  th1  th2  thg  tau  mix | theta1 theta2 theta3    tau1   tau2   tau3      log-PG        log-L
+---------------------------------------------------------------------------------------------------------------
+  -3%  0.65 0.10 0.30 0.30 0.80 0.04 0.12   0.0031 0.0095 0.0068  0.0021 0.0015 0.0014   1204.63468  -4458.38814
+ (some output omitted here)
+   5%  0.64 0.26 0.30 0.30 0.85 0.28 0.27   0.0035 0.0096 0.0067  0.0019 0.0018 0.0017   1225.51650  -4443.85539  1:09
+  10%  0.65 0.27 0.30 0.30 0.86 0.28 0.28   0.0035 0.0095 0.0068  0.0019 0.0018 0.0018   1202.62497  -4445.50020  1:47
+  15%  0.64 0.27 0.30 0.30 0.87 0.28 0.28   0.0034 0.0095 0.0068  0.0019 0.0018 0.0017   1211.95125  -4446.35694  2:25
+  20%  0.64 0.26 0.31 0.31 0.88 0.28 0.28   0.0034 0.0095 0.0067  0.0018 0.0018 0.0017   1211.09206  -4445.74292  3:05
+  25%  0.64 0.26 0.31 0.31 0.89 0.28 0.28   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1222.97603  -4446.12020  3:43
+  30%  0.64 0.26 0.31 0.31 0.90 0.28 0.28   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1216.60217  -4445.55424  4:21
+  35%  0.64 0.26 0.31 0.31 0.91 0.28 0.28   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1260.59722  -4445.22113  5:00
+  40%  0.64 0.26 0.31 0.31 0.92 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1269.45020  -4445.20340  5:38
+  45%  0.65 0.26 0.31 0.31 0.93 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1243.07668  -4445.00207  6:16
+  50%  0.65 0.26 0.31 0.31 0.94 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1229.59858  -4445.04036  6:55
+  55%  0.64 0.26 0.31 0.31 0.95 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1209.31273  -4445.43161  7:33
+  60%  0.64 0.26 0.31 0.31 0.96 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1206.22162  -4445.53994  8:11
+  65%  0.64 0.26 0.31 0.31 0.96 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1190.78837  -4445.21618  8:50
+  70%  0.64 0.26 0.31 0.31 0.97 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1203.82684  -4445.04124  9:30
+  75%  0.64 0.26 0.31 0.31 0.97 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1186.32176  -4445.00578  10:09
+  80%  0.64 0.26 0.31 0.31 0.97 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1222.75718  -4444.94315  10:47
+  85%  0.64 0.26 0.31 0.31 0.97 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1228.39106  -4444.68671  11:26
+  90%  0.64 0.26 0.31 0.31 0.97 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1228.72385  -4444.54844  12:04
+  95%  0.64 0.26 0.31 0.31 0.97 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1223.25921  -4444.25455  12:43
+ 100%  0.64 0.26 0.31 0.31 0.97 0.28 0.27   0.0034 0.0096 0.0067  0.0018 0.0018 0.0017   1199.52731  -4444.17857  13:21
+
+13:21 spent in MCMC
 
               theta_1K  theta_2C  theta_3L  theta_4H  theta_5KCLH theta_6KCL theta_7KC tau_5KCLH tau_6KCL tau_7KC lnL
     mean      0.003422  0.009588  0.006683  0.003031  0.003720  0.001577  0.001648  0.001823  0.001787  0.001710  -4444.16
@@ -3638,7 +3865,7 @@ that we considered previously. The contents of the control file `A01.bpp.ctl` ar
   thetaprior = gamma 2 2000 # gamma(a, b) for theta (estimate theta)
   tauprior = gamma 2 1000 # gamma(a, b) for root tau & Dirichlet(a) for other tau's
 
-  finetune =  1: 5 0.001 0.001  0.001 0.3 0.33 1.0  # finetune for GBtj, GBspr, theta, tau, mix, locusrate, seqerr
+  finetune = 1  # finetune: auto-adjust step lengths during burnin
 
   print = 1 0 0 0   * MCMC samples, locusrate, heredityscalars, Genetrees
   burnin = 8000
@@ -3670,31 +3897,30 @@ variable [15 speciesmodelprior](#15-speciesmodelprior) for more details. The ava
 #### Output A01
 When BPP is run using the above control file a summary of the progress of the MCMC is again printed to screen as follows:
 ```{ .yaml .no-copy }
-
-     |         Acceptance proportions         |
-Prgs | Gage Gspr thet  tau  mix   Sspr   Ssnl | mthet1   mtau1       log-PG        log-L
----------------------------------------------------------------------------------------
+     |            Acceptance proportions            |
+Prgs | Gage Gspr  th1  th2  thg  tau  mix   Sspr   Ssnl | theta1    tau1       log-PG        log-L
+--------------------------------------------------------------------------------------------------
 (some output omitted here)
-   5%  0.64 0.26 0.31 0.28 0.27 0.0980 0.0000   0.0037  0.0019   1213.12189  -4448.22572  1:00
-  10%  0.64 0.26 0.30 0.28 0.27 0.0865 0.0000   0.0037  0.0019   1212.13271  -4447.30801  1:37
-  15%  0.64 0.26 0.30 0.27 0.27 0.0885 0.0000   0.0037  0.0019   1205.76722  -4446.44035  2:20
-  20%  0.64 0.26 0.30 0.27 0.27 0.0867 0.0000   0.0037  0.0019   1209.18617  -4445.20436  3:03
-  25%  0.64 0.26 0.31 0.27 0.27 0.0919 0.0000   0.0038  0.0019   1189.24742  -4444.02665  3:45
-  30%  0.65 0.26 0.31 0.27 0.27 0.0959 0.0000   0.0038  0.0018   1218.30083  -4443.50919  4:28
-  35%  0.65 0.26 0.31 0.27 0.27 0.0908 0.0000   0.0038  0.0019   1271.24840  -4443.30946  5:13
-  40%  0.65 0.26 0.31 0.27 0.27 0.0903 0.0000   0.0038  0.0018   1221.51424  -4442.93455  5:56
-  45%  0.65 0.26 0.31 0.28 0.27 0.0865 0.0000   0.0037  0.0018   1179.64791  -4442.58322  6:39
-  50%  0.65 0.26 0.31 0.28 0.27 0.0883 0.0000   0.0038  0.0018   1220.10587  -4442.33168  7:21
-  55%  0.65 0.26 0.31 0.28 0.27 0.0882 0.0000   0.0037  0.0018   1230.47093  -4442.53042  8:03
-  60%  0.65 0.26 0.31 0.28 0.27 0.0900 0.0000   0.0037  0.0019   1210.69277  -4443.13901  8:46
-  65%  0.65 0.26 0.31 0.28 0.27 0.0906 0.0000   0.0037  0.0019   1259.02426  -4443.42635  9:29
-  70%  0.65 0.26 0.31 0.28 0.27 0.0907 0.0000   0.0037  0.0019   1227.92007  -4443.74417  10:11
-  75%  0.65 0.26 0.31 0.28 0.27 0.0907 0.0000   0.0037  0.0019   1254.82843  -4443.96093  10:55
-  80%  0.65 0.26 0.31 0.28 0.27 0.0912 0.0000   0.0037  0.0019   1211.86344  -4443.93739  11:40
-  85%  0.65 0.26 0.31 0.28 0.27 0.0922 0.0000   0.0037  0.0019   1205.06522  -4443.99758  12:23
-  90%  0.65 0.26 0.31 0.28 0.27 0.0924 0.0000   0.0037  0.0019   1191.95318  -4444.06010  13:05
-  95%  0.65 0.26 0.31 0.28 0.27 0.0918 0.0000   0.0037  0.0019   1213.34484  -4444.05286  13:47
- 100%  0.65 0.26 0.31 0.28 0.27 0.0916 0.0000   0.0037  0.0019   1224.45872  -4443.84148  14:30
+   5%  0.64 0.26 0.31 0.31 0.85 0.28 0.27 0.0980 0.0000   0.0037  0.0019   1213.12189  -4448.22572  1:00
+  10%  0.64 0.26 0.30 0.30 0.86 0.28 0.27 0.0865 0.0000   0.0037  0.0019   1212.13271  -4447.30801  1:37
+  15%  0.64 0.26 0.30 0.30 0.87 0.27 0.27 0.0885 0.0000   0.0037  0.0019   1205.76722  -4446.44035  2:20
+  20%  0.64 0.26 0.30 0.30 0.88 0.27 0.27 0.0867 0.0000   0.0037  0.0019   1209.18617  -4445.20436  3:03
+  25%  0.64 0.26 0.31 0.31 0.89 0.27 0.27 0.0919 0.0000   0.0038  0.0019   1189.24742  -4444.02665  3:45
+  30%  0.65 0.26 0.31 0.31 0.90 0.27 0.27 0.0959 0.0000   0.0038  0.0018   1218.30083  -4443.50919  4:28
+  35%  0.65 0.26 0.31 0.31 0.91 0.27 0.27 0.0908 0.0000   0.0038  0.0019   1271.24840  -4443.30946  5:13
+  40%  0.65 0.26 0.31 0.31 0.92 0.27 0.27 0.0903 0.0000   0.0038  0.0018   1221.51424  -4442.93455  5:56
+  45%  0.65 0.26 0.31 0.31 0.93 0.28 0.27 0.0865 0.0000   0.0037  0.0018   1179.64791  -4442.58322  6:39
+  50%  0.65 0.26 0.31 0.31 0.94 0.28 0.27 0.0883 0.0000   0.0038  0.0018   1220.10587  -4442.33168  7:21
+  55%  0.65 0.26 0.31 0.31 0.95 0.28 0.27 0.0882 0.0000   0.0037  0.0018   1230.47093  -4442.53042  8:03
+  60%  0.65 0.26 0.31 0.31 0.96 0.28 0.27 0.0900 0.0000   0.0037  0.0019   1210.69277  -4443.13901  8:46
+  65%  0.65 0.26 0.31 0.31 0.96 0.28 0.27 0.0906 0.0000   0.0037  0.0019   1259.02426  -4443.42635  9:29
+  70%  0.65 0.26 0.31 0.31 0.97 0.28 0.27 0.0907 0.0000   0.0037  0.0019   1227.92007  -4443.74417  10:11
+  75%  0.65 0.26 0.31 0.31 0.97 0.28 0.27 0.0907 0.0000   0.0037  0.0019   1254.82843  -4443.96093  10:55
+  80%  0.65 0.26 0.31 0.31 0.97 0.28 0.27 0.0912 0.0000   0.0037  0.0019   1211.86344  -4443.93739  11:40
+  85%  0.65 0.26 0.31 0.31 0.97 0.28 0.27 0.0922 0.0000   0.0037  0.0019   1205.06522  -4443.99758  12:23
+  90%  0.65 0.26 0.31 0.31 0.97 0.28 0.27 0.0924 0.0000   0.0037  0.0019   1191.95318  -4444.06010  13:05
+  95%  0.65 0.26 0.31 0.31 0.97 0.28 0.27 0.0918 0.0000   0.0037  0.0019   1213.34484  -4444.05286  13:47
+ 100%  0.65 0.26 0.31 0.31 0.97 0.28 0.27 0.0916 0.0000   0.0037  0.0019   1224.45872  -4443.84148  14:30
 
 14:30 spent in MCMC
 
@@ -3801,7 +4027,7 @@ that we considered previously. The contents of the control file `A10.bpp.ctl` ar
 	thetaprior = gamma 2 2000 # gamma(a, b) for theta (estimate theta)
 	tauprior = gamma 2 1000 # gamma(a, b) for root tau & Dirichlet(a) for other tau's
 
-	finetune =  1: 5 0.001 0.001  0.001 0.3 0.33 1.0  # finetune for GBtj, GBspr, theta, tau, mix, locusrate, seqerr
+	finetune = 1  # finetune: auto-adjust step lengths during burnin
 
 	print = 1 0 0 0   * MCMC samples, locusrate, heredityscalars, Genetrees
 	burnin = 8000
@@ -3856,30 +4082,30 @@ order:", etc.).
 
 When BPP is run using the above control file a summary of the progress of the MCMC is again printed to screen as follows:
 ```{ .yaml .no-copy }
-     |     Acceptance proportions      |
-Prgs | Gage Gspr thet  tau  mix     rj | np del        mldp mthet1   mtau1       log-PG        log-L
-----------------------------------------------------------------------------------------------------
+     |        Acceptance proportions         |
+Prgs | Gage Gspr  th1  th2  thg  tau  mix  rj | np del        mldp theta1    tau1       log-PG        log-L
+-----------------------------------------------------------------------------------------------------------
 (some output omitted here)
-   5%  0.62 0.25 0.30 0.33 0.29 0.0061   10 111 P[5]=0.9726 0.0026  0.0009   217.01433   -972.53408  0:08
-  10%  0.63 0.25 0.30 0.34 0.29 0.0037   10 111 P[5]=0.9845 0.0026  0.0009   229.43024   -972.60186  0:12
-  15%  0.63 0.25 0.30 0.34 0.29 0.0033   10 111 P[5]=0.9886 0.0026  0.0009   224.68967   -972.41862  0:16
-  20%  0.63 0.25 0.30 0.34 0.29 0.0037   10 111 P[5]=0.9885 0.0026  0.0009   210.93188   -972.34981  0:21
-  25%  0.63 0.25 0.30 0.33 0.29 0.0038   10 111 P[5]=0.9892 0.0026  0.0009   224.49484   -972.24813  0:26
-  30%  0.63 0.25 0.30 0.33 0.28 0.0035   10 111 P[5]=0.9901 0.0026  0.0009   216.40848   -972.27563  0:30
-  35%  0.63 0.25 0.30 0.33 0.28 0.0033   10 111 P[5]=0.9907 0.0026  0.0009   224.00442   -972.50421  0:35
-  40%  0.63 0.25 0.30 0.33 0.28 0.0031   10 111 P[5]=0.9912 0.0026  0.0009   213.49838   -972.43257  0:40
-  45%  0.63 0.25 0.30 0.33 0.29 0.0034   10 111 P[5]=0.9905 0.0026  0.0009   209.30067   -972.37969  0:45
-  50%  0.63 0.25 0.30 0.33 0.29 0.0033   10 111 P[5]=0.9906 0.0026  0.0009   232.27193   -972.51538  0:50
-  55%  0.63 0.25 0.30 0.33 0.29 0.0035   10 111 P[5]=0.9900 0.0026  0.0009   203.35457   -972.50992  0:55
-  60%  0.63 0.25 0.30 0.33 0.29 0.0037   10 111 P[5]=0.9895 0.0026  0.0009   206.99225   -972.50202  1:00
-  65%  0.63 0.25 0.30 0.33 0.28 0.0038   10 111 P[5]=0.9898 0.0026  0.0009   217.40496   -972.48296  1:05
-  70%  0.63 0.25 0.30 0.33 0.29 0.0038   10 111 P[5]=0.9893 0.0026  0.0009   216.82582   -972.50246  1:10
-  75%  0.63 0.25 0.30 0.33 0.29 0.0037   10 111 P[5]=0.9896 0.0026  0.0009   204.99588   -972.56907  1:15
-  80%  0.63 0.25 0.30 0.33 0.29 0.0036   10 111 P[5]=0.9897 0.0026  0.0009   217.51889   -972.54354  1:21
-  85%  0.63 0.25 0.30 0.33 0.28 0.0037   10 111 P[5]=0.9893 0.0026  0.0009   212.80419   -972.51050  1:27
-  90%  0.63 0.25 0.30 0.33 0.29 0.0037   10 111 P[5]=0.9896 0.0026  0.0009   223.34976   -972.47616  1:33
-  95%  0.63 0.25 0.30 0.33 0.29 0.0036   10 111 P[5]=0.9893 0.0026  0.0009   215.63544   -972.48464  1:39
- 100%  0.63 0.25 0.30 0.33 0.28 0.0037   10 111 P[5]=0.9895 0.0026  0.0009   201.02451   -972.47685  1:45
+   5%  0.62 0.25 0.30 0.30 0.85 0.33 0.29 0.0061   10 111 P[5]=0.9726 0.0026  0.0009   217.01433   -972.53408  0:08
+  10%  0.63 0.25 0.30 0.30 0.86 0.34 0.29 0.0037   10 111 P[5]=0.9845 0.0026  0.0009   229.43024   -972.60186  0:12
+  15%  0.63 0.25 0.30 0.30 0.87 0.34 0.29 0.0033   10 111 P[5]=0.9886 0.0026  0.0009   224.68967   -972.41862  0:16
+  20%  0.63 0.25 0.30 0.30 0.88 0.34 0.29 0.0037   10 111 P[5]=0.9885 0.0026  0.0009   210.93188   -972.34981  0:21
+  25%  0.63 0.25 0.30 0.30 0.89 0.33 0.29 0.0038   10 111 P[5]=0.9892 0.0026  0.0009   224.49484   -972.24813  0:26
+  30%  0.63 0.25 0.30 0.30 0.90 0.33 0.28 0.0035   10 111 P[5]=0.9901 0.0026  0.0009   216.40848   -972.27563  0:30
+  35%  0.63 0.25 0.30 0.30 0.91 0.33 0.28 0.0033   10 111 P[5]=0.9907 0.0026  0.0009   224.00442   -972.50421  0:35
+  40%  0.63 0.25 0.30 0.30 0.92 0.33 0.28 0.0031   10 111 P[5]=0.9912 0.0026  0.0009   213.49838   -972.43257  0:40
+  45%  0.63 0.25 0.30 0.30 0.93 0.33 0.29 0.0034   10 111 P[5]=0.9905 0.0026  0.0009   209.30067   -972.37969  0:45
+  50%  0.63 0.25 0.30 0.30 0.94 0.33 0.29 0.0033   10 111 P[5]=0.9906 0.0026  0.0009   232.27193   -972.51538  0:50
+  55%  0.63 0.25 0.30 0.30 0.95 0.33 0.29 0.0035   10 111 P[5]=0.9900 0.0026  0.0009   203.35457   -972.50992  0:55
+  60%  0.63 0.25 0.30 0.30 0.96 0.33 0.29 0.0037   10 111 P[5]=0.9895 0.0026  0.0009   206.99225   -972.50202  1:00
+  65%  0.63 0.25 0.30 0.30 0.96 0.33 0.28 0.0038   10 111 P[5]=0.9898 0.0026  0.0009   217.40496   -972.48296  1:05
+  70%  0.63 0.25 0.30 0.30 0.97 0.33 0.29 0.0038   10 111 P[5]=0.9893 0.0026  0.0009   216.82582   -972.50246  1:10
+  75%  0.63 0.25 0.30 0.30 0.97 0.33 0.29 0.0037   10 111 P[5]=0.9896 0.0026  0.0009   204.99588   -972.56907  1:15
+  80%  0.63 0.25 0.30 0.30 0.97 0.33 0.29 0.0036   10 111 P[5]=0.9897 0.0026  0.0009   217.51889   -972.54354  1:21
+  85%  0.63 0.25 0.30 0.30 0.97 0.33 0.28 0.0037   10 111 P[5]=0.9893 0.0026  0.0009   212.80419   -972.51050  1:27
+  90%  0.63 0.25 0.30 0.30 0.97 0.33 0.29 0.0037   10 111 P[5]=0.9896 0.0026  0.0009   223.34976   -972.47616  1:33
+  95%  0.63 0.25 0.30 0.30 0.97 0.33 0.29 0.0036   10 111 P[5]=0.9893 0.0026  0.0009   215.63544   -972.48464  1:39
+ 100%  0.63 0.25 0.30 0.30 0.97 0.33 0.28 0.0037   10 111 P[5]=0.9895 0.0026  0.0009   201.02451   -972.47685  1:45
 
 1:45 spent in MCMC
 
@@ -4053,7 +4279,7 @@ that we considered previously. The contents of the control file `A11.bpp.ctl` ar
 *     heredity = 1 4 4
 *    locusrate = 1 5
 
-      finetune =  1: 5 0.001 0.001  0.001 0.3 0.33 1.0  # finetune for GBtj, GBspr, theta, tau, 
+      finetune = 1  # finetune for GBtj, GBspr, theta, tau, 
 mix, locusrate, seqerr
 
          print = 1 0 0 0   * MCMC samples, locusrate, heredityscalars, Genetrees
@@ -4093,30 +4319,30 @@ Prior 3 may be suitable when there are many populations.
 #### Output A11
 When BPP is run using the above control file a summary of the progress of the MCMC is again printed to screen as follows:
 ```{ .yaml .no-copy }
-     |            Acceptance proportions             |
-Prgs | Gage Gspr thet  tau  mix   Sspr   Ssnl     rj | sp np        mldp mthet1   mtau1       log-PG        log-L
-----------------------------------------------------------------------------------------------------------------
+     |               Acceptance proportions                |
+Prgs | Gage Gspr  th1  th2  thg  tau  mix   Sspr   Ssnl  rj | sp np        mldp theta1    tau1       log-PG        log-L
+------------------------------------------------------------------------------------------------------------------------
 (some output omitted here)
-   5%  0.65 0.26 0.30 0.28 0.30 0.0904 0.0000 0.0000    4 10 P[4]=1.0000 0.0041  0.0017   1239.61701  -4439.20352  0:59
-  10%  0.65 0.26 0.30 0.27 0.30 0.0964 0.0000 0.0000    4 10 P[4]=1.0000 0.0042  0.0017   1221.22458  -4437.63784  1:35
-  15%  0.65 0.26 0.30 0.26 0.30 0.0962 0.0000 0.0000    4 10 P[4]=1.0000 0.0042  0.0017   1238.23420  -4436.36392  2:13
-  20%  0.65 0.26 0.30 0.26 0.30 0.0998 0.0000 0.0000    4 10 P[4]=1.0000 0.0042  0.0016   1207.06023  -4435.09525  2:54
-  25%  0.65 0.26 0.30 0.26 0.30 0.1005 0.0000 0.0000    4 10 P[4]=1.0000 0.0043  0.0016   1211.57636  -4434.31571  3:37
-  30%  0.65 0.26 0.30 0.26 0.30 0.1018 0.0000 0.0000    4 10 P[4]=1.0000 0.0043  0.0016   1199.97256  -4434.32883  4:19
-  35%  0.65 0.26 0.30 0.26 0.30 0.1023 0.0000 0.0000    4 10 P[4]=1.0000 0.0043  0.0016   1200.88102  -4433.94315  4:57
-  40%  0.65 0.26 0.30 0.26 0.30 0.1002 0.0000 0.0000    4 10 P[4]=1.0000 0.0044  0.0016   1191.04407  -4434.06936  5:38
-  45%  0.65 0.26 0.30 0.26 0.30 0.1045 0.0000 0.0000    4 10 P[4]=1.0000 0.0043  0.0016   1193.71849  -4434.12002  6:21
-  50%  0.65 0.26 0.30 0.26 0.30 0.1036 0.0000 0.0000    4 10 P[4]=1.0000 0.0043  0.0016   1247.11644  -4434.33624  7:05
-  55%  0.65 0.26 0.30 0.26 0.30 0.1017 0.0000 0.0000    4 10 P[4]=1.0000 0.0043  0.0016   1218.84106  -4434.33556  7:43
-  60%  0.65 0.26 0.30 0.26 0.30 0.0994 0.0000 0.0000    4 10 P[4]=1.0000 0.0043  0.0016   1233.73293  -4434.00290  8:22
-  65%  0.65 0.26 0.30 0.26 0.30 0.1005 0.0000 0.0000    4 10 P[4]=1.0000 0.0043  0.0016   1235.85799  -4433.85179  9:06
-  70%  0.65 0.26 0.30 0.26 0.30 0.0995 0.0000 0.0000    4 10 P[4]=1.0000 0.0043  0.0016   1218.90538  -4434.20067  9:50
-  75%  0.65 0.26 0.30 0.26 0.30 0.1002 0.0000 0.0000    4 10 P[4]=1.0000 0.0043  0.0016   1214.40621  -4434.67870  10:32
-  80%  0.65 0.26 0.30 0.26 0.30 0.0999 0.0000 0.0000    4 10 P[4]=1.0000 0.0043  0.0016   1215.56021  -4435.19959  11:13
-  85%  0.65 0.26 0.30 0.26 0.30 0.0980 0.0000 0.0000    4 10 P[4]=1.0000 0.0043  0.0016   1227.95558  -4435.47778  11:52
-  90%  0.65 0.26 0.30 0.26 0.30 0.0963 0.0000 0.0000    4 10 P[4]=1.0000 0.0042  0.0016   1225.62882  -4435.73626  12:35
-  95%  0.65 0.26 0.30 0.27 0.30 0.0958 0.0000 0.0000    4 10 P[4]=1.0000 0.0042  0.0017   1244.11759  -4435.87327  13:19
- 100%  0.65 0.26 0.30 0.26 0.30 0.0949 0.0000 0.0000    4 10 P[4]=1.0000 0.0042  0.0017   1214.44552  -4436.19194  14:03
+   5%  0.65 0.26 0.30 0.30 0.85 0.28 0.30 0.0904 0.0000 0.0000    4 10 P[4]=1.0000 0.0041  0.0017   1239.61701  -4439.20352  0:59
+  10%  0.65 0.26 0.30 0.30 0.86 0.27 0.30 0.0964 0.0000 0.0000    4 10 P[4]=1.0000 0.0042  0.0017   1221.22458  -4437.63784  1:35
+  15%  0.65 0.26 0.30 0.30 0.87 0.26 0.30 0.0962 0.0000 0.0000    4 10 P[4]=1.0000 0.0042  0.0017   1238.23420  -4436.36392  2:13
+  20%  0.65 0.26 0.30 0.30 0.88 0.26 0.30 0.0998 0.0000 0.0000    4 10 P[4]=1.0000 0.0042  0.0016   1207.06023  -4435.09525  2:54
+  25%  0.65 0.26 0.30 0.30 0.89 0.26 0.30 0.1005 0.0000 0.0000    4 10 P[4]=1.0000 0.0043  0.0016   1211.57636  -4434.31571  3:37
+  30%  0.65 0.26 0.30 0.30 0.90 0.26 0.30 0.1018 0.0000 0.0000    4 10 P[4]=1.0000 0.0043  0.0016   1199.97256  -4434.32883  4:19
+  35%  0.65 0.26 0.30 0.30 0.91 0.26 0.30 0.1023 0.0000 0.0000    4 10 P[4]=1.0000 0.0043  0.0016   1200.88102  -4433.94315  4:57
+  40%  0.65 0.26 0.30 0.30 0.92 0.26 0.30 0.1002 0.0000 0.0000    4 10 P[4]=1.0000 0.0044  0.0016   1191.04407  -4434.06936  5:38
+  45%  0.65 0.26 0.30 0.30 0.93 0.26 0.30 0.1045 0.0000 0.0000    4 10 P[4]=1.0000 0.0043  0.0016   1193.71849  -4434.12002  6:21
+  50%  0.65 0.26 0.30 0.30 0.94 0.26 0.30 0.1036 0.0000 0.0000    4 10 P[4]=1.0000 0.0043  0.0016   1247.11644  -4434.33624  7:05
+  55%  0.65 0.26 0.30 0.30 0.95 0.26 0.30 0.1017 0.0000 0.0000    4 10 P[4]=1.0000 0.0043  0.0016   1218.84106  -4434.33556  7:43
+  60%  0.65 0.26 0.30 0.30 0.96 0.26 0.30 0.0994 0.0000 0.0000    4 10 P[4]=1.0000 0.0043  0.0016   1233.73293  -4434.00290  8:22
+  65%  0.65 0.26 0.30 0.30 0.96 0.26 0.30 0.1005 0.0000 0.0000    4 10 P[4]=1.0000 0.0043  0.0016   1235.85799  -4433.85179  9:06
+  70%  0.65 0.26 0.30 0.30 0.97 0.26 0.30 0.0995 0.0000 0.0000    4 10 P[4]=1.0000 0.0043  0.0016   1218.90538  -4434.20067  9:50
+  75%  0.65 0.26 0.30 0.30 0.97 0.26 0.30 0.1002 0.0000 0.0000    4 10 P[4]=1.0000 0.0043  0.0016   1214.40621  -4434.67870  10:32
+  80%  0.65 0.26 0.30 0.30 0.97 0.26 0.30 0.0999 0.0000 0.0000    4 10 P[4]=1.0000 0.0043  0.0016   1215.56021  -4435.19959  11:13
+  85%  0.65 0.26 0.30 0.30 0.97 0.26 0.30 0.0980 0.0000 0.0000    4 10 P[4]=1.0000 0.0043  0.0016   1227.95558  -4435.47778  11:52
+  90%  0.65 0.26 0.30 0.30 0.97 0.26 0.30 0.0963 0.0000 0.0000    4 10 P[4]=1.0000 0.0042  0.0016   1225.62882  -4435.73626  12:35
+  95%  0.65 0.26 0.30 0.30 0.97 0.27 0.30 0.0958 0.0000 0.0000    4 10 P[4]=1.0000 0.0042  0.0017   1244.11759  -4435.87327  13:19
+ 100%  0.65 0.26 0.30 0.30 0.97 0.26 0.30 0.0949 0.0000 0.0000    4 10 P[4]=1.0000 0.0042  0.0017   1214.44552  -4436.19194  14:03
 
 14:03 spent in MCMC
 
@@ -4197,7 +4423,7 @@ First note the following line found in the control file `yu2001.bpp.ctl`.
 Here finetune = 1 means that MCMC step lengths will be adjusted
 automatically, and the specified values are used as initial values.
 ```
-    finetune = 1: 2 0.00002 0.0001 0.0005 0.5 0.2 1.0
+    finetune = 1
 ```
 There are seven finetune steplengths here. They are in a fixed order and
 always read by the program even if the concerned proposal is not used.
@@ -4220,7 +4446,7 @@ used in the algorithm and we will manually change the step lengths so that the
 acceptance proportions become close to 30%. 
 First, edit the line, changing it to:
 ```
-    finetune = 0: 2 0.00002 0.0001 0.0005 0.5 0.2 1.0
+    finetune = 0
 ```
 The basic strategy for adjusting fine-tune parameters is if the acceptance proportion
 is too small (e.g., $<0.10$), decrease the corresponding finetune
@@ -4979,3 +5205,466 @@ use a full path. You may have to edit the source file `BFdriver.c` and
 recompile.
 
 ## Experimental Features (Use at Your Own Risk!)
+
+*This section is reserved for experimental features that are under development.*
+
+---
+
+## Troubleshooting
+
+This section covers common errors, problems, and their solutions.
+
+### Installation Issues
+
+#### "Command not found: bpp"
+
+**Problem:** The shell cannot find the BPP executable.
+
+**Solutions:**
+- Ensure BPP is compiled: run `make` in the `src/` directory
+- Add BPP to your PATH: `export PATH=$PATH:/path/to/bpp/src`
+- Use the full path: `/path/to/bpp/src/bpp --cfile control.ctl`
+
+#### Compilation errors on Mac
+
+**Problem:** Compilation fails with errors about missing headers or incompatible flags.
+
+**Solutions:**
+- Ensure Xcode command line tools are installed: `xcode-select --install`
+- For ARM Macs (M1/M2/M3), use the appropriate Makefile: `make -f Makefile.ARM64`
+
+### Control File Errors
+
+#### "Option 'migprior' is obsolete"
+
+**Problem:** You are using the old `migprior` option which was replaced in v4.8.0.
+
+**Solution:** Replace `migprior` with `wprior`. Note the parameterization has changed:
+- Old: $M_{XY} = m_{XY} \cdot N_Y$ (population migration rate)
+- New: $w_{XY} = m_{XY} / \mu$ (mutation-scaled migration rate)
+
+Convert using: $w_{XY} = 4 M_{XY} / \theta_Y$
+
+#### "Option 'outfile' and 'mcmcfile' are now obsolete"
+
+**Problem:** These options have been replaced by `jobname`.
+
+**Solution:** Replace both options with a single `jobname` line:
+```
+# Old (no longer works):
+outfile = results.txt
+mcmcfile = results.mcmc.txt
+
+# New:
+jobname = results
+```
+
+#### "Option 'diploid' was renamed to 'phase'"
+
+**Problem:** The option name changed but the syntax is the same.
+
+**Solution:** Simply rename `diploid` to `phase` in your control file.
+
+#### "Erroneous format of 'clock'"
+
+**Problem:** Invalid clock specification.
+
+**Solution:** Valid clock options are:
+```
+clock = 1                                 # strict clock (default)
+clock = 2 a_vbar b_vbar a_vi prior dist   # independent rates
+clock = 3 a_vbar b_vbar a_vi prior dist   # correlated rates
+clock = 4 a_vbar b_vbar                   # simple rates
+```
+
+### MCMC Issues
+
+#### MCMC not converging / poor mixing
+
+**Symptoms:** ESS values are low, trace plots show trends or poor mixing.
+
+**Solutions:**
+1. **Increase run length:** Increase `burnin` and `nsample`
+2. **Adjust step sizes:** Set `finetune = 0` initially to let BPP auto-tune, then examine the acceptance rates in the output
+3. **Check priors:** Ensure priors are appropriate for your data scale
+4. **Run multiple chains:** Use different seeds (`seed = -1`) and compare results
+5. **Simplify the model:** Start with a simpler model (e.g., JC69 instead of GTR)
+
+#### Acceptance rates too low or too high
+
+**Problem:** MCMC proposals are being rejected too often (< 20%) or accepted too often (> 80%).
+
+**Solution:** Adjust the `finetune` parameters:
+- Low acceptance rate → decrease step size
+- High acceptance rate → increase step size
+
+Let BPP auto-tune first (`finetune = 1`), then manually adjust if needed.
+
+#### "NaN" or "Inf" in output
+
+**Problem:** Numerical overflow or underflow occurred.
+
+**Solutions:**
+- Check that sequence data is valid (no unusual characters)
+- Ensure prior parameters are reasonable
+- Try using `cleandata = 1` to remove ambiguous sites
+- Check for very short or very long branch lengths in starting tree
+
+### Data Issues
+
+#### "Number of sequences does not match"
+
+**Problem:** Mismatch between Imap file and sequence file.
+
+**Solution:** Ensure every sequence in the sequence file has a corresponding entry in the Imap file, and that sample counts in `species&tree` match.
+
+#### "Duplicate taxon or node label"
+
+**Problem:** The same name appears more than once in the species tree.
+
+**Solution:** Ensure all node labels in your species tree are unique.
+
+#### Sequences not aligning with species
+
+**Problem:** Wrong sequences assigned to species.
+
+**Solution:** Check your Imap file carefully. Format is:
+```
+sequence_name    species_name
+```
+
+### Memory and Performance
+
+#### Out of memory errors
+
+**Solutions:**
+- Reduce number of threads: `threads = 1`
+- Analyze fewer loci: reduce `nloci`
+- Use a machine with more RAM
+
+#### Analysis running very slowly
+
+**Solutions:**
+- Increase threads: `threads = N` (where N = number of CPU cores)
+- Use `loadbalance = zigzag` for better thread utilization
+- Use simpler substitution model
+- Reduce number of loci for initial testing
+
+### Getting Help
+
+If you cannot resolve your issue:
+
+1. Check the [BPP GitHub issues](https://github.com/bpp/bpp/issues)
+2. Post on the [BPP discussion forum](https://groups.google.com/g/bpp-discussion)
+3. Include in your report:
+   - BPP version (`bpp --version`)
+   - Operating system
+   - Complete error message
+   - Minimal control file that reproduces the issue
+
+---
+
+## Common Recipes
+
+This section provides step-by-step instructions for common analysis tasks.
+
+### Recipe 1: Basic Parameter Estimation (A00)
+
+**Goal:** Estimate divergence times and population sizes for a known species tree.
+
+**Control file:**
+```
+seed = -1
+seqfile = sequences.txt
+Imapfile = species_map.txt
+jobname = A00_analysis
+
+speciesdelimitation = 0    # fixed delimitation
+speciestree = 0            # fixed tree
+
+species&tree = 3  A  B  C
+                  5  5  5
+                  ((A, B), C);
+
+usedata = 1
+nloci = 100
+cleandata = 0
+
+thetaprior = invgamma 3 0.002
+tauprior = invgamma 3 0.03
+
+finetune = 1
+print = 1 0 0 0 0
+burnin = 10000
+sampfreq = 10
+nsample = 100000
+```
+
+**Key points:**
+- Set `speciesdelimitation = 0` and `speciestree = 0`
+- Provide your species tree in Newick format
+- Adjust priors based on expected θ and τ values
+
+### Recipe 2: Species Tree Estimation (A01)
+
+**Goal:** Infer the species tree when species assignments are known.
+
+**Control file:**
+```
+seed = -1
+seqfile = sequences.txt
+Imapfile = species_map.txt
+jobname = A01_analysis
+
+speciesdelimitation = 0    # fixed delimitation
+speciestree = 1            # estimate tree
+
+species&tree = 4  A  B  C  D
+                  5  5  5  5
+                  ((A, B), (C, D));   # starting tree
+
+usedata = 1
+nloci = 100
+
+thetaprior = invgamma 3 0.002
+tauprior = invgamma 3 0.03
+
+finetune = 1
+burnin = 20000
+sampfreq = 10
+nsample = 200000
+```
+
+**Key points:**
+- Set `speciestree = 1` to estimate the tree topology
+- The tree in `species&tree` is just a starting tree
+- Run longer chains (more `nsample`) for tree estimation
+
+### Recipe 3: Species Delimitation with Guide Tree (A10)
+
+**Goal:** Test species boundaries using a fixed guide tree.
+
+**Control file:**
+```
+seed = -1
+seqfile = sequences.txt
+Imapfile = species_map.txt
+jobname = A10_analysis
+
+speciesdelimitation = 1 1 2 1    # rjMCMC algorithm 1
+speciestree = 0                  # fixed guide tree
+
+species&tree = 4  A  B  C  D
+                  5  5  5  5
+                  ((A, B), (C, D));
+
+usedata = 1
+nloci = 100
+
+thetaprior = invgamma 3 0.002
+tauprior = invgamma 3 0.03
+speciesmodelprior = 1    # uniform prior on models
+
+finetune = 1
+burnin = 20000
+sampfreq = 10
+nsample = 200000
+```
+
+**Key points:**
+- `speciesdelimitation = 1` enables delimitation
+- The additional parameters control the rjMCMC algorithm
+- Output includes posterior probabilities for different delimitation models
+
+### Recipe 4: Adding Migration (MSC-M)
+
+**Goal:** Estimate migration rates between populations.
+
+**Control file:**
+```
+seed = -1
+seqfile = sequences.txt
+Imapfile = species_map.txt
+jobname = MSCM_analysis
+
+speciesdelimitation = 0
+speciestree = 0
+
+species&tree = 3  A  B  C
+                  10 10 10
+                  ((A, B)AB, C)R;    # label internal nodes!
+
+usedata = 1
+nloci = 100
+
+thetaprior = invgamma 3 0.002
+tauprior = invgamma 3 0.03
+
+# Migration setup
+wprior = 2 200              # gamma prior on migration rates
+migration = 1               # number of migration bands
+  A B                       # migration from A to B
+
+finetune = 1
+burnin = 20000
+sampfreq = 10
+nsample = 200000
+```
+
+**Key points:**
+- Label internal nodes in the species tree (e.g., `AB`, `R`)
+- Use `wprior` (not `migprior`) for BPP v4.8.0+
+- Specify migration connections with source and target populations
+
+### Recipe 5: Adding Introgression (MSC-I)
+
+**Goal:** Model introgression/hybridization events.
+
+**Control file:**
+```
+seed = -1
+seqfile = sequences.txt
+Imapfile = species_map.txt
+jobname = MSCI_analysis
+
+speciesdelimitation = 0
+speciestree = 0
+
+species&tree = 3  A  B  C
+                  10 10 10
+                  ((A, B)AB, C)R;
+
+usedata = 1
+nloci = 100
+
+thetaprior = invgamma 3 0.002
+tauprior = invgamma 3 0.03
+phiprior = beta 1 1         # prior on introgression probability
+
+# Introgression: from branch leading to A into branch leading to C
+hybridization = R A, AB C as S H tau=yes, no phi=0.1
+
+finetune = 1
+burnin = 20000
+sampfreq = 10
+nsample = 200000
+```
+
+**Key points:**
+- Use `phiprior` to set prior on introgression probability
+- `hybridization` defines the introgression event
+- See MSC-I documentation for full syntax options
+
+### Recipe 6: Relaxed Clock Analysis
+
+**Goal:** Allow substitution rate variation among lineages.
+
+**Control file:**
+```
+seed = -1
+seqfile = sequences.txt
+Imapfile = species_map.txt
+jobname = relaxed_clock
+
+speciesdelimitation = 0
+speciestree = 0
+
+species&tree = 3  A  B  C
+                  10 10 10
+                  ((A, B), C);
+
+usedata = 1
+nloci = 100
+
+thetaprior = invgamma 3 0.002
+tauprior = invgamma 3 0.03
+
+# Relaxed clock with independent rates among branches
+clock = 2 10.0 100.0 5.0 iid G
+
+finetune = 1
+burnin = 20000
+sampfreq = 10
+nsample = 200000
+```
+
+**Clock options:**
+- `clock = 1` — strict clock (default)
+- `clock = 2 ... iid G` — independent rates, gamma distributed
+- `clock = 3 ... iid G` — autocorrelated rates
+- `clock = 4 a b` — simple rates model
+
+---
+
+## Glossary
+
+### Parameters
+
+| Symbol | Name | Description |
+|--------|------|-------------|
+| θ (theta) | Population size parameter | $\theta = 4N\mu$, where N is effective population size and μ is mutation rate |
+| τ (tau) | Divergence time | Time of species divergence, measured in expected substitutions per site |
+| φ (phi) | Introgression probability | Probability that a lineage follows the introgression path (MSC-I model) |
+| w | Migration rate | Mutation-scaled migration rate: $w_{XY} = m_{XY}/\mu$ (MSC-M model, v4.8.0+) |
+| M | Population migration rate | $M_{XY} = m_{XY} \cdot N_Y$, expected migrants per generation (pre-v4.8.0) |
+
+### Models
+
+| Term | Description |
+|------|-------------|
+| MSC | Multispecies Coalescent — the basic model relating gene trees to species trees |
+| MSC-I | MSC with Introgression — allows hybridization/introgression events |
+| MSC-M | MSC with Migration — allows continuous gene flow between populations |
+| IM | Isolation with Migration — another name for the MSC-M model |
+
+### Analysis Types
+
+| Code | Name | Description |
+|------|------|-------------|
+| A00 | Parameter estimation | Fixed species tree and delimitation, estimate θ and τ |
+| A01 | Species tree estimation | Fixed delimitation, estimate species tree topology |
+| A10 | Species delimitation | Fixed guide tree, test alternative delimitations |
+| A11 | Joint estimation | Simultaneously estimate tree and delimitation |
+
+### MCMC Terms
+
+| Term | Description |
+|------|-------------|
+| Burn-in | Initial MCMC iterations discarded before sampling |
+| ESS | Effective Sample Size — measure of independent samples in MCMC output |
+| Mixing | How well the MCMC explores parameter space |
+| Convergence | When the MCMC has reached the stationary distribution |
+| Chain | A single MCMC run |
+| Proposal | A suggested move in parameter space |
+| Acceptance rate | Fraction of proposals accepted |
+
+### Priors
+
+| Prior | Syntax | Use |
+|-------|--------|-----|
+| Inverse-gamma | `invgamma a b` | Conjugate prior for θ; allows analytical integration |
+| Gamma | `gamma a b` | Alternative prior for θ and τ |
+| Beta | `beta a b` | Prior for bounded parameters like φ |
+| Dirichlet | `dir` | Prior for rate variation among loci |
+
+### File Types
+
+| File | Description |
+|------|-------------|
+| Control file | Main configuration file (`.ctl`) specifying all analysis options |
+| Sequence file | Phylip-format alignment of DNA/protein sequences |
+| Imap file | Maps individual sequences to species |
+| MCMC file | Output file containing posterior samples (`.mcmc.txt`) |
+| Checkpoint file | Saved state for resuming analysis (`.chk`) |
+
+### Substitution Models
+
+| Model | Description |
+|-------|-------------|
+| JC69 | Jukes-Cantor — equal rates, equal frequencies |
+| K80 | Kimura 2-parameter — transition/transversion bias |
+| F81 | Felsenstein 1981 — unequal base frequencies |
+| HKY | Hasegawa-Kishino-Yano — K80 + F81 |
+| GTR | General Time Reversible — most general reversible model |
+
+---

@@ -9,6 +9,9 @@ theme:
     - navigation.path
     - toc.integrate
 markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
   - pymdownx.arithmatex:
       generic: true
 extra_javascript:
