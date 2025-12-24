@@ -25,5 +25,15 @@ jobs:
         run: |
           pip install mkdocs mkdocs-material pymdown-extensions
 
+      - name: Set up docs structure
+        run: |
+          mkdir -p docs
+          cp bpp-4-manual.md docs/
+          cp quickstart.md docs/
+          cp index.md docs/
+          cp mathjax.js docs/
+          cp tutorials.md docs/
+          cp -r figures docs/
+
       - name: Build and deploy
         run: mkdocs gh-deploy --force
