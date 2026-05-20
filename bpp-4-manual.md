@@ -296,37 +296,159 @@ then you (or your system) administrator will need to install the
 compiler software (using a package manager such as apt on Ubuntu, for
 example) before you can compile BPP.
 
-#### Downloading and compiling the source code
+#### Downloading the source code
 
 If you have the necessary software for compiling you can download the C
 source code for the latest release from:
 
 <https://github.com/bpp/bpp/releases/latest>
 
-The link to the source file on github is named `Source code`. You will
-need to download and uncompress the file, then change to the source code
-subdirectory before executing the commands outlined below. The program
-needs to be compiled only once. For example, the following commands use
-the gcc compiler to compile the program and move the generated
-executable file (bpp) into the bin/ folder.
-```
-cd bpp
-mkdir bin
-cd src
-make
-mv bpp ../bin
-```
+The link to the source file on github is named `Source code`. Download
+and uncompress the file, then change to the source code subdirectory
+(`src/`) before compiling. The program needs to be compiled only once.
+
 If you use git you can instead clone the bpp repository and check out
 the master branch (which contains source code for the latest stable
-version of bpp) and then compile the program:
+version of bpp):
 ```
 git clone https://github.com/bpp/bpp.git
 cd bpp
 git checkout master
 cd src
-make
 ```
-You are now ready to proceed to [BPP Trial Run](#bpp-trial-run)
+
+#### Choosing the right Makefile
+
+The `src/` directory contains three Makefiles, one for each supported
+build environment. Pick the row that matches your hardware:
+
+| Platform                                       | Makefile           | Build command              | SIMD path      |
+|------------------------------------------------|--------------------|----------------------------|----------------|
+| Linux x86_64 (Intel/AMD)                       | `Makefile`         | `make`                     | SSE3/AVX/AVX2  |
+| Mac with Intel CPU (x86_64)                    | `Makefile`         | `make CC=clang`            | SSE3/AVX/AVX2  |
+| Mac with Apple Silicon (M1/M2/M3, arm64)       | `Makefile.ARM64`   | `make -f Makefile.ARM64`   | NEON           |
+| Linux aarch64 / arm64                          | `Makefile.ARM64`   | `make -f Makefile.ARM64`   | NEON           |
+| Windows (Microsoft Visual C++)                 | `Makefile.VC`      | `nmake -f Makefile.VC`     | SSE3/AVX/AVX2  |
+
+The default `Makefile` targets the x86 SIMD instruction sets (SSE3, AVX
+and AVX-2). `Makefile.ARM64` substitutes NEON intrinsics for ARM-family
+CPUs (Apple Silicon, Raspberry Pi 4/5, AWS Graviton, etc). `Makefile.VC`
+is for Microsoft's `cl` compiler and is invoked through `nmake` from a
+Visual Studio Developer Command Prompt.
+
+!!! note "Default compiler on Mac"
+    `Makefile` declares `CC = gcc-7` as a fallback. On a stock macOS
+    install `gcc-7` is not present — Apple's `cc` is actually clang.
+    Override the compiler on the command line: `make CC=clang` on an
+    Intel Mac, or install GCC via Homebrew (`brew install gcc`) and
+    call e.g. `make CC=gcc-14`. Modern clang accepts all of the AVX
+    flags used by the default Makefile, so no other changes are needed.
+
+!!! tip "Suppressing AVX or AVX-2 for older compilers"
+    Compiling BPP with the default `Makefile` requires GCC 4.7 or
+    newer; older compilers reject the `-mavx` / `-mavx2` flags with
+    `cc1: error: unrecognized command line option "-mavx2"`. If you
+    cannot upgrade the compiler, disable AVX-2 with:
+    ```
+    make clean
+    make -e DISABLE_AVX2=1
+    ```
+    For GCC older than 4.6, disable both:
+    ```
+    make -e DISABLE_AVX2=1 DISABLE_AVX=1
+    ```
+    BPP selects the SIMD instruction set supported by the current CPU
+    at runtime, so disabling either flag at compile time only restricts
+    which optimised paths get compiled in — not which CPU the resulting
+    binary will later run on.
+
+#### Compiling
+
+Once the right Makefile is chosen, compile and (optionally) move the
+binary into a `bin/` directory at the top of the BPP distribution. For
+the default Linux build:
+```
+cd src
+make
+mkdir -p ../bin
+mv bpp ../bin
+```
+For an Apple Silicon Mac:
+```
+cd src
+make -f Makefile.ARM64
+mkdir -p ../bin
+mv bpp ../bin
+```
+
+#### Compiling on Windows
+
+The Windows build uses Microsoft's `cl` compiler and `nmake` driver from
+Visual Studio, together with a POSIX-threads-for-Windows library. Most
+Windows users will be better served by the pre-compiled binary
+distribution (`bpp-4.8.7-win-x86_64.zip`) listed in
+[Obtaining BPP](#obtaining-bpp); compile from source only if you need to
+modify the code or your version of Windows is unusual.
+
+**1. Install the Visual Studio build tools.** Either the full *Visual
+Studio Community* IDE or the standalone *Build Tools for Visual Studio*
+will work — both are free from
+<https://visualstudio.microsoft.com/downloads/>. Select the
+"Desktop development with C++" workload, which installs `cl`, `link`,
+`nmake`, the Windows SDK, and the standard C/C++ libraries.
+
+**2. Install a Windows pthreads library.** `Makefile.VC` links against
+`libpthreadvc3.lib` and `#include`s `<pthread.h>`. The standard source
+is the *pthreads4w* (formerly pthreads-win32) project at
+<https://sourceforge.net/projects/pthreads4w/>. Download the pre-built
+release and note the locations of:
+
+- `pthread.h` and the other pthreads headers — pass to `cl` via
+  `/I <include-dir>`.
+- `libpthreadvc3.lib` — must be on `link`'s library search path
+  (`LIB` environment variable or `/LIBPATH:<lib-dir>`).
+- `pthreadVC3.dll` — must accompany `bpp.exe` at runtime, either in
+  the same directory or somewhere on `PATH`.
+
+**3. Open a Developer Command Prompt.** From the Start menu launch
+*x64 Native Tools Command Prompt for VS 2022* (or the equivalent for
+your Visual Studio version). This shell pre-loads `PATH`, `INCLUDE`,
+and `LIB` so that `cl`, `link`, and `nmake` resolve correctly.
+
+**4. Build.** Change into the BPP `src\` directory and invoke `nmake`:
+
+```
+cd bpp\src
+set INCLUDE=%INCLUDE%;C:\path\to\pthreads4w\include
+set LIB=%LIB%;C:\path\to\pthreads4w\lib\x64
+nmake -f Makefile.VC
+```
+
+The build produces `bpp.exe` in the `src\` directory. Copy it (and
+`pthreadVC3.dll`) into a `bin\` folder at the top of the BPP
+distribution:
+
+```
+mkdir ..\bin
+copy bpp.exe ..\bin
+copy C:\path\to\pthreads4w\bin\pthreadVC3.dll ..\bin
+```
+
+!!! tip "Cleaning a previous Windows build"
+    `Makefile.VC` provides a `clean` target that removes intermediate
+    `.obj` files and `bpp.exe`:
+    ```
+    nmake -f Makefile.VC clean
+    ```
+
+!!! note "MinGW / MSYS2 / Cygwin"
+    The shipped `Makefile.VC` targets MSVC specifically. The default
+    `Makefile` *may* build under MinGW or MSYS2 with `make CC=gcc`,
+    but this configuration is not regularly tested by the BPP
+    developers. If you cannot use MSVC, the official Windows binary
+    is the safer option.
+
+You are now ready to proceed to [BPP Trial Run](#bpp-trial-run).
 
 ### BPP Trial Run
 
