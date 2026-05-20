@@ -780,7 +780,7 @@ The tables below provide a quick overview of all control file options. See the d
 | | `beta p q l u` | `beta 1 1 0 0.01` | |
 | `tauprior` | `invgamma a b` | `invgamma 3 0.03` | Prior on τ (divergence times) |
 | | `gamma a b` | `gamma 2 100` | |
-| `phiprior` | `beta a b` | `beta 1 1` | Prior on φ (introgression probability) |
+| `phiprior` | `a b` | `1 1` | Beta(a, b) prior on φ (introgression probability) — no distribution keyword |
 | `wprior` | `wprior = a b` | `wprior = 2 200` | Prior on w (migration rate) — *replaces migprior in v4.8.0* |
 
 #### Substitution Model
@@ -803,10 +803,19 @@ The tables below provide a quick overview of all control file options. See the d
 
 #### MSC-I Model (Introgression) *(v4.1+)*
 
-| Option | Syntax | Description |
-|--------|--------|-------------|
-| `hybridization` | `source target as node1 node2 tau=y,y phi=f` | Define introgression event |
-| `bidirection` | `pop1 pop2 as node1 node2 phi=f,f` | Bidirectional introgression |
+Introgression events are **not** specified with control-file options.
+They are encoded directly in the extended-Newick string given to
+`species&tree` using inline `[&phi=...,&tau-parent=...]` annotations.
+The commands below are not control-file keywords — they are commands
+used inside a separate definitions file consumed by
+`bpp --msci-create <file>`, which generates the extended-Newick string
+to paste into your control file. See the "Introgression and Migration
+Models" section for full syntax.
+
+| Helper command (msci-create file) | Syntax | Description |
+|-----------------------------------|--------|-------------|
+| `hybridization` | `source target as node1 node2 tau=y,y phi=f` | Generates a hybridization/introgression event in the output tree |
+| `bidirection`   | `pop1 pop2 as node1 node2 phi=f,f`            | Generates a bidirectional introgression event |
 
 #### MSC-M Model (Migration) *(v4.6+)*
 
@@ -5632,6 +5641,14 @@ nsample = 200000
 
 **Goal:** Model introgression/hybridization events.
 
+Introgression events are encoded directly in the species-tree
+newick string using extended-Newick annotations
+`[&phi=...,&tau-parent=...]`. The example below specifies an
+introgression event with hybrid node `H` between an ancestor of `C`
+and an ancestor on the branch leading to `(A, B)`. To build complex
+networks, use the helper `bpp --msci-create <file>` to generate the
+extended-Newick string and paste it into `species&tree`.
+
 **Control file:**
 ```
 seed = -1
@@ -5642,19 +5659,17 @@ jobname = MSCI_analysis
 speciesdelimitation = 0
 speciestree = 0
 
+# Extended-Newick: H is a hybridization node introgressing C into (A, B)
 species&tree = 3  A  B  C
                   10 10 10
-                  ((A, B)AB, C)R;
+                  ((A, (C)H[&phi=0.5,&tau-parent=yes])S, (H[&tau-parent=yes], B)T)R;
 
 usedata = 1
 nloci = 100
 
 thetaprior = invgamma 3 0.002
 tauprior = invgamma 3 0.03
-phiprior = beta 1 1         # prior on introgression probability
-
-# Introgression: from branch leading to A into branch leading to C
-hybridization = R A, AB C as S H tau=yes, no phi=0.1
+phiprior = 1 1              # Beta(1, 1) prior on introgression probability phi
 
 finetune = 1
 burnin = 20000
@@ -5663,9 +5678,10 @@ nsample = 200000
 ```
 
 **Key points:**
-- Use `phiprior` to set prior on introgression probability
-- `hybridization` defines the introgression event
-- See MSC-I documentation for full syntax options
+- `phiprior` takes two doubles (Beta shape parameters); do not include a `beta` keyword
+- Introgression is specified inline in `species&tree`, not via a separate `hybridization = ...` option
+- `&phi` is the introgression probability (used by `--simulate`, otherwise serves as a starting value); `&tau-parent` specifies whether the parent of the hybrid node has its own $\tau$
+- See [MSC-I Model](#msc-i-model-introgression) for the full annotation syntax and the `--msci-create` helper
 
 ### Recipe 6: Relaxed Clock Analysis
 
