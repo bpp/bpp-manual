@@ -1376,17 +1376,23 @@ probability for any specific number of species among the compatible
 models (of species delimitation and species phylogeny) uniformly.  
 **DEPENDENCIES**  
 The variable `speciesmodelprior` must be defined if either (or both)
-`speciestree = 1` or `speciesdelimitation = 1`. If
-`speciestree = 1` and `speciesdelimitation = 0` then only
-options `speciesmodelprior = 0` or `speciesmodelprior = 1` may
-be used.  
+`speciestree = 1` or `speciesdelimitation = 1`. Options `2` and `3`
+are only valid for A11 (`speciesdelimitation = 1` *and*
+`speciestree = 1`). For A01 (`speciestree = 1`,
+`speciesdelimitation = 0`) and A10 (`speciesdelimitation = 1`,
+`speciestree = 0`) only `speciesmodelprior = 0` or
+`speciesmodelprior = 1` may be used; supplying `2` or `3` in those
+analyses fatals with `Invalid 'speciesmodelprior' value`.  
 **COMMENTS**  
 The priors specified by options 2 and 3 are described in [Yang and Rannala 2014](https://doi.org/10.1093/molbev/msu279).
-The prior specified by option 3 may be suitable when there are many populations.  
+The prior specified by option 3 may be suitable when there are many populations. See
+[Validating control files with bpp-lint](#validating-control-files-with-bpp-lint) for an
+automated way to catch this and similar option-combination errors before launching a run.  
 **EXAMPLES**
 ```
 speciesmodelprior = 0
-speciesmodelprior = 3
+speciesmodelprior = 1
+speciesmodelprior = 3   # A11 only
 ```
 
 ### 15 phase
@@ -5540,6 +5546,49 @@ recompile.
 ## Troubleshooting
 
 This section covers common errors, problems, and their solutions.
+
+### Validating control files with bpp-lint
+
+The companion utility [bpp-lint](https://github.com/bpp/bpp-lint) parses
+a BPP control file and reports errors before you launch a run. It
+recognises BPP 4.x syntax, flags forbidden option combinations (e.g.
+`speciesmodelprior = 2` or `3` under A10), and proposes fixes for files
+written for older releases — covering both [renamed options](#control-file-errors)
+introduced in 4.x and syntax going back to BPP 2.x.
+
+**Build from source:**
+```
+git clone https://github.com/bpp/bpp-lint.git
+cd bpp-lint
+make
+```
+
+**Run on a control file:**
+```
+bpp-lint A00.bpp.ctl              # report errors and suggestions
+bpp-lint -d A00.bpp.ctl           # show a unified diff of auto-fixes
+bpp-lint -f A00.bpp.ctl           # rewrite in place (backs up to .bak)
+bpp-lint -s simulate.ctl          # lint a '--simulate' control file
+```
+
+**Useful flags:**
+
+- `--list-codes` — list every diagnostic code the linter can emit.
+- `--explain CODE` — print a longer description of a single diagnostic
+  code (e.g. `--explain 020`).
+- `--codes` — include the diagnostic code (e.g. `[020]`) in each line of
+  output; handy when filtering with `grep`.
+- `--suggest-priors` — read the control file's `seqfile` and `Imap` and
+  propose `thetaprior` / `tauprior` lines (`invgamma` with α = 3,
+  mean derived from the data).
+- `--check-priors` — same data-derived estimate, but compared against
+  the control file's existing priors; warns when more than ~10× off.
+
+!!! tip "Use bpp-lint before every run"
+    Running `bpp-lint -d <ctl>` catches most of the errors listed in
+    the rest of this section — obsolete keywords, missing dependencies,
+    invalid option combinations, and 2.x/3.x → 4.x migrations — in a
+    fraction of a second, without waiting for an MCMC chain to fatal.
 
 ### Installation Issues
 
