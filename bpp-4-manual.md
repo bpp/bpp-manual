@@ -353,17 +353,22 @@ cd examples/frogs/
 If the program executed successfully, you should see initial output
 similar to the following:
 ```{ .yaml .no-copy }
-bpp v4.8.0_linux_x86_64, 31GB RAM, 12 cores
+Detected CPU features: mmx sse sse2 sse3 ssse3 sse4.1 sse4.2 popcnt avx avx2
+bpp v4.8.7_linux_x86_64, 15GB RAM, 32 cores
 https://github.com/bpp/bpp
-	
+
 Auto-selected SIMD ISA: AVX2
-	
+
 
 Starting timer..
-Using seed: -1
+Seed: 694233523 (randomly generated)
 Parsing species tree... Done
 Parsing phylip file... Done
 ```
+(The reported version, RAM, core count and seed will of course vary
+on your system. When `seed = -1` BPP draws a fresh seed from the
+system and reports it on the `Seed:` line so the run can be
+reproduced later by editing the control file to use that integer.)
 Alternatively, you may see one or more error messages. This may be due
 to a spelling error, or you may not be in the correct subdirectory. If
 this does not appear to be the case and the problem persists you can ask
@@ -3676,19 +3681,30 @@ Prgs | Gage Gspr  th1  thg  tau  mix | theta1       log-PG         log-L
 
 0:27 spent in MCMC
 
-          theta_1H  lnL
-mean      0.000352  -12720.995649
-median    0.000337  -12720.726000
-S.D       0.000116  2.936769
-min       0.000089  -12735.535000
-max       0.001293  -12712.774000
-2.5%      0.000170  -12727.454000
-97.5%     0.000617  -12716.086000
-2.5%HPD   0.000145  -12726.920000
-97.5%HPD  0.000574  -12715.718000
-ESS*      757.838791  1180.434956
-Eff*      0.075784  0.118043
+ param     mean     median     S.D       min       max       2.5%     97.5%    2.5%HPD   97.5%HPD     ESS*       Eff*      rho1
+---------------------------------------------------------------------------------------------------------------------------------
+theta:1  0.000357  0.000341  0.000119  0.000105  0.000912  0.000169  0.000635  0.000159  0.000601  311.981713  0.311982  0.159801
+
+lnL      -12721.250814  -12720.967500  2.922500  -12734.458000  -12714.145000  -12727.192000  -12716.162000  -12726.572000  -12715.660000  324.592328  0.324592  0.238661
+
+
+Summarizing parameter estimates using file out.conditional_a1b1.txt ...
+
+ param     mean      S.D       2.5%     97.5%    2.5%HPD   97.5%HPD    Effu      Effy       c
+-------------------------------------------------------------------------------------------------
+theta:1  0.000363  0.000121  0.000175  0.000639  0.000149  0.000599  0.450205  0.421116  1.181238
 ```
+The first summary table lists one row per parameter (here only
+$\theta_1$ and `lnL`) and one column per posterior statistic: posterior
+mean, median, standard deviation, min, max, equal-tail 95% credible
+interval (`2.5%`, `97.5%`), highest-posterior-density 95% interval
+(`2.5%HPD`, `97.5%HPD`), effective sample size (`ESS*`), efficiency
+(`Eff*`), and lag-1 autocorrelation (`rho1`). The second table, headed
+"Summarizing parameter estimates using file `out.conditional_a1b1.txt`",
+reports the same posterior summaries computed from the conditional
+posterior recorded in the auxiliary `*.conditional_a1b1.txt` file
+(introduced in v4.8.1) together with the `Effu`, `Effy`, and `c`
+diagnostics for the conditional sampler.
 Note that in these examples we are using a random seed from the computer clock so your results will differ slightly from those shown. The line:
 ```{ .yaml .no-copy }
      |    Acceptance proportions     |
@@ -3897,44 +3913,67 @@ Prgs | Gage Gspr  th1  th2  thg  tau  mix | theta1 theta2 theta3    tau1   tau2 
 
 13:21 spent in MCMC
 
-              theta_1K  theta_2C  theta_3L  theta_4H  theta_5KCLH theta_6KCL theta_7KC tau_5KCLH tau_6KCL tau_7KC lnL
-    mean      0.003422  0.009588  0.006683  0.003031  0.003720  0.001577  0.001648  0.001823  0.001787  0.001710  -4444.16
-    median    0.003351  0.009492  0.006599  0.002932  0.003642  0.001412  0.001463  0.001809  0.001773  0.001700  -4443.69
-    S.D       0.000747  0.001461  0.001118  0.000819  0.000944  0.000899  0.000954  0.000234  0.000230  0.000238  11.615936
-    min       0.001309  0.004913  0.003258  0.000866  0.001131  0.000029  0.000039  0.001047  0.001043  0.000772  -4496.72
-    max       0.008147  0.017569  0.012778  0.009724  0.010355  0.008461  0.008987  0.003140  0.003113  0.002847  -4403.99
-    2.5%      0.002171  0.006999  0.004743  0.001729  0.002100  0.000325  0.000340  0.001404  0.001375  0.001271  -4468.01
-    97.5%     0.005084  0.012720  0.009104  0.004919  0.005780  0.003751  0.003991  0.002319  0.002280  0.002209  -4422.74
-    2.5%HPD   0.002071  0.006802  0.004595  0.001566  0.001949  0.000142  0.000164  0.001396  0.001342  0.001252  -4467.06
-    97.5%HPD  0.004928  0.012469  0.008903  0.004650  0.005573  0.003312  0.003512  0.002308  0.002237  0.002185  -4421.90
-    ESS*      2721.25   8954.56   5279.29   11762.38  1199.63   4543.27   3299.32   850.33    970.61    932.00    420.40
-    Eff*      0.027213  0.089546  0.052793  0.117624  0.011996  0.045433  0.032993  0.008503  0.009706  0.009320  0.004204
+ param     mean     median      S.D       min       max       2.5%     97.5%    2.5%HPD   97.5%HPD     ESS*       Eff*      rho1
+----------------------------------------------------------------------------------------------------------------------------------
+theta:1  0.003317  0.003248   0.000682  0.001705  0.005682  0.002172  0.004868  0.001947  0.004569  102.406093  0.102406  0.369769
+theta:2  0.009994  0.009813   0.001501  0.006180  0.016312  0.007416  0.013182  0.007321  0.012902  102.808251  0.102808  0.367336
+theta:3  0.006744  0.006658   0.001068  0.003474  0.011037  0.004823  0.008960  0.004676  0.008764  189.170193  0.189170  0.467882
+theta:4  0.003120  0.003025   0.000829  0.001468  0.007434  0.001811  0.005046  0.001684  0.004810  345.035961  0.345036  0.231715
+theta:5  0.003766  0.003662   0.000894  0.001715  0.007404  0.002275  0.005964  0.002158  0.005666   16.662652  0.016663  0.615495
+theta:6  0.001665  0.001518   0.000946  0.000054  0.006152  0.000327  0.003853  0.000239  0.003524  421.126958  0.421127  0.233307
+theta:7  0.001576  0.001427   0.000897  0.000123  0.005819  0.000267  0.003831  0.000123  0.003376  401.506041  0.401506  0.288305
+tau:5    0.001903  0.001902   0.000240  0.001229  0.002765  0.001442  0.002409  0.001440  0.002400   22.278306  0.022278  0.714517
+tau:6    0.001853  0.001855   0.000233  0.001180  0.002687  0.001414  0.002324  0.001406  0.002310   24.502869  0.024503  0.725154
+tau:7    0.001788  0.001780   0.000246  0.001172  0.002643  0.001344  0.002294  0.001344  0.002284   23.563475  0.023563  0.743529
+
+lnL      -4444.789459  -4444.722000  12.559818  -4479.345000  -4410.021000  -4469.515000  -4420.749000  -4467.476000  -4419.409000   26.107218  0.026107  0.656018
+
+
+FigTree tree is in out.FigTree.tre
+
+Summarizing parameter estimates using file out.conditional_a1b1.txt ...
+
+ param     mean      S.D       2.5%     97.5%    2.5%HPD   97.5%HPD    Effu      Effy       c
+-------------------------------------------------------------------------------------------------
+theta:1  0.003276  0.000664  0.002180  0.004761  0.002068  0.004597  0.096051  0.092150  1.788348
+theta:2  0.009890  0.001448  0.007348  0.012988  0.007105  0.012699  0.180065  0.167328  1.732247
+theta:3  0.006706  0.001083  0.004778  0.009023  0.004605  0.008815  0.193891  0.180904  1.587940
+theta:4  0.003078  0.000751  0.001880  0.004799  0.001742  0.004576  0.499119  0.370238  3.305110
+theta:5  0.003728  0.000859  0.002254  0.005656  0.002082  0.005415  0.015898  0.015820  1.447916
+theta:6  0.001605  0.000890  0.000349  0.003758  0.000168  0.003350  0.418180  0.380594  1.309178
+theta:7  0.001499  0.000854  0.000337  0.003594  0.000174  0.003152  0.239482  0.224320  1.393207
 ```
 There are again 5 acceptance proportions for the 5 parameter proposals,
 but now the current mean values of 6 parameters are printed. The current
-mean values of $\theta$ for nodes 1, 2 and 3 (`mthet1 mthet2 mthet3`)
+mean values of $\theta$ for nodes 1, 2 and 3 (`theta1 theta2 theta3`)
 are printed -- which are $\theta$s of the contemporary species K, C and
-L, and those of the 3 $\tau$s (`mtau1 mtau2 mtau3`) which are the
+L, and those of the 3 $\tau$s (`tau1 tau2 tau3`) which are the
 divergence times for ancestral species KCLH, KCL and KC, respectively.
 If there are many populations/species only the first few $\tau$s will be
 printed to screen but all the $\tau$s will be available in the summary
 created at the end of the run (see below). When the run finishes, a
-final block is written summarizing the results. The first two rows give
-the mean and median of the posterior distribution for each parameter.
-This is followed by summaries of the statistical uncertainty: the
-standard deviation (S.D.) of the posterior distribution; the minimum
-(min) and maximum (max) values; the lower and upper bounds of the 95%
+final block is written summarizing the results. Since v4.8.0 the
+table has **one row per parameter** (`theta:1`, `theta:2`, ..., the
+$\tau$s, and `lnL`) and **one column per posterior statistic**: the
+posterior mean and median, standard deviation (S.D.), minimum (min)
+and maximum (max), the lower and upper bounds of the 95%
 [Credible Interval](https://en.wikipedia.org/wiki/Credible_interval)
-(2.5% and 97.5%); the lower and upper bounds of the [Highest Posterior
-Density (HPD) Interval](https://en.wikipedia.org/wiki/Credible_interval)
-(2.5%HPD and 97.5%HPD); the Effective Sample Size (ESS\*); and the
-Efficiency (Eff\*). Larger values for ESS\* and Eff\* indicate better
-mixing and more reliable estimates. The above information is also
-printed (along with other technical details of the run) to the output
-file specified by the `jobname` variable in the control file (in our
-example, `jobname = out` and thus the output file is called `out.txt`).
-A tree file in NEXUS/Newick format is also created and placed in the file named
-FigTree.tre which is formatted for viewing/printing using the
+(`2.5%`, `97.5%`), the lower and upper bounds of the 95% [Highest
+Posterior Density (HPD)
+Interval](https://en.wikipedia.org/wiki/Credible_interval) (`2.5%HPD`,
+`97.5%HPD`), the Effective Sample Size (`ESS*`), the Efficiency
+(`Eff*`), and the lag-1 autocorrelation (`rho1`). Larger ESS\*/Eff\*
+and smaller rho1 indicate better mixing and more reliable estimates.
+A second summary table, headed `Summarizing parameter estimates using
+file out.conditional_a1b1.txt`, reports the same statistics computed
+from the auxiliary `*.conditional_a1b1.txt` file (introduced in
+v4.8.1) along with the conditional-sampler diagnostics `Effu`, `Effy`,
+and `c`. Both tables (plus other technical details of the run) are
+also written to the file named by the `jobname` variable in the
+control file — in our example, `jobname = out` and thus the output
+file is called `out.txt`. A tree file in NEXUS/Newick format is also
+created and placed in the file named FigTree.tre which is formatted
+for viewing/printing using the
 [Figtree](http://tree.bio.ed.ac.uk/software/figtree/) program
 
 #### MCMC output file
@@ -4098,7 +4137,7 @@ Columns 7 and 8 are the acceptance proportions for moves that
 change the species tree topology, both are much lower than the
 other parameter proposals, this is typical and it is often not possible
 to improve these acceptance proportions. 
-Columns 9 and 10 are posterior means of $\theta$ and $\tau$ for the root population (-1 is printed in column 9 if $\theta$s are integrated out). The last two numbers are the log MSC gene-tree density ([Rannala and Yang 2003](https://doi.org/10.1093/genetics/164.4.1645)) and the average log sequence likelihood (Felsenstein 1981).
+Columns 9 and 10 are posterior means of $\theta$ and $\tau$ for the root population. Since BPP v4.8.2 the inverse-gamma `thetaprior` estimates $\theta$ by default, so column 9 normally shows a real value; `-1` only appears if you ask for analytical integration with `thetaprior = invgamma a b int`. The last two numbers are the log MSC gene-tree density ([Rannala and Yang 2003](https://doi.org/10.1093/genetics/164.4.1645)) and the average log sequence likelihood (Felsenstein 1981).
 
 Next, there are 4 sections: A, B, C and D summarizing the results.
 Section (A) lists the species trees in decreasing order of posterior
@@ -4895,12 +4934,12 @@ segments.
 Running the program on the above control file produces the following screen output, indicating
 that the simulation has been successful:
 ```{ .yaml .no-copy }
-bpp --simulate MCcoal.ctl 
-Site rates: alpha sampled from Gamma(100.000000,20.000000), K = 5
-bpp v4.7.0_linux_x86_64, 15GB RAM, 8 cores
+$ bpp --simulate MCcoal.ctl
+Detected CPU features: mmx sse sse2 sse3 ssse3 sse4.1 sse4.2 popcnt avx avx2
+bpp v4.8.7_linux_x86_64, 15GB RAM, 32 cores
 https://github.com/bpp/bpp
 
-Detected CPU features: mmx sse sse2 sse3 ssse3 sse4.1 sse4.2 popcnt avx avx2
+Site rates: alpha sampled from Gamma(100.000000,20.000000), K = 5
 Auto-selected SIMD ISA: AVX2
 
 Substitution model: GTR with generated rates from Dirichlet
@@ -4916,9 +4955,9 @@ Map of populations and ancestors (1 in map indicates ancestor):
 2 B         0  1  0  0  1  1  0  tau = 0.000000  theta = 0.010000
 3 C         0  0  1  0  1  0  1  tau = 0.000000  theta = 0.000000
 4 D         0  0  0  1  1  0  1  tau = 0.000000  theta = 0.000000
-5 ABCD      0  0  0  0  1  0  0  tau = 0.012000  theta = 0.010000
-6 AB        0  0  0  0  1  1  0  tau = 0.010000  theta = 0.010000
-7 CD        0  0  0  0  1  0  1  tau = 0.011000  theta = 0.010000
+5 A,B,C,D   0  0  0  0  1  0  0  tau = 0.012000  theta = 0.010000
+6 A,B       0  0  0  0  1  1  0  tau = 0.010000  theta = 0.010000
+7 C,D       0  0  0  0  1  0  1  tau = 0.011000  theta = 0.010000
 
 Sequence data file -> MySeq.txt
 Trees -> MyTree.tre
