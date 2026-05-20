@@ -239,12 +239,12 @@ Download the distribution file containing an executable for your
 operating system and uncompress the file. Change the current directory
 to be the root of the subdirectory created by uncompressing the file.
 For example, on a Linux machine you could type the following to download
-and install bpp version 4.8.0 (the latest version may be different from
+and install bpp version 4.8.7 (the latest version may be different from
 this):
 ```
-wget https://github.com/bpp/bpp/releases/download/v4.8.0/bpp-4.8.0-linux-x86_64.tar.gz
-tar -xzf bpp-4.8.0-linux-x86_64.tar.gz
-cd bpp-4.8.0-linux-x86_64
+wget https://github.com/bpp/bpp/releases/download/v4.8.7/bpp-4.8.7-linux-x86_64.tar.gz
+tar -xzf bpp-4.8.7-linux-x86_64.tar.gz
+cd bpp-4.8.7-linux-x86_64
 ```
 You are now ready to proceed to [BPP Trial Run](#bpp-trial-run)
 
@@ -337,8 +337,8 @@ uncompressing the bpp distribution file. For example, in Linux the
 following commands will uncompress the distribution file and move you to
 the top level of the bpp directory:
 ```
-tar -xvzf bpp-4.8.0-linux-x86_64.tar.gz
-cd bpp-4.8.0-linux-x86_64
+tar -xvzf bpp-4.8.7-linux-x86_64.tar.gz
+cd bpp-4.8.7-linux-x86_64
 ```
 In the bpp/ subdirectory, run the program in Windows by typing the
 following command within the Terminal application:
@@ -406,8 +406,8 @@ Below is a list of command-line options for running BPP.
 | `--theta-showeps`         | Show individual step lengths/pjumps for each $\theta$                                                  |
 | `--theta-slide-prob FLOAT`| Frequency for $\theta$ sliding window move (default: 0.1)                                              |
 | `--phi-slide-prob FLOAT`  | Frequency for $\phi$ sliding window move (default: 0.1)                                                |
-| `--wrate_mode INTEGER`    | Definition of W step lengths (default: 1)                                                              |
-| `--wrate-slide-prob FLOAT`| Frequency for W sliding window move (default: 0.1)                                                     |
+| `--wrate_mode INTEGER`    | Definition of W (migration-rate) step lengths (default: 1). `1`: one step length for all W; `2`: one step length per migration rate. Mirrors `--theta_mode` for theta. Cannot be combined with `--wrate-slide-prob 0` (equivalent to mode 1) or with gene-flow inference. |
+| `--wrate-slide-prob FLOAT`| Frequency for W sliding window move (default: 0.1). Renamed from `--mrate_move` in v4.8.6.            |
 | `--wrate-showeps`         | Show individual step lengths/pjumps for each W                                                         |
 | `--extend INTEGER`        | Extend resumed analysis by number of MCMC samples (use with --resume)                                  |
 | `--keep-labels`           | Keep original node labels when summarizing results                                                     |
@@ -743,7 +743,7 @@ The tables below provide a quick overview of all control file options. See the d
 | Option | Syntax | Default | Description |
 |--------|--------|---------|-------------|
 | `seed` | `seed = -1` or `seed = N` | `-1` | Random seed (-1 = auto-generate) |
-| `usedata` | `usedata = 0\|1\|2` | `1` | 0: prior only, 1: likelihood+prior, 2: prior with fixed gene tree |
+| `usedata` | `usedata = 0\|1\|2` | `1` | 0: prior only, 1: likelihood+prior, 2: condition on fixed gene trees (A00 only, v4.8.4+) |
 | `jobname` | `jobname = prefix` | — | Output file prefix (replaces deprecated `outfile`/`mcmcfile`) |
 | `seqfile` | `seqfile = path` | — | Path to sequence alignment file |
 | `Imapfile` | `Imapfile = path` | — | Path to individual-to-species mapping file |
@@ -775,7 +775,7 @@ The tables below provide a quick overview of all control file options. See the d
 
 | Option | Syntax | Example | Description |
 |--------|--------|---------|-------------|
-| `thetaprior` | `invgamma a b [e]` | `invgamma 3 0.002` | Prior on θ (population size) |
+| `thetaprior` | `invgamma a b [int]` | `invgamma 3 0.002` | Prior on θ (population size); add `int` to integrate θ analytically (v4.8.2+); requires `a > 2` |
 | | `gamma a b` | `gamma 2 100` | |
 | | `beta p q l u` | `beta 1 1 0 0.01` | |
 | `tauprior` | `invgamma a b` | `invgamma 3 0.03` | Prior on τ (divergence times) |
@@ -877,20 +877,29 @@ seed = 278
 usedata = b
 ```
 **DESCRIPTION**  
-Specifies whether data (likelihood+priors) are used in calculating
-probabilities during MCMC or only priors.  
+Specifies whether sequence data (likelihood + priors) are used during
+the MCMC, or only priors, or whether the gene trees themselves serve
+as the observed data.  
 **VALUES**
 `0`, use only the priors to calculate probabilities (likelihood
 constant).
 `1`, use likelihood and prior probabilities.
-`2`, use only the priors (like `0`) but fix the gene tree topology.
+`2`, use fixed gene trees as the data instead of sequences. The gene
+tree topologies and node ages are held fixed during the MCMC; only
+species-tree parameters ($\theta$, $\tau$) are sampled. Added in v4.8.4.
 **DEFAULT**
 `1`
 **COMMENTS**
 The `0` option can be used for debugging, or examining priors. When
 using option `0` a MCMC run produces samples from the prior for each
-variable. Option `2` is similar to `0` but additionally fixes the gene
-tree topology during the MCMC run.
+variable. Option `2` treats user-supplied gene trees as the observation:
+the sequence likelihood is not computed, and the gene tree age, gene
+tree SPR, migration age, $\tau$ and mixing proposals are all skipped.
+The MCMC samples $\theta$ (and $\tau$ when applicable) conditional on
+the fixed gene trees. This mode is currently restricted to the A00
+analysis (fixed species tree, no species delimitation, no gene flow);
+BPP exits with an error if combined with species-tree estimation,
+delimitation, or migration.
 **EXAMPLES**
 ```
 usedata = 0
@@ -1514,8 +1523,8 @@ thetaprior = s [(f*, f f s)]
 **DESCRIPTION**  
 Specifies the distribution model and parameters of the prior
 distribution on the contemporary and ancestral population parameters
-$\theta$ and whether the MCMC integrates over the parameters or the
-integration is instead performed analytically.  
+$\theta$ and whether $\theta$s are estimated as part of the MCMC or
+integrated out analytically.  
 **VALUES**  
 `s`, specifies the form of the prior distribution on theta and
 should be either `invgamma`, `gamma` or `beta` to specify either an
@@ -1526,12 +1535,13 @@ specified in the first argument. The permissible combinations of
 distributions and parameters are:
 ```
     invgamma a b
-    invgamma a b e
+    invgamma a b int
 ```
 which specifies an inverse gamma prior with $\alpha$ and $\beta$
-parameters a and b, respectively. The first entry specifies that
-$\theta$s are integrated over analytically and the second entry (with
-trailing e) specifies that $\theta$s are estimated.
+parameters a and b, respectively. The first entry estimates the
+$\theta$ parameters as part of the MCMC; adding the trailing `int`
+integrates the $\theta$s out analytically. The inverse-gamma prior
+requires $\alpha > 2$.
 ```
     gamma a b
 ```
@@ -1541,10 +1551,20 @@ b, respectively.
     beta p q l u
 ```
 which specifies a beta prior constrained to the interval $(l,u)$ with
-parameters p and q, respectively. All the distributions above, except
-the inverse Gamma distribution (without the e argument) integrate over
-the $\theta$ parameters numerically as part of the MCMC, estimating the
-posterior distribution of $\theta$ for each population.  
+parameters p and q, respectively. All these distributions estimate the
+$\theta$ parameters as part of the MCMC, producing posterior summaries
+for each population. Only the inverse-gamma prior additionally supports
+the `int` keyword for analytical integration of $\theta$.
+
+!!! warning "Behavior change in BPP v4.8.2"
+    Starting with BPP v4.8.2 the inverse-gamma prior **estimates**
+    $\theta$ by default. Earlier versions integrated $\theta$ out
+    analytically by default and required a trailing `e` to switch to
+    estimation. The `e`/`E` flag is still accepted for backward
+    compatibility but is now a no-op (it duplicates the default).
+    To request analytical integration in v4.8.2+ use the new `int`
+    keyword: `thetaprior = invgamma 3 0.002 int`.
+
 **COMMENTS**  
 The inverse-gamma prior `invgamma a b`, where a and b are the parameters
 $\alpha$ and $\beta$, has mean and variance: 
@@ -1554,32 +1574,34 @@ $\textrm{Mean}(\theta) = \frac{\beta}{\alpha - 1}$,
 $\textrm{Var}(\theta) = \frac{\beta^2}{(\alpha - 1)^2 (\alpha - 2)}$.
 
 For example, if $\alpha=3$ and $\beta=0.002$ the mean is
-$0.002/(3 – 1) = 0.001$ (one variable site per kb on average). Note that
-all $\theta$ parameters in the MSC model (for both modern species and
-extinct ancestral species) are assigned the same specified prior
-distribution with identical parameters. The inverse-gamma is a conjugate
-prior for $\theta$ (Hey and Nielsen, 2007), which means that both the
-prior and the posterior of $\theta$ will be inverse-gamma. Use of the
-conjugate prior allows the $\theta$ parameters to be integrated out
-analytically, and thus the dimension of the parameter space is reduced.
-This typically leads to improved mixing of the MCMC.
+$0.002/(3 – 1) = 0.001$ (one variable site per kb on average). The
+shape parameter must satisfy $\alpha > 2$ for the variance to be
+defined; BPP will exit with an error otherwise. Note that all $\theta$
+parameters in the MSC model (for both modern species and extinct
+ancestral species) are assigned the same specified prior distribution
+with identical parameters. The inverse-gamma is a conjugate prior for
+$\theta$ (Hey and Nielsen, 2007), which means that both the prior and
+the posterior of $\theta$ will be inverse-gamma. Use of the conjugate
+prior allows the $\theta$ parameters to be integrated out analytically,
+and thus the dimension of the parameter space is reduced. This typically
+leads to improved mixing of the MCMC.
 
 !!! note "Trade-off: Analytical Integration vs. Posterior Estimation"
-    Using `invgamma a b` (without `e`) integrates θ analytically for better MCMC mixing,
-    but you won't get posterior distributions for θ. To estimate θ posteriors, use
-    `invgamma a b e` instead.
+    Adding `int` to `invgamma a b` integrates θ analytically for better
+    MCMC mixing, but you will not get posterior distributions for θ. The
+    default (without `int`) estimates θ and gives per-population
+    posterior summaries.
 
-To estimate the $\theta$ parameters when using an inverse gamma prior,
-add the letter e (or E) on the line, as follows
+To integrate the $\theta$ parameters out analytically when using an
+inverse gamma prior, add the keyword `int` on the line, as follows
 ```
-    thetaprior = 3 0.002 e
+    thetaprior = invgamma 3 0.002 int
 ```
 Whether $\theta$s are integrated out or estimated, other results (such
 as the posterior probability of species trees or species-delimitation
-models) should be identical if the same prior is used. The analytical
-integration of $\theta$ is only possible with an inverse gamma prior
-distribution, if any other prior is used the $\theta$s are automatically
-estimated and the E flag is not needed and should not be used. The gamma
+models) should be identical if the same prior is used. Analytical
+integration of $\theta$ is only possible with an inverse gamma prior;
+the `int` keyword is rejected for the gamma and beta priors. The gamma
 prior `gamma a b`, where a and b are the parameters $\alpha$ and
 $\beta$, has mean and variance: 
 
@@ -1602,8 +1624,9 @@ $\frac{2(0.1)+18(10^{-6})}{2+18} = 0.0100009$
 which is 10 variable sites per kb on average.  
 **EXAMPLES**
 ```
-thetaprior = invgamma 3 0.002
-thetaprior = invgamma 4 0.001 e
+thetaprior = invgamma 3 0.002         # estimate theta (default since v4.8.2)
+thetaprior = invgamma 3 0.002 int     # integrate theta analytically
+thetaprior = invgamma 4 0.001         # estimate theta
 thetaprior = beta 2 18 1e-6 0.1
 thetaprior = beta 2 18 1e-6 0.01
 thetaprior = beta 1 10 0.0001 0.2
@@ -1819,7 +1842,7 @@ clock model are also specified.
 `+d`, specifies a strict clock (1), a variable clock with
 independent rates among branches (2), a variable clock with
 autocorrelated rates between ancestral and descendent branches (3),
-or a simple variable clock model (4).  
+or a simple "lineage rate" model (4, added in v4.8.5/4.8.6).  
 `f f f s s`, are required when `clock =` 2 or 3 and specify
 respectively the parameters $\alpha_{\bar{\nu}}$, $\beta_{\bar{\nu}}$
 and $\alpha_{\nu_i}$, the prior distribution for the locus rate
@@ -1835,8 +1858,9 @@ $\nu_i$ given $\bar\nu$ follows the same procedure as the specification
 of the distribution of $\mu_i$ given the mean rate $\bar\mu$ when
 modeling among-locus rate variation; see notes above about the
 `locusrate` variable.
-`f f`, are required when `clock = 4` and specify the parameters
-$\alpha_{\bar{\nu}}$ and $\beta_{\bar{\nu}}$ for the simple rates model.  
+`f`, is required when `clock = 4` and specifies the single shape
+parameter $\alpha$ of the gamma($\alpha, \alpha$) prior on the lineage
+rate (see below).  
 **DEFAULT**  
 `1`  
 **DEPENDENCIES**  
@@ -1924,12 +1948,33 @@ prior mean $\alpha_{\bar{\nu}} / \beta_{\bar{\nu}}$. If
 $\alpha_{\bar{\nu}} = 10$ and $\beta_{\bar{\nu}} = 100$, the prior mean
 will be 0.1. Thus, for the log-normal model $\nu = 0.5$ represents a
 serious violation of the clock while $\nu < 0.1$ represents only a
-slight violation.  
+slight violation.
+
+**Clock 4 (lineage rate model)**  
+The option `clock = 4 a` specifies a "simple" or "lineage" rate model
+added in BPP v4.8.5/4.8.6. Each branch of the species tree is assigned
+its own substitution rate $r_b$ drawn from a gamma($\alpha, \alpha$)
+prior, with prior mean 1 and variance $1/\alpha$ (so larger $\alpha$
+gives less rate variation among lineages). The branch rate is shared
+across all loci — there is no per-locus variation of branch rates as
+under clocks 2 and 3. At each locus the effective branch rate is
+$r_b \cdot \mu_i$, where $\mu_i$ is the locus rate (see `locusrate`).
+Clock 4 takes a single parameter (the shape $\alpha$). A larger
+$\alpha$ (e.g. 20) enforces a near-clock model; smaller values (e.g.
+1–2) allow substantial rate heterogeneity among species-tree branches.
+
+!!! note "Clock 4 syntax"
+    The BPP help text and changelog list `clock = 4 a_vbar b_vbar`
+    (two parameters), but the v4.8.7 parser accepts a single
+    parameter and stores it as $\alpha$ of a gamma($\alpha, \alpha$)
+    prior. Supply one value, e.g. `clock = 4 10`.
+
 **EXAMPLES**
 ```
 clock = 1
 clock = 2 10.0 100.0 5.0 dir LN
 clock = 3 10.0 50.0 3.0 dir G
+clock = 4 10                 # lineage rate model, gamma(10,10) per-branch
 ```
 
 ### 27 heredity
@@ -2176,14 +2221,74 @@ loadbalance = zigzag
 traitfile = s
 ```
 **DESCRIPTION**
-Specifies the file containing trait data for morphological analysis.
+Specifies the file containing morphological/trait data to be analysed
+jointly with the sequence data under the MSC. Support for
+morphological data was merged in BPP v4.8.6 and should be considered
+preliminary.
+
 **VALUES**
 `s`, a string specifying the path to the trait data file.
+
+**TRAIT FILE FORMAT**
+The trait file consists of one or more *partitions* (blocks). Each
+partition has a header line and a block of per-species trait values:
+
+```
+[# optional comment lines starting with '#']
+ntaxa  ntraits  type  [v_pop  ldetRs]
+species1  val_1_1  val_1_2  ...  val_1_ntraits
+species2  val_2_1  val_2_2  ...  val_2_ntraits
+...
+```
+
+Header fields:
+
+- `ntaxa` — number of species (> 0).
+- `ntraits` — number of trait columns in the partition (> 0).
+- `type` — `C` or `c` for continuous traits, `D` or `d` for discrete.
+- `v_pop`, `ldetRs` — *(continuous only)* the within-population
+  variance and the log-determinant of the shrinkage estimate of the
+  trait correlation matrix R*. These are precomputed during data
+  preprocessing.
+
+Trait value conventions:
+
+- Continuous (`C`): real numbers. Negative values are supported. `?`
+  marks a missing value (stored as NaN).
+- Discrete (`D`): single digits `0`–`9` per character. `?` and `-`
+  are treated as missing (all states allowed). Ambiguity is written
+  using either braces `{...}` or parentheses `(...)` around the set
+  of allowed states, e.g. `{012}`.
+
+Multiple partitions can be concatenated in the same file by following
+one block immediately with the next header line.
+
 **EXAMPLES**
 ```
 traitfile = traits.txt
 traitfile = /home/user/data/morphology.txt
 ```
+
+Example partition (continuous):
+```
+4 3 C 0.12 1.345
+speciesA  0.31  -0.12  1.04
+speciesB  0.45   0.08  0.92
+speciesC  0.27   ?     1.10
+speciesD  0.33  -0.05  0.99
+```
+
+Example partition (discrete):
+```
+3 4 D
+speciesA  0 1 2 {01}
+speciesB  0 1 1 1
+speciesC  1 ? 2 0
+```
+
+!!! warning "Preliminary feature"
+    Morphological/trait data support was added in v4.8.6. Behavior,
+    input format, and model details may change in future releases.
 
 ## Example control file
 
@@ -2228,7 +2333,7 @@ Control files illustrating the 4 methods of analysis A00, A01, A10 and A11 are f
     cleandata = 0    
 
     # invgamma(a, b) for theta
-    thetaprior = invgamma 3 0.004 E  
+    thetaprior = invgamma 3 0.004  
 
     # invgamma(a, b) for root tau & Dirichlet(a) for other tau's
     tauprior = invgamma 3 0.002    
@@ -2411,13 +2516,15 @@ likelihood calculation. Setting `cleandata = 1` instead specifies that
 such data are removed prior to analysis.
 ```
     # invgamma(a, b) for theta
-    thetaprior = invgamma 3 0.004 E  
+    thetaprior = invgamma 3 0.004  
 ```
-The line `thetaprior = 3 0.004 E` specifies the inverse-gamma prior
-IG($\alpha, \beta$) for the $\theta$ parameters, with the mean to be
+The line `thetaprior = invgamma 3 0.004` specifies the inverse-gamma
+prior IG($\alpha, \beta$) for the $\theta$ parameters, with the mean
 $\beta/(\alpha-1)$. In the example, the mean is $0.004/(3 – 1) = 0.002$
-(two substitutions per kb on average) and the option E specifies that
-the program analytically integrates over $\theta$s. Note that all
+(two substitutions per kb on average). Since BPP v4.8.2 the
+inverse-gamma prior estimates $\theta$ by default, producing
+per-population posterior summaries. To request analytical integration
+of $\theta$ instead, add the `int` keyword (see below). Note that all
 $\theta$ parameters in the MSC model (for both modern species and
 extinct ancestral species) are assigned the inverse-gamma prior with the
 same parameters.
@@ -2429,18 +2536,22 @@ inverse-gamma. Use of the conjugate priors allows the $\theta$
 parameters to be integrated out analytically, and thus the dimension of
 the parameter space is reduced. This typically leads to improved mixing
 of the MCMC. However, with this option, the posterior of the $\theta$
-parameters will not be produced. To estimate the $\theta$ parameters,
-add the letter e (or E) on the line, as follows
+parameters will not be produced. To integrate the $\theta$ parameters
+out analytically, add the `int` keyword on the line, as follows
 ```
-    thetaprior = invgamma 3 0.002 e
+    thetaprior = invgamma 3 0.002 int
 ```
-Whether $\theta$s are integrated out or estimated, other results (such
-as the posterior of the $\theta$ parameters or the posterior probability
-of species trees or species-delimitation models) should be identical. A
-useful strategy may be to run the A01, A10, and A11 analyses without
-estimating the $\theta$ parameters, and after the MAP model (the best
-species tree or the best species delimitation model) is identified, run
-the A00 analysis with the model fixed to estimate all parameters.
+Prior to BPP v4.8.2 the default was the opposite — invgamma integrated
+$\theta$ analytically by default and the letter `e`/`E` was used to
+request estimation. The `e`/`E` flag is still accepted for backward
+compatibility but is now redundant (it just confirms the default
+behavior). Whether $\theta$s are integrated out or estimated, other
+results (such as the posterior probability of species trees or
+species-delimitation models) should be identical. A useful strategy may
+be to run the A01, A10, and A11 analyses with $\theta$ integrated out,
+and after the MAP model (the best species tree or the best species
+delimitation model) is identified, run the A00 analysis with the model
+fixed and $\theta$ estimated to obtain all parameters.
 
 Some notes about the inverse-gamma distribution. Since
 BPP3.4, both the $\theta$ and $\tau$ parameters are
@@ -2449,9 +2560,10 @@ version 3.3 or earlier. One difference is that the gamma is light-tailed
 while the inverse-gamma is heavy-tailed, so that the inverse-gamma may
 be less influential than the gamma if your prior mean is much too small.
 The inverse-gamma distribution IG($\alpha, \beta$) has mean
-$m = \alpha/(\beta-1)$ if $\alpha > 1$ and variance
+$m = \beta/(\alpha-1)$ if $\alpha > 1$ and variance
 $s^2 = \beta^2/[(\alpha-1)^2(\alpha-2)]$ if $\alpha > 2$, while the
-coefficient of variation is $s/m = \sqrt{1/(\alpha-2)}$. If little
+coefficient of variation is $s/m = \sqrt{1/(\alpha-2)}$. BPP requires
+$\alpha > 2$ for the invgamma `thetaprior`. If little
 information is available about the parameters, you can use $\alpha = 3$
 for a diffuse prior and then adjust the $\beta$ so that the mean looks
 reasonable. For example, for the human species,
@@ -5274,7 +5386,7 @@ jobname = results
 clock = 1                                 # strict clock (default)
 clock = 2 a_vbar b_vbar a_vi prior dist   # independent rates
 clock = 3 a_vbar b_vbar a_vi prior dist   # correlated rates
-clock = 4 a_vbar b_vbar                   # simple rates
+clock = 4 a                               # lineage rate model (gamma(a,a) per species-tree branch)
 ```
 
 ### MCMC Issues
@@ -5592,7 +5704,7 @@ nsample = 200000
 - `clock = 1` — strict clock (default)
 - `clock = 2 ... iid G` — independent rates, gamma distributed
 - `clock = 3 ... iid G` — autocorrelated rates
-- `clock = 4 a b` — simple rates model
+- `clock = 4 a` — lineage rate model (per-species-branch rate, gamma(a, a) prior, shared across loci)
 
 ---
 
