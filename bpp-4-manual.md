@@ -4286,9 +4286,9 @@ Number of species-delimitation models = 5
    5 111   0.200000   0.989410
 
 Order of ancestral nodes:
-  KCLH
-  KC
-  LH
+  K,C,L,H
+  K,C
+  L,H
 
 Guide tree with posterior probability for presence of nodes:
 ((K, C)#0.995370, (L, H)#0.994040)#1.000000;;
@@ -4338,9 +4338,9 @@ Number of species-delimitation models = 5
    5 111   0.200000   0.989410
 
 Order of ancestral nodes:
-  KCLH
-  KC
-  LH
+  K,C,L,H
+  K,C
+  L,H
 
 Guide tree with posterior probability for presence of nodes:
 ((K, C)#0.995370, (L, H)#0.994040)#1.000000;;
