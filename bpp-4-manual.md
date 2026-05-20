@@ -5556,7 +5556,39 @@ recognises BPP 4.x syntax, flags forbidden option combinations (e.g.
 written for older releases — covering both [renamed options](#control-file-errors)
 introduced in 4.x and syntax going back to BPP 2.x.
 
-**Build from source:**
+**Download a pre-built binary** (recommended). Pick the archive for
+your platform from the
+[latest release](https://github.com/bpp/bpp-lint/releases/latest)
+and extract it. The current release is `v0.1.0`:
+
+Linux x86_64:
+```bash
+wget -c https://github.com/bpp/bpp-lint/releases/download/v0.1.0/bpp-lint-0.1.0-linux-x86_64.tar.gz -O - | tar -xz
+export PATH=$PATH:$PWD/bpp-lint-0.1.0-linux-x86_64
+```
+
+Mac x86_64 (Intel):
+```bash
+wget -c https://github.com/bpp/bpp-lint/releases/download/v0.1.0/bpp-lint-0.1.0-macos-x86_64.tar.gz -O - | tar -xz
+export PATH=$PATH:$PWD/bpp-lint-0.1.0-macos-x86_64
+```
+
+Mac arm64 (Apple Silicon M1/M2/M3):
+```bash
+wget -c https://github.com/bpp/bpp-lint/releases/download/v0.1.0/bpp-lint-0.1.0-macos-arm64.tar.gz -O - | tar -xz
+export PATH=$PATH:$PWD/bpp-lint-0.1.0-macos-arm64
+```
+
+Windows x86_64: download
+<https://github.com/bpp/bpp-lint/releases/download/v0.1.0/bpp-lint-0.1.0-windows-x86_64.zip>
+and extract it. The executable is `bpp-lint.exe`.
+
+Each release archive also ships a `SHA256SUMS` file alongside the
+binaries; verify the download with `shasum -a 256 -c SHA256SUMS` (or
+`sha256sum -c` on Linux) if your environment requires it.
+
+**Build from source** (only needed if no pre-built binary fits your
+platform, or you want the latest commit):
 ```
 git clone https://github.com/bpp/bpp-lint.git
 cd bpp-lint
