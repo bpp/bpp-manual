@@ -4974,10 +4974,9 @@ seqfile = mydata.txt
 *concatfile = concat.txt
 modelparafile = modelparas.txt
 #phase = 0 0 0
-species&tree = 3
-A B C
-4 4 4
-((A #0.015, B #0.025) S #0.015 :0.01, C #0.025) :0.02 #0.025;
+species&tree = 3  A B C
+                  4 4 4
+                  ((A #0.015, B #0.025) S #0.015 :0.01, C #0.025) :0.02 #0.025;
 loci&length = 2000 500
 model = 0
 * JC
@@ -4988,12 +4987,12 @@ A C 0.2 5
 There are two major differences from the previous (MSC) example. First, in the species tree
 the ancestral population to clade (A, B) is given a label S:
 ```
-species&tree = 3
-A B C
-4 4 4
-((A #0.015, B #0.025) S #0.015 :0.01, C #0.025) :0.02 #0.025;
+species&tree = 3  A B C
+                  4 4 4
+                  ((A #0.015, B #0.025) S #0.015 :0.01, C #0.025) :0.02 #0.025;
 ```
-A label is needed if migration is going to be specified for the ancestral population.
+A label is needed if migration is going to be specified for the ancestral population. Note that, as in all BPP control files, the species count and species names must appear on the same line as `species&tree =`; the count of sequences per species follows on the next line, then the tree.
+
 Second, there is a new `migration` block:
 ```
 migration = 2
