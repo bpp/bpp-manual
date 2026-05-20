@@ -766,7 +766,7 @@ The tables below provide a quick overview of all control file options. See the d
 | `burnin` | `burnin = N` | — | Number of burn-in iterations |
 | `sampfreq` | `sampfreq = N` | — | Sample every N iterations |
 | `nsample` | `nsample = N` | — | Number of samples to collect |
-| `finetune` | `finetune = 0\|1: params...` | `1` | Auto-tune (1) or manual step sizes |
+| `finetune` | `finetune = 0\|1 [key:val ...]` | `1` | Auto-tune (1) or fixed (0); optional `key:val` overrides initial step sizes (v4.8.1+) |
 | `checkpoint` | `checkpoint = N N` | — | Checkpoint frequency and number to keep |
 | `threads` | `threads = N [N N]` | `1` | Number of threads [start pin] |
 | `loadbalance` | `none` or `zigzag` | `none` | Thread load balancing strategy |
