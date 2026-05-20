@@ -5009,8 +5009,42 @@ proportion of individuals in population $j$ that are migrants from population $i
 $M_{SC} = 0.1$, which means that on average 0.1 individuals are immigrants from population S
 to population C. We use forward-time for our definition of rates as the rates are then more biologically meaningful.
 This control file format is used in BPP version 4.4 onward, and is different from the old MCcoal format, in which the labels and 
-order for populations are fixed by the program. The control file included in the release ( `MCcoal.im-3s-saturated.ctl` ) simulates data on a
-species tree for three species, with eight migration rates.
+order for populations are fixed by the program.
+
+#### A 3-species 'saturated' migration example
+
+The control file below simulates data on a three-species tree
+$((A, B)S, C)R$ with the full set of eight directional migration rates
+between concurrent populations: every tip-to-tip pair (A↔B, A↔C, B↔C)
+plus the $S$↔$C$ rates between the ancestor of $(A,B)$ and $C$. Save
+it as `MCcoal.im-3s-saturated.ctl` and run `bpp --simulate
+MCcoal.im-3s-saturated.ctl`.
+```
+seed = -1
+treefile = mytree.tre
+Imapfile = myimap.txt
+seqfile = mydata.txt
+modelparafile = modelparas.txt
+
+species&tree = 3  A B C
+                  4 4 4
+                  ((A #0.01, B #0.01) S #0.01 :0.01, C #0.01) :0.02 #0.01;
+
+loci&length = 5 500
+model = 0
+
+# 'Saturated' migration on a 3-species tree: every directional rate
+# between concurrent populations (A, B, C plus the AB-ancestor S).
+migration = 8
+A B 0.1
+B A 0.1
+A C 0.1
+C A 0.1
+B C 0.1
+C B 0.1
+S C 0.1
+C S 0.1
+```
 
 ### Simulation with tip-dating under the MSC
 Here we consider a simple example of a simulation under the MSC with tip-dating.
