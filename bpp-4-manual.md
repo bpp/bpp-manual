@@ -5066,7 +5066,7 @@ seqDates = seqDates.txt
 
 species&tree = 3  A B C 
                   4 4 2
-		  (A #0.001, B #0.001):.007 #0.001, (C #0.001, D #0.001):.004 #.001);
+		  ((A #0.001, B #0.001):.004 #0.001, C #0.001):.007 #.001;
 
 phase =   0 0 0 
 
@@ -5077,11 +5077,18 @@ locusrate =0
 model = 0
 
 ```
+!!! note "Simulator Newick convention"
+    In the simulator's species-tree string, `:value` after a node is
+    the **absolute tau** (age) of that node, not a branch length as in
+    standard Newick. Tau values must therefore be monotonically
+    increasing from tips to root, so the ancestor of `(A, B)` here has
+    tau `0.004` and the root has tau `0.007`.
+
 The only difference in the control file when using tip-dating is the inclusion of the `datefile` and `seqDates` options. `datefile` specifies the name/path to the file containing the sequence ages
 The ages are in units of expected number of substitutions, which is not the same as the inference program.
 The dates are assigned to populations. 
 The number of sample dates must match the number of samples from each population. 
-For example, in the below date file, there are 4 samples from population A with sample ages 0.00005 and  0.00006 substitutions per site.
+For example, in the below date file, there are 4 samples from population A with sample ages 0.00005 and  0.00006 substitutions per site. The simulator sorts the ages ascending within each population and assigns them to `a1, a2, a3, …` in that order, which is why the order in `seqDates.txt` below differs from the order in the input `datefile`.
 ```
 A 0.00006
 A 0.00005
