@@ -601,7 +601,12 @@ For example, the following date file assigns `specimen1` an age 500, `specimen2`
 ```
 Each line should have one individual followed by the sample age.
 Each sequence in the dataset must be included in the date file.
-Also see the date file `mammoth/dates.txt` in the `examples` subdirectory.
+Also see the date file `mammoth/dates.txt` and the matching control
+file `mammoth/mammoth.ctl` in the `examples` subdirectory — a
+runnable five-species elephantid example (Asian elephant, African
+forest and savanna elephants, woolly mammoth, American mastodon)
+that is walked through in [Recipe 7: Tip Dating with Ancient
+DNA](#recipe-7-tip-dating-with-ancient-dna).
 
 Control File
 ------------
@@ -5762,9 +5767,109 @@ nsample = 200000
 - `clock = 3 ... iid G` — autocorrelated rates
 - `clock = 4 a` — lineage rate model (per-species-branch rate, gamma(a, a) prior, shared across loci)
 
----
+### Recipe 7: Tip Dating with Ancient DNA
 
-## Glossary
+**Goal:** Estimate species divergence times when some samples are
+ancient (radiocarbon-dated or stratigraphically constrained) and the
+mutation rate is unknown.
+
+This recipe walks through the `mammoth` example shipped in
+`examples/mammoth/`, which analyses five elephantids — three extant
+(Asian elephant, African forest elephant, African savanna elephant) and
+two extinct (woolly mammoth, American mastodon) — using ages of the
+ancient samples to calibrate the mutation rate.
+
+**Control file** (`examples/mammoth/mammoth.ctl`):
+```
+seed = -1
+
+seqfile = mammoth_nuclear.txt
+Imapfile = map.txt
+jobname = out
+datefile = dates.txt           # tip-date file (calendar years)
+
+speciesdelimitation = 0        # fixed species tree
+speciestree = 0
+
+species&tree = 5 ASIAN2 MAM1 SAV1 FOR MAST
+                 1 1 1 1 1
+                 (((ASIAN2, MAM1), (SAV1, FOR)), MAST);
+
+# 4 extant species: unphased diploid; mastodon: phased (haploid call)
+phase =   1 1 1 1 0
+
+usedata = 1
+nloci = 100                    # full dataset has 347 loci
+cleandata = 0
+
+# Mutation-rate prior gamma(5, 1e10): mean 5e-10 substitutions/site/year
+locusrate = 3 5 10000000000
+
+thetaprior = gamma 2 2000      # gamma(a, b) for theta (estimated)
+tauprior = gamma 35 1000       # gamma(a, b) for root tau
+
+finetune = 1
+print = 1 0 0 0
+burnin = 40000
+sampfreq = 2
+nsample = 400000
+```
+
+**Date file** (`dates.txt`) — one line per species, age in calendar
+years before present (BP):
+```
+ASIAN2 0
+FOR 0
+MAM1 43000
+MAST 90000
+SAV1 0
+```
+
+**Imap file** (`map.txt`) — each consensus sequence label maps to its
+species:
+```
+ASIAN2 ASIAN2
+FOR FOR
+MAM1 MAM1
+MAST MAST
+SAV1 SAV1
+```
+
+**Key points:**
+
+- **Tip dating activates** as soon as `datefile = ...` is set; the
+  dates are interpreted as calendar units (e.g., years) and must match
+  the units implied by the mutation-rate prior set in `locusrate`. With
+  `locusrate = 3 5 10000000000`, the prior on the per-locus mutation
+  rate $\mu$ is gamma(5, $10^{10}$) with mean $5 \times 10^{-10}$
+  substitutions per site per year — a sensible scale for nuclear
+  mammalian DNA. Ancient ages then place tips off the present, and the
+  data co-estimate $\mu$ and the $\tau$s on the same time scale.
+- **`phase` is per-species:** living taxa here are unphased
+  diploid (`1`) so heterozygous sites are coded with IUPAC ambiguity
+  characters; the mastodon column is `0` because the ancient sample
+  was called as a single haplotype (insufficient depth for confident
+  heterozygous calls).
+- **Sample counts are `1` per species** because each species is
+  represented by a single consensus sequence. The MSC handles
+  within-population variation through $\theta$ — for unphased diploid
+  data BPP uses the heterozygous sites to estimate $\theta$ even from
+  one individual.
+- **`locusrate = 3 a b`** is the mode that *requires* a `datefile`:
+  all loci share a single rate $\mu$, and $\mu$ itself is estimated
+  with the gamma(`a`, `b`) prior. The dates anchor the rate.
+- **Strict clock is assumed**; relaxed-clock modes (`clock = 2/3`) are
+  not currently supported with tip dating.
+- **Run-time tip:** the shipped settings (`burnin = 40000`,
+  `nsample = 400000`, 100 loci) are tuned for a real analysis. Drop
+  burnin/nsample and `nloci` to small values for a smoke test, then
+  scale up. The full dataset has 347 loci.
+
+To run the example as shipped:
+```bash
+cd examples/mammoth/
+bpp --cfile mammoth.ctl
+```
 
 ### Parameters
 
