@@ -10,6 +10,7 @@ then
 fi
 
 cp mkdocs.yml ./site/ &&
+cp -r overrides ./site/ &&
 cp bpp-4-manual.md ./site/docs/ &&
 cp quickstart.md ./site/docs/ &&
 cp index.md ./site/docs/ &&

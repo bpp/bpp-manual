@@ -1,6 +1,7 @@
 site_name: BPP Bayesian Phylogenetics & Phylogeography
 theme:
   name: material
+  custom_dir: overrides
   palette:
     primary: amber
   features:
