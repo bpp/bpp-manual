@@ -788,7 +788,7 @@ as the need arises.
 | Index                         | Variable              | Values              | Condition          | Dependencies |
 |-------------------------------|-----------------------|---------------------|--------------------|--------------|
 | [1](#1-seed)                  | *seed*                | (-d,+d)             | True               | None         |
-| [2](#2-usedata)               | *usedata*             | b                   | True               | None         |
+| [2](#2-usedata)               | *usedata*             | +d                  | True               | None         |
 | [3](#3-jobname)               | **jobname**           | s                   | True               | None         |
 | [4](#4-seqfile)               | **seqfile**           | s                   | True               | <-16         |
 | [5](#5-finetune)              | **finetune**          | b [f*]              | True               | ->7          |
@@ -798,7 +798,7 @@ as the need arises.
 | [9](#9-nsample)               | **nsample**           | +d                  | True               | None         |
 | [10](#10-species&tree)        | **species&tree**      | +d s* +d* t         | True               | ->{11,15,22} |
 | [11](#11-imapfile)            | `Imapfile`            | s                   | 10[1]>1            | <-10         |
-| [12](#12-speciesdelimitation) | *speciesdelimitation* | b [b f*]            | True               | ->14         |
+| [12](#12-speciesdelimitation) | *speciesdelimitation* | b [b f]             | True               | ->14         |
 | [13](#13-speciestree)         | *speciestree*         | b                   | True               | ->13         |
 | [14](#14-speciesmodelprior)   | `speciesmodelprior`   | +d                  | 12[1]=1 OR 13[1]=1 | <-\{12,13\}  |
 | [15](#15-phase)               | **phase**             | b*                  | 10[1]              | <-10         |
@@ -913,7 +913,6 @@ The tables below provide a quick overview of all control file options. See the d
 |--------|--------|---------|-------------|
 | `thetaprior` | `invgamma a b [int]` | `invgamma 3 0.002` | Prior on θ (population size); add `int` to integrate θ analytically (v4.8.2+); requires `a > 2` |
 | | `gamma a b` | `gamma 2 100` | |
-| | `beta p q l u` | `beta 1 1 0 0.01` | |
 | `tauprior` | `invgamma a b` | `invgamma 3 0.03` | Prior on τ (divergence times) |
 | | `gamma a b` | `gamma 2 100` | |
 | `phiprior` | `a b` | `1 1` | Beta(a, b) prior on φ (introgression probability) — no distribution keyword |
@@ -1176,10 +1175,14 @@ locus-specific heredity scalars if those are estimated from the data;
 variable 4 specifies locus-specific gene trees; and variable 5 specifies
 locus-specific substitution-rate parameters (qmat for the $Q$ matrix,
 freqs for base frequencies, and alpha for gamma rates for sites).  
+The first variable (MCMC samples) must be `1`. The fifth variable is
+optional, so four values are also accepted. Setting `print = -1` writes
+only summary output, with no per-iteration MCMC sample file.
 **EXAMPLES**
 ```
-print = 0 1 1 1 0
+print = 1 1 1 1 0
 print = 1 1 1 1 1
+print = -1
 ```
 
 ### 7 burnin
@@ -1593,8 +1596,8 @@ $\theta$ and whether $\theta$s are estimated as part of the MCMC or
 integrated out analytically.  
 **VALUES**  
 `s`, specifies the form of the prior distribution on theta and
-should be either `invgamma`, `gamma` or `beta` to specify either an
-inverse gamma, gamma, or beta distribution, respectively.
+should be either `invgamma` or `gamma` to specify either an
+inverse gamma or gamma distribution, respectively.
 `[(f*, f f s)]`, specifies the parameters of the prior distribution.
 The form for the parameters depends on the type of distribution
 specified in the first argument. The permissible combinations of
@@ -1613,14 +1616,15 @@ requires $\alpha > 2$.
 ```
 which specifies a gamma prior with $\alpha$ and $\beta$ parameters a and
 b, respectively.
-```
-    beta p q l u
-```
-which specifies a beta prior constrained to the interval $(l,u)$ with
-parameters p and q, respectively. All these distributions estimate the
+Both distributions estimate the
 $\theta$ parameters as part of the MCMC, producing posterior summaries
 for each population. Only the inverse-gamma prior additionally supports
 the `int` keyword for analytical integration of $\theta$.
+
+!!! note "Removed in BPP v4.8.0"
+    A `beta p q l u` prior on $\theta$ (constrained to the interval
+    $(l,u)$) was available in v4.4.0–v4.7.0 and was removed in v4.8.0.
+    Use `invgamma` or `gamma` instead.
 
 !!! warning "Behavior change in BPP v4.8.2"
     Starting with BPP v4.8.2 the inverse-gamma prior **estimates**
@@ -1667,7 +1671,7 @@ Whether $\theta$s are integrated out or estimated, other results (such
 as the posterior probability of species trees or species-delimitation
 models) should be identical if the same prior is used. Analytical
 integration of $\theta$ is only possible with an inverse gamma prior;
-the `int` keyword is rejected for the gamma and beta priors. The gamma
+the `int` keyword is rejected for the gamma prior. The gamma
 prior `gamma a b`, where a and b are the parameters $\alpha$ and
 $\beta$, has mean and variance: 
 
@@ -1676,26 +1680,12 @@ $\textrm{Mean}(\theta) = \frac{\alpha}{\beta}$,
 $\textrm{Var}(\theta) = \frac{\alpha}{\beta^2}$.
 
 For example, if $\alpha=0.001$ and $\beta=1$ the mean is
-$0.001/1 = 0.001$ (one variable site per kb on average). The beta prior
-`beta p q l u` has mean and variance: 
-
-$\textrm{Mean}(\theta) = \frac{p u + q l}{p + q}$,
-
-$\textrm{Var}(\theta) = \frac{p q (u - l)^2}{(p + q)^2 (p + q + 1)}$.
-
-For example, with `beta 2 18 1e-6 0.1` the mean is: 
-
-$\frac{2(0.1)+18(10^{-6})}{2+18} = 0.0100009$ 
-
-which is 10 variable sites per kb on average.  
+$0.001/1 = 0.001$ (one variable site per kb on average).
 **EXAMPLES**
 ```
 thetaprior = invgamma 3 0.002         # estimate theta (default since v4.8.2)
 thetaprior = invgamma 3 0.002 int     # integrate theta analytically
 thetaprior = invgamma 4 0.001         # estimate theta
-thetaprior = beta 2 18 1e-6 0.1
-thetaprior = beta 2 18 1e-6 0.01
-thetaprior = beta 1 10 0.0001 0.2
 thetaprior = gamma 0.001 1
 ```
 
@@ -2274,7 +2264,7 @@ Specifies the load balancing strategy for distributing computation across thread
 `none`, no dynamic load balancing (static distribution).
 `zigzag`, use zigzag load balancing for better distribution of work across threads.
 **DEFAULT**
-`none`
+`zigzag`
 **EXAMPLES**
 ```
 loadbalance = none
