@@ -796,28 +796,32 @@ as the need arises.
 | [7](#7-burnin)                | `burnin`              | +d                  | True               | <-5          |
 | [8](#8-sampfreq)              | **sampfreq**          | +d                  | True               | None         |
 | [9](#9-nsample)               | **nsample**           | +d                  | True               | None         |
-| [10](#10-species&tree)        | **species&tree**      | +d s* +d* t         | True               | ->{11,15,24} |
+| [10](#10-species&tree)        | **species&tree**      | +d s* +d* t         | True               | ->{11,15,22} |
 | [11](#11-imapfile)            | `Imapfile`            | s                   | 10[1]>1            | <-10         |
 | [12](#12-speciesdelimitation) | *speciesdelimitation* | b [b f*]            | True               | ->14         |
 | [13](#13-speciestree)         | *speciestree*         | b                   | True               | ->13         |
 | [14](#14-speciesmodelprior)   | `speciesmodelprior`   | +d                  | 12[1]=1 OR 13[1]=1 | <-\{12,13\}  |
 | [15](#15-phase)               | **phase**             | b*                  | 10[1]              | <-10         |
-| [16](#16-nloci)               | *nloci*               | +d                  | True               | ->4 <-30     |
+| [16](#16-nloci)               | *nloci*               | +d                  | True               | ->4 <-28     |
 | [17](#17-model)               | *model*               | s [s]               | True               | None         |
-| [18](#18-qrates)              | *Qrates*              | b +f +f +f +f +f +f | 17=''7''           | <-17         |
-| [19](#19-basefreqs)           | *basefreqs*           | b +f +f +f +f       | 17=''7''           | <-17         |
-| [20](#20-alphaprior)          | *alphaprior*          | f f +d              | True               | None         |
-| [21](#21-cleandata)           | *cleandata*           | b                   | True               | None         |
-| [22](#22-thetaprior)          | *thetaprior*          | s [(f*, f f s)]     | True               | None         |
-| [23](#23-tauprior)            | *tauprior*            | s f f               | True               | None         |
-| [24](#24-phiprior)            | `phiprior`            | f f                 | 10[4]              | <-10         |
-| [25](#25-locusrate)           | *locusrate*           | +d [(f f f s, s, )] | True               | <-26 ->26    |
-| [26](#26-clock)               | *clock*               | +d [f f f s s]      | True               | <-25 ->25    |
-| [27](#27-heredity)            | *heredity*            | +d [(f f, s)]       | True               | None         |
-| [28](#28-checkpoint)          | *checkpoint*          | +d [(+d)]           | True               | None         |
-| [29](#29-constraintfile)      | *constraintfile*      | s                   | True               | None         |
-| [30](#30-threads)             | `threads`             | +d [ +d +d ]        | True               | ->16         |
-| [31](#31-datefile)            | *datefile*            | s                   | 25[3]               | None    |
+| [18](#18-alphaprior)          | *alphaprior*          | f f +d              | True               | None         |
+| [19](#19-cleandata)           | *cleandata*           | b                   | True               | None         |
+| [20](#20-thetaprior)          | *thetaprior*          | s [(f*, f f s)]     | True               | None         |
+| [21](#21-tauprior)            | *tauprior*            | s f f               | True               | None         |
+| [22](#22-phiprior)            | `phiprior`            | f f                 | 10[4]              | <-10         |
+| [23](#23-locusrate)           | *locusrate*           | +d [(f f f s, s, )] | True               | <-24 ->24    |
+| [24](#24-clock)               | *clock*               | +d [f f f s s]      | True               | <-23 ->23    |
+| [25](#25-heredity)            | *heredity*            | +d [(f f, s)]       | True               | None         |
+| [26](#26-checkpoint)          | *checkpoint*          | +d [(+d)]           | True               | None         |
+| [27](#27-constraintfile)      | *constraintfile*      | s                   | True               | None         |
+| [28](#28-threads)             | `threads`             | +d [ +d +d ]        | True               | ->16         |
+| [29](#29-datefile)            | *datefile*            | s                   | 23[3]               | None    |
+| [30](#30-thetamodel)          | *thetamodel*          | s                   | True               | None         |
+| [31](#31-printlocus)          | *printlocus*          | +d +d*              | True               | None         |
+| [32](#32-geneflow)            | *geneflow*            | b                   | True               | None         |
+| [33](#33-loadbalance)         | *loadbalance*         | s                   | True               | None         |
+| [34](#34-traitfile)           | *traitfile*           | s                   | True               | None         |
+| [35](#35-scaling)             | *scaling*             | b                   | True               | None         |
 
 **Table 2.** Complete list of BPP control file variables. The column `Variable` contains the
   control file variable name, the column `Values` specifies (using symbols) the format of the values (symbols are defined in
@@ -920,8 +924,6 @@ The tables below provide a quick overview of all control file options. See the d
 | Option | Syntax | Default | Description |
 |--------|--------|---------|-------------|
 | `model` | `model = name` | `HKY` | JC69, K80, F81, HKY, T92, TN93, F84, GTR, or amino acid models |
-| `Qrates` | `Qrates = 0\|1\|2 [a b]` | `0` | Rate matrix: 0=fixed, 1=estimate, 2=prior |
-| `basefreqs` | `basefreqs = 0\|1\|2 [params]` | `0` | Base frequencies: 0=empirical, 1=estimate, 2=prior |
 | `alphaprior` | `alphaprior = a b` | — | Gamma prior on α (rate variation among sites) |
 | `cleandata` | `cleandata = 0\|1` | `0` | Remove ambiguous sites |
 
@@ -1514,10 +1516,6 @@ For amino acid sequences: `DAYHOFF`, `LG`, `DCMUT`,
 Among-locus model variation: `Custom filename`.  
 **DEFAULT**  
 `JC69`  
-**DEPENDENCIES**  
-If `model = GTR` the variables `Qrates` and `basefreqs` can
-be optionally defined which provide priors on the rate matrix and base
-frequencies, respectively (default priors will be used otherwise).  
 **EXAMPLES**
 ```
 model = GTR
@@ -1525,86 +1523,7 @@ model = CPREV
 model = Custom models.txt
 ```
 
-### 18 Qrates
-------------------------------------------------------------------------
-```
-Qrates = b +f +f +f +f +f +f
-```
-**DESCRIPTION**  
-Specifies whether the exchangeability parameters in the GTR model are
-fixed or variable and either their fixed values or prior relative mean
-values.  
-**VALUES**  
-`b`, specifies either fixed (1) or variable (0) exchangeability
-parameters in the GTR model.  
-`+f +f +f +f +f +f`, specify the exchangeability parameters in the
-order $a, b, c, d, e, f$ for TC, TA, TG, CA, CG, and AG, as described in
-[Yang 2014](https://global.oup.com/academic/product/molecular-evolution-9780199602605?lang=es&cc=gb).  
-**DEFAULT**  
-`0 1 2 1 1 2 1`  
-**DEPENDENCIES**  
-The variable `Qrates` is defined only if `model = GTR`.  
-**COMMENTS**  
-Two example cases are discussed here with either fixed, or variable
-rates. The following specifies fixed rates:
-```
-Qrates = 1  2 1 1 1 1 2
-```
-This specifies fixed rates at $a = 2, b = c = d = e = 1$ and $f = 2$, so
-that the transition rate is twice as high as the transversion rate, and
-the model corresponds to K80 or HKY. Note that only the relative rates
-matter, because the rate matrix ($Q$) is scaled so that the average rate
-(over the base frequencies) is 1 and branch lengths are measured in the
-expected number of mutations/substitutions per site. Nevertheless the
-program expects six rate parameters.
-```
-Qrates = 0  10 5 5 5 5 10 
-```
-This specifies variable rates with a prior on $a, b, c, d, e$ that is a
-Dirichlet distribution for every locus. The above specifies Dir(10, 5,
-5, 5, 5, 10), with parameters
-$\alpha_a = 10, \alpha_b = \alpha_c = \alpha_d = \alpha_e = 10$, and
-$\alpha_f = 10$. The rates generated from the Dirichlet sum to 1, and
-they are rescaled. Note that larger values for those parameters mean
-less variance, while the mean for $a$, say, is given by
-$\alpha_a/\alpha$ with
-$\alpha = \alpha_a + \alpha_b + \alpha_c + \alpha_d + \alpha_e +
-\alpha_f$. This specifies an average transition/transversion rate ratio
-of 2 (if base frequencies are all fixed at $\frac{1}{4}$).  
-**EXAMPLES**
-```
-Qrates = 1 2 1 1 1 1 2
-Qrates = 0 1 1 1 1 1 1
-```
-
-### 19 basefreqs
-------------------------------------------------------------------------
-```
-basefreqs = b +f +f +f +f
-```
-**DESCRIPTION**  
-Specifies whether the base frequency parameters are fixed or variable
-and either their fixed values or prior relative mean values.  
-**VALUES**  
-`b`, specifies either fixed (1) or variable (0) base frequency
-parameters in the GTR model.  
-`+f +f +f +f`, specify the base frequency parameters in the order
-TCAG.  
-**DEFAULT**  
-`0 1 1 1 1`  
-**DEPENDENCIES**  
-The variable `basefreqs` is defined only if `model = GTR`.  
-**COMMENTS**  
-The parameters $\pi_T, \pi_C, \pi_A, \pi_G$ can be either fixed or
-variable with a prior specified by the Dirichlet distribution with
-$\alpha$ parameters specifying the relative mean frequencies.  
-**EXAMPLES**
-```
-basefreqs = 1 0.15 0.35 0.15 0.35
-basefreqs = 0 10 10 10 10
-```
-
-### 20 alphaprior
+### 18 alphaprior
 ------------------------------------------------------------------------
 ```
 alphaprior = f f +d
@@ -1639,7 +1558,7 @@ $\textrm{Var}(\alpha) = \frac{\alpha_p}{\beta_p^2}$
 alphaprior = 1 1 4
 ```
 
-### 21 cleandata
+### 19 cleandata
 ------------------------------------------------------------------------
 ```
 cleandata = b
@@ -1662,7 +1581,7 @@ cleandata = 1
 cleandata = 0
 ```
 
-### 22 thetaprior
+### 20 thetaprior
 ------------------------------------------------------------------------
 ```
 thetaprior = s [(f*, f f s)]
@@ -1780,7 +1699,7 @@ thetaprior = beta 1 10 0.0001 0.2
 thetaprior = gamma 0.001 1
 ```
 
-### 23 tauprior 
+### 21 tauprior 
 ------------------------------------------------------------------------
 ```
 tauprior = s f f
@@ -1829,7 +1748,7 @@ tauprior = invgamma 3 0.03
 tauprior = gamma 0.01 1
 ```
 
-### 24 phiprior
+### 22 phiprior
 ------------------------------------------------------------------------
 ```
 phiprior = f f
@@ -1860,7 +1779,7 @@ phiprior = 1 1
 phiprior = 1.5 1.5
 ```
 
-### 25 locusrate
+### 23 locusrate
 ------------------------------------------------------------------------
 ```
 locusrate = d+[(f f f s, s)]
@@ -1974,7 +1893,7 @@ locusrate = 1 1 1 1 iid
 locusrate = 3 20 1000000
 ```
 
-### 26 clock
+### 24 clock
 ------------------------------------------------------------------------
 ```
 clock = +d [f f f s s]
@@ -2124,7 +2043,7 @@ clock = 3 10.0 50.0 3.0 dir G
 clock = 4 10                 # lineage rate model, gamma(10,10) per-branch
 ```
 
-### 27 heredity
+### 25 heredity
 ------------------------------------------------------------------------
 ```
 heredity = +d [(f f, s, )]
@@ -2183,7 +2102,7 @@ heredity = 1 4 4
 heredity = 2 scalars.txt
 ```
 
-### 28 checkpoint
+### 26 checkpoint
 ------------------------------------------------------------------------
 ```
 checkpoint = +d [(+d)]
@@ -2211,7 +2130,7 @@ checkpoint = 100000
 checkpoint = 100000 10000
 ```
 
-### 29 constraintfile
+### 27 constraintfile
 ------------------------------------------------------------------------
 ```
 constraintfile = s
@@ -2230,7 +2149,7 @@ the analysis.
 constraintfile = myconstraints.txt
 ```
 
-### 30 threads
+### 28 threads
 ------------------------------------------------------------------------
 ```
 threads = +d [+d +d]
@@ -2258,7 +2177,7 @@ threads = 4
 threads = 8 4 1
 ```
 
-### 31 datefile
+### 29 datefile
 ------------------------------------------------------------------------
 ```
 datefile = s 
@@ -2289,7 +2208,7 @@ datefile = dates.txt
 datefile = /home/foo/seqDates.txt
 ```
 
-### 32 thetamodel
+### 30 thetamodel
 ------------------------------------------------------------------------
 ```
 thetamodel = s
@@ -2311,7 +2230,7 @@ thetamodel = linked-all
 thetamodel = linked-inner
 ```
 
-### 33 printlocus
+### 31 printlocus
 ------------------------------------------------------------------------
 ```
 printlocus = +d +d +d ...
@@ -2326,7 +2245,7 @@ printlocus = 2 1 5    # print gene trees for loci 1 and 5
 printlocus = 3 1 2 3  # print gene trees for loci 1, 2, and 3
 ```
 
-### 34 geneflow
+### 32 geneflow
 ------------------------------------------------------------------------
 ```
 geneflow = b
@@ -2344,7 +2263,7 @@ geneflow = 0
 geneflow = 1
 ```
 
-### 35 loadbalance
+### 33 loadbalance
 ------------------------------------------------------------------------
 ```
 loadbalance = s
@@ -2362,7 +2281,7 @@ loadbalance = none
 loadbalance = zigzag
 ```
 
-### 36 traitfile
+### 34 traitfile
 ------------------------------------------------------------------------
 ```
 traitfile = s
@@ -2436,6 +2355,27 @@ speciesC  1 ? 2 0
 !!! warning "Preliminary feature"
     Morphological/trait data support was added in v4.8.6. Behavior,
     input format, and model details may change in future releases.
+
+### 35 scaling
+------------------------------------------------------------------------
+```
+scaling = b
+```
+**DESCRIPTION**  
+Turns on scaling of the conditional (partial) likelihoods during the
+phylogenetic likelihood calculation to prevent numerical underflow.
+Underflow can arise when there are many sequences, long sequences, or deep
+divergences, which can make the per-site conditional likelihoods extremely
+small. Enabling scaling makes each likelihood evaluation slightly slower but
+avoids underflow.  
+**VALUES**  
+`b`, either 0 (scaling off) or 1 (scaling on).  
+**DEFAULT**  
+`0`  
+**EXAMPLES**
+```
+scaling = 1
+```
 
 ## Example control file
 
@@ -2854,101 +2794,29 @@ specified.
 
 #### GTR model
 
-The General Time-Reversible (GTR) model implemented in BPP allows
-different rates of substitution between different nucleotide pairs, with
-the constraint that the process is "reversible" so that, for example,
-the rate of transition from A to T equals the rate of transition from T
-to A and so on. The GTR model accommodates factors such as
-transition-transversion bias and should be used when sequences are more
-divergent (distantly related species). The control file specification of
-the GTR model is:
+The General Time-Reversible (GTR) model implemented in BPP allows different
+rates of substitution between different nucleotide pairs, subject to the
+constraint that the process is "reversible" so that, for example, the rate of
+substitution from A to T equals the rate from T to A, and so on. The GTR model
+accommodates factors such as transition-transversion bias and should be used
+when sequences are more divergent (distantly related species). The control file
+specification of the GTR model is:
 ```
     model = GTR
 ```
-Note that if the GTR model is used, two other variables may be specified
-in the control file: `Qrates` and `basefreqs`. The `Qrates` variable
-specifies whether the exchangeability parameters of the GTR model are
-fixed or variable as well as either their fixed values, or prior mean
-values, respectively. The control file specification is:
-```
-    Qrates = B a b c d e f
-```
-The variable `B` is either 0 (variable exchangeability parameters) or 1
-(fixed exchangeability parameters). The variables `a b c d e f` are
-positive numbers specifying the exchangeability parameters for TC, TA,
-TG, CA, CG and AG substitutions respectively (see [Yang 1994](https://doi.org/10.1007/BF00178256)). Note that
-TC is the rate of either T-\>C or C-\>T substitutions. Note that only
-the relative rates matter because the rate matrix is scaled to have an
-overall average substitution rate of 1. Thus, for the model of fixed
-rates if x is any positive number a b c d e f and xa xb xc xd xe xf are
-equivalent specifications. An example with fixed rates is as follows:
-```
-    Qrates = 1  2 1 1 1 1 2
-```
-which specifies $a=2,b=c=d=e=1,f=2$ so that the transition rate is twice
-as high as the transversion rate, corresponding to a K80 or HKY model.
-In most cases, users will want to use the GTR model with exchangeability
-parameters variable. Using this specification, the posterior
-distribution of the parameters will be estimated from the data. An
-example with variable rates is as follows:
-```
-    Qrates = 0  10 5 5 5 5 10
-```
-The absolute magnitude of the numbers *does matter* in this case as it
-determines the variance of the prior probability distribution on
-exchangeability parameters. The variance is inversely proportional to
-the absolute magnitude of the variables. The prior on the free
-parameters $a, b, c, d, e$ is a Dirichlet distribution with parameters
+Under the GTR model, BPP has two additional groups of parameters. The first is
+the set of six exchangeability parameters, the relative substitution rates for
+the nucleotide pairs TC, TA, TG, CA, CG and AG (see
+[Yang 1994](https://doi.org/10.1007/BF00178256); "TC" denotes the rate of
+substitution between T and C in either direction). The second is the set of four
+base (stationary) frequencies $\pi_T, \pi_C, \pi_A, \pi_G$. Only the relative
+exchangeabilities matter, because the rate matrix is scaled so that the average
+substitution rate is 1 and branch lengths are measured in the expected number of
+substitutions per site.
 
-$\alpha_a = 10, \alpha_b = \alpha_c = \alpha_d = \alpha_e = 5, \texttt{and} \, \alpha_f = 10$
-
-The rates generated from the Dirichlet sum to 1 and are rescaled. If we
-define
-
-$\alpha = \alpha_a + \alpha_b + \alpha_c + \alpha_d + \alpha_e + \alpha_f$
-
-then the mean for $a$ is $\alpha_a/\alpha$ and the variance for $a$ is
-
-$\textrm{Var}(a) = \frac{\frac{\alpha_a}{\alpha}\left(1-\frac{\alpha_a}{\alpha}\right)}{\alpha + 1}$.
-
-The means and variances of the other parameters are the same
-(substituting subscripts). Thus, in this example, the mean for $a$ is
-$\alpha_a/\alpha = 10/40 = 1/4$ and the variance is
-$(1/4)(3/4)/41 = 4.6 \times 10^{-3}$. The prior specified above has an
-average transition-transversion rate ratio of 2 (if base frequencies are
-all fixed at 1/4).
-
-The other control file variable that must be specified when using the
-GTR model is the `basefreqs` variable which specifies whether the
-stationary nucleotide (base) frequencies are fixed, or variable, and
-either their fixed values, or relative prior means, respectively. The
-control file specification is:
-```
-    basefreqs = B T C A G
-```
-where B is either 0 (variable base frequencies) or 1 (fixed base
-frequencies) and T C A and G are numbers specifying the frequencies of
-bases T, C, A and G, respectively. An example with fixed base
-frequencies is as follows:
-```
-    basefreqs = 1  0.1 0.2 0.2 0.5
-```
-In most cases, users will want to use the variable base frequencies
-setting which specifies that the posterior distribution of base
-frequencies is estimated from the data. An example with variable base
-frequencies is as follows:
-```
-    0  10 10 10 10
-```
-Here the 4 variables T C A G specify the alpha parameters of a Dirichlet
-prior distribution on the nucleotide frequencies. So, the prior mean
-frequency of base A in this example is $10/40 = 1/4$ and the variance is
-$(1/4)(3/4)/41 = 4.6 \times 10^{-3}$. As noted above when discussing the
-Dirichlet prior for exchangeability parameters the absolute magnitude of
-the variables determines the variance of the Dirichlet prior. If a GTR
-model is chosen and `Qrates` and `basefreqs` are not specified in the
-control file default values of `Qrates = 0 1 2 1 1 2 1` and
-`basefreqs = 0 1 1 1 1` will be used.
+These parameters are estimated from the data: BPP places a Dirichlet prior on
+the exchangeability parameters and a Dirichlet prior on the base frequencies and
+samples them during MCMC together with the other model parameters.
 
 #### Other DNA substitution models
 
