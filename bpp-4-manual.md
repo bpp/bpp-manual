@@ -822,6 +822,9 @@ as the need arises.
 | [33](#33-loadbalance)         | *loadbalance*         | s                   | True               | None         |
 | [34](#34-traitfile)           | *traitfile*           | s                   | True               | None         |
 | [35](#35-scaling)             | *scaling*             | b                   | True               | None         |
+| [36](#36-wprior)              | *wprior*              | f f                 | migration          | <-37         |
+| [37](#37-migration)           | *migration*           | +d                  | True               | ->36         |
+| [38](#38-bayesfactorbeta)     | *bayesfactorbeta*     | f                   | True               | None         |
 
 **Table 2.** Complete list of BPP control file variables. The column `Variable` contains the
   control file variable name, the column `Values` specifies (using symbols) the format of the values (symbols are defined in
@@ -2365,6 +2368,73 @@ avoids underflow.
 **EXAMPLES**
 ```
 scaling = 1
+```
+
+### 36 wprior
+------------------------------------------------------------------------
+```
+wprior = a b
+```
+**DESCRIPTION**  
+Gamma prior on the migration rates $w$ under the MSC-M (isolation-with-migration)
+model. Replaces the older `migprior` (v4.8.0). See *Introgression and Migration
+Models* for the full MSC-M specification.  
+**VALUES**  
+`a b`, the parameters $\alpha$ and $\beta$ of a gamma prior $G(\alpha,\beta)$
+applied to every migration rate $w$.  
+**DEFAULT**  
+None (required when migration bands are defined).  
+**DEPENDENCIES**  
+Required when `migration` bands are specified.  
+**EXAMPLES**
+```
+wprior = 2 200
+```
+
+### 37 migration
+------------------------------------------------------------------------
+```
+migration = N
+    source target [a b] [a_w] [pseudo_a pseudo_b]
+    ...
+```
+**DESCRIPTION**  
+Defines migration bands under the MSC-M model: a count `N` followed by `N` lines,
+each specifying a source and target population between which gene flow is allowed
+(optionally with band-specific prior parameters). Mutually exclusive with
+introgression (`&phi=` nodes in `species&tree`). See *Introgression and Migration
+Models* for full details and worked examples.  
+**VALUES**  
+`N`, the number of migration bands; then `N` lines each giving a `source` and
+`target` population label, optionally followed by band-specific parameters.  
+**DEFAULT**  
+`0` (no migration).  
+**DEPENDENCIES**  
+Requires `wprior`. Incompatible with `speciestree = 1`.  
+**EXAMPLES**
+```
+migration = 2
+    A C
+    S C
+```
+
+### 38 bayesfactorbeta
+------------------------------------------------------------------------
+```
+bayesfactorbeta = f
+```
+**DESCRIPTION**  
+Power-posterior parameter $\beta$ used when estimating the marginal likelihood
+for Bayes-factor model comparison. Each run uses one $\beta$ value; combine runs
+over a grid of $\beta$ to compute the marginal likelihood by thermodynamic
+integration.  
+**VALUES**  
+`f`, a positive real (the power applied to the likelihood; typically in $(0,1]$).  
+**DEFAULT**  
+`1`  
+**EXAMPLES**
+```
+bayesfactorbeta = 0.5
 ```
 
 ## Example control file
